@@ -1,4 +1,5 @@
 import 'package:bc_app/views/authentification/loginPage.dart';
+import 'package:bc_app/views/widgets/appbar.dart';
 import 'package:flutter/material.dart';
 
 
@@ -16,110 +17,107 @@ class _BeASellerState extends State<BeASeller> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-      backgroundColor: Colors.white,
-      elevation: 0.0,
-      centerTitle: true,
-      title: Text("Bonbino Confort",
-          style: TextStyle(
-              fontFamily: 'Varela',
-              fontSize: 20.0,
-              color: Color(0xFF545D68))),
-      actions: [
-        IconButton(
-          icon:
-          const Icon(Icons.notifications_none, color: Color(0xFF545D68)),
-          tooltip: 'Show Notification',
-          onPressed: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Show Notification')));
-          },
-        ),
-      ],
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color:  Color(0xFF545D68)),
-          onPressed: () {
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (BuildContext ctx) => LoginPage()));
-          }
-        ),
-    ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-                  padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 10.0),
-                  child: Card(
-                      color: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width - 80,
-                            child: buildTextField('الإسم الكامل')
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                    padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 10.0),
+                    child: Card(
+                        color: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
                         ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width - 80,
+                              child: buildTextField('الإسم الكامل')
+                          ),
+                        )
+                    ),
+                  ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 10.0),
+                child: Card(
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SizedBox(
+                          width: MediaQuery.of(context).size.width - 80,
+                          child: buildTextField('رقم الهاتف')
+                      ),
+                    )
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 10.0),
+                child: Card(
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SizedBox(
+                          width: MediaQuery.of(context).size.width - 80,
+                          child: buildTextField('البريد الإلكتروني')
+                      ),
+                    )
+                ),
+              ),
+              Center(
+                child: ButtonTheme(
+                  minWidth: 150.0,
+                  height: 50.0,
+                  child: RaisedButton(
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                    onPressed: () {
+                      _sendRequest();
+                    },
+                    color: Color(0xFF2C7DBF),
+                    textColor: Colors.white,
+                    child: Text(
+                      'ارسال الطلب',
+                      textDirection: TextDirection.rtl,
+                      style: TextStyle(
+                          fontSize: 19.0
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: (){
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => LoginPage()));
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.arrow_back, size: 20.0,),
+                      Text(
+                        'رجوع',
+                        style: TextStyle(
+                            fontSize: 20.0
+                        ),
+                        textDirection: TextDirection.rtl,
                       )
-                  ),
-                ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 10.0),
-              child: Card(
-                  color: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SizedBox(
-                        width: MediaQuery.of(context).size.width - 80,
-                        child: buildTextField('رقم الهاتف')
-                    ),
-                  )
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 10.0),
-              child: Card(
-                  color: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SizedBox(
-                        width: MediaQuery.of(context).size.width - 80,
-                        child: buildTextField('البريد الإلكتروني')
-                    ),
-                  )
-              ),
-            ),
-            Center(
-              child: ButtonTheme(
-                minWidth: 150.0,
-                height: 50.0,
-                child: RaisedButton(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                  onPressed: () {
-                    _sendRequest();
-                  },
-                  color: Color(0xFF2C7DBF),
-                  textColor: Colors.white,
-                  child: Text(
-                    'ارسال الطلب',
-                    textDirection: TextDirection.rtl,
-                    style: TextStyle(
-                        fontSize: 19.0
-                    ),
+                    ],
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

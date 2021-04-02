@@ -1,62 +1,65 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:bc_app/models/user.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class AuthentificationService {
-
   User user;
-  String baseUrl = 'https://reqres.in/api';
-  var token;
-  var status;
+  String baseUrl = 'https://bc.meks.ma/BC/v1/';
+  var error;
   bool isLogged = false;
 
-
   /// Login method
-  Future<User> login() async {
-    String myUrl = 'https://bc.meks.ma/BC/v1/revendeur/?id=1';
+  Future<User> login(String userN, String userP) async {
+    String myUrl = '${baseUrl}revendeur/?firstName=$userN&password=$userP';
 
     String username = 'TelcoBill_Api_User_V2|1|6';
-    String password = '4398eefebc6342f42cd25e93250484fe76e19427bccc9c3d538a4c02faa267e81a6e4cdcb9ff10d90ef809fe2426d28cac87c2a314a9913aed56b64f687e616f';
+    String password =
+        '4398eefebc6342f42cd25e93250484fe76e19427bccc9c3d538a4c02faa267e81a6e4cdcb9ff10d90ef809fe2426d28cac87c2a314a9913aed56b64f687e616f';
     String basicAuth =
         'Basic ' + base64Encode(utf8.encode('$username:$password'));
 
-
-    Response response = await get(Uri.parse(myUrl), headers: {
-      'Accept': 'Application/json',
-      'authorization': basicAuth
-    },
+    Response response = await get(
+      Uri.parse(myUrl),
+      headers: {'Accept': 'Application/json', 'authorization': basicAuth},
     );
-    //print(response.body);
-    status = response.body.contains('error');
+    if (response.body != null) {
+      var data = jsonDecode(response.body);
+      print("sss => ${data["data"].length}");
 
-    var data = jsonDecode(response.body);
-    print('data ====> $data');
-    if (status) {
-      print('error ====>: ${data["error"]}');
+      if(data["data"].length > 0){
+        print('success');
+        isLogged = true;
+        final prefs = await SharedPreferences.getInstance();
+        final key = 'isLogged';
+        final value = isLogged;
+        prefs.setBool(key, value);
+
+        error = true;
+        ///fill user model
+        user = User(
+            data["data"][0]["revendeur_id"],
+            data["data"][0]["firstName"],
+            data["data"][0]["lastName"],
+            data["data"][0]["userName"],
+            data["data"][0]["password"],
+            data["data"][0]["entrepriseName"],
+            data["data"][0]["ice"],
+            data["data"][0]["city"],
+            data["data"][0]["address"],
+            data["data"][0]["telephone"],
+            data["data"][0]["clientNumber"]);
+
+        _storeUserData(data);
+      }else{
+        print('account not found!');
+        error = false;
+      }
+
     }
-    else {
 
-      isLogged = true;
-      print('is logged=====> $isLogged');
-      final prefs = await SharedPreferences.getInstance();
-      final key = 'isLogged';
-      final value = isLogged;
-      prefs.setBool(key, value);
-
-      user = User(data["data"][0]["revendeur_id"], data["data"][0]["firstName"], data["data"][0]["lastName"],
-          data["data"][0]["userName"], data["data"][0]["password"], data["data"][0]["entrepriseName"],
-        data["data"][0]["ice"], data["data"][0]["city"], data["data"][0]["address"], data["data"][0]["telephone"], data["data"][0]["clientNumber"] );
-
-      print("Login say: username is:  => ${user.fname}");
-      _storeUserData(data);
-    }
     return user;
-
   }
-
 
   ///disconnecting method
   Future disconnect() async {
@@ -73,17 +76,11 @@ class AuthentificationService {
 
     isLogged = value;
 
-    print("login checker say: =======> $value");
-
     return value;
   }
 
-
-
   /**
-   *
    * ******************************* User Information *******************************
-   *
    */
 
   /// store user information in shared preferences
@@ -91,7 +88,6 @@ class AuthentificationService {
     final prefs = await SharedPreferences.getInstance();
     var user = responseData['data'];
     print('----------  $user');
-    //user.putIfAbsent('jwt', () => responseData['jwt']);
     prefs.setString('user', json.encode(user));
   }
 
@@ -103,5 +99,4 @@ class AuthentificationService {
     var user = json.decode(storedUser);
     return user;
   }
-
 }

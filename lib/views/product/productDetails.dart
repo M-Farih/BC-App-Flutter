@@ -1,112 +1,96 @@
+import 'package:bc_app/views/widgets/appbar.dart';
 import 'package:flutter/material.dart';
 
 class ProductDetail extends StatelessWidget {
-  final assetPath, title, description, category;
+  final assetPath, title, description;
   final double price;
 
-  ProductDetail({this.assetPath, this.price, this.title, this.description, this.category});
+  ProductDetail(
+      {this.assetPath,
+      this.price,
+      this.title,
+      this.description});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0.0,
-        centerTitle: true,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Color(0xFF545D68)),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-        title: Text('Pickup',
-            style: TextStyle(
-                fontFamily: 'Varela',
-                fontSize: 20.0,
-                color: Color(0xFF545D68))),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.notifications_none, color: Color(0xFF545D68)),
-            onPressed: () {},
-          ),
-        ],
-      ),
-
-      body: ListView(
+        appBar: MyAppBar(),
+        body: Column(
           children: [
-            SizedBox(height: 15.0),
-            Padding(
-              padding: EdgeInsets.only(left: 20.0),
-              child: Text(
-                  '$category',
-                  style: TextStyle(
-                      fontFamily: 'Varela',
-                      fontSize: 42.0,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFFF17532))
-              ),
-            ),
-            SizedBox(height: 15.0),
-            Hero(
-                tag: assetPath,
-                child: Image.asset(assetPath,
-                    height: 150.0,
-                    width: 100.0,
-                    fit: BoxFit.contain
-                )
-            ),
-            SizedBox(height: 20.0),
-            Center(
-              child: Text('${price.toString()}',
-                  style: TextStyle(
-                      fontFamily: 'Varela',
-                      fontSize: 22.0,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFFF17532))),
-            ),
-            SizedBox(height: 10.0),
-            Center(
-              child: Text(title,
-                  style: TextStyle(
-                      color: Color(0xFF575E67),
-                      fontFamily: 'Varela',
-                      fontSize: 24.0)),
-            ),
-            SizedBox(height: 20.0),
-            Center(
-              child: Container(
-                width: MediaQuery.of(context).size.width - 50.0,
-                child: Text('$description',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontFamily: 'Varela',
-                        fontSize: 16.0,
-                        color: Color(0xFFB4B8B9))
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Icon(Icons.arrow_back),
+                    Text(
+                      'المنتوجات',
+                      style: TextStyle(fontSize: 20.0),
+                    )
+                  ],
                 ),
               ),
             ),
-            SizedBox(height: 20.0),
-            Center(
-                child: Container(
-                    width: MediaQuery.of(context).size.width - 50.0,
-                    height: 50.0,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(25.0),
-                        color: Color(0xFFF17532)
+            Container(
+              height: MediaQuery.of(context).size.height / 1.4,
+              width: MediaQuery.of(context).size.width - 80,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20.0),
+                boxShadow: [
+                  //background color of box
+                  BoxShadow(
+                    color: Colors.grey,
+                    blurRadius: 25.0, // soften the shadow
+                    spreadRadius: 1.0, //extend the shadow
+                    offset: Offset(
+                      1.0, // Move to right 10  horizontally
+                      5.0, // Move to bottom 10 Vertically
                     ),
-                    child: Center(
-                        child: Text('Add to cart',
+                  )
+                ],
+              ),
+              child: Column(
+                children: [
+                  SizedBox(height: 20.0),
+                  Image.asset('$assetPath'),
+                  SizedBox(height: 20.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20.0),
+                        child: Text(
+                          '$title',
                           style: TextStyle(
-                              fontFamily: 'Varela',
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white
-                          ),
-                        )
-                    )
-                )
+                              fontSize: 25.0, fontWeight: FontWeight.bold),
+                          textDirection: TextDirection.ltr,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0),
+                    child: Flexible(
+                      child: Text(
+                        '$description',
+                        style: TextStyle(
+                            fontSize: 10.0, fontWeight: FontWeight.normal),
+                        textDirection: TextDirection.ltr,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                ],
+              ),
             )
-          ]
-      ),
-    );
+          ],
+        ));
   }
 }

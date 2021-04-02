@@ -2,73 +2,107 @@ import 'package:bc_app/views/product/productDetails.dart';
 import 'package:flutter/material.dart';
 
 class ProductCard extends StatelessWidget {
-
   final String name;
-  final double price;
   final String imgPath;
   final String desc;
-  final String category;
-  final context;
-  final bool isFavorite = false;
-  final bool added = false;
 
-  ProductCard({this.name, this.price, this.imgPath, this.desc, this.category, this.context});
+  ProductCard({this.name, this.imgPath, this.desc});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
         padding: EdgeInsets.only(top: 5.0, bottom: 5.0, left: 5.0, right: 5.0),
-        child: InkWell(
-            onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => ProductDetail(
-                    assetPath: imgPath, price: price, title: name, description: desc, category: category,)));
-            },
-            child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15.0),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.grey.withOpacity(0.2),
-                          spreadRadius: 3.0,
-                          blurRadius: 5.0)
-                    ],
-                    color: Colors.white),
-                child: Column(children: [
+        child: Container(
+          // height: 300.0,
+          //width: 160.0,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              //background color of box
+              BoxShadow(
+                color: Colors.grey,
+                blurRadius: 25.0, // soften the shadow
+                spreadRadius: 1.0, //extend the shadow
+                offset: Offset(
+                  1.0, // Move to right 10  horizontally
+                  5.0, // Move to bottom 10 Vertically
+                ),
+              )
+            ],
+          ),
+          child: Column(
+            children: [
+              SizedBox(height: 20.0),
+              Image.asset('$imgPath'),
+              SizedBox(height: 20.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
                   Padding(
-                      padding: EdgeInsets.all(5.0),
+                    padding: const EdgeInsets.only(left: 20.0),
+                    child: Text(
+                      '$name',
+                      style: TextStyle(
+                          fontSize: 25.0, fontWeight: FontWeight.bold),
+                      textDirection: TextDirection.ltr,
+                    ),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0),
+                child: Flexible(
+                  child: Text(
+                    '$desc',
+                    style: TextStyle(
+                        fontSize: 10.0, fontWeight: FontWeight.normal),
+                    textDirection: TextDirection.ltr,
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 10.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => ProductDetail(
+                              assetPath: imgPath, title: name, description: desc)));
+                    },
+                    child: Container(
+                      height: 25.0,
+                      width: 75.0,
+                      decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(10.0),
+                            bottomLeft: Radius.circular(10.0),
+                          )),
                       child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            isFavorite
-                                ? Icon(Icons.favorite, color: Color(0xFFEF7532))
-                                : Icon(Icons.favorite_border,
-                                color: Color(0xFFEF7532))
-                          ])),
-                  Hero(
-                      tag: imgPath,
-                      child: Container(
-                          height: 75.0,
-                          width: 75.0,
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage(imgPath),
-                                  fit: BoxFit.contain)))),
-                  SizedBox(height: 7.0),
-                  Text('$price',
-                      style: TextStyle(
-                          color: Color(0xFFCC8053),
-                          fontFamily: 'Varela',
-                          fontSize: 14.0)),
-                  Text('$name',
-                      style: TextStyle(
-                          color: Color(0xFF575E67),
-                          fontFamily: 'Varela',
-                          fontSize: 14.0)),
-                  Padding(
-                      padding: EdgeInsets.all(8.0),
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Lire la suite',
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 10.0),
+                          ),
+                          Icon(
+                            Icons.arrow_forward_ios_outlined,
+                            color: Colors.white,
+                            size: 10.0,
+                          )
+                        ],
                       ),
-
-                ]))));
+                    ),
+                  )
+                ],
+              )
+            ],
+          ),
+        ));
   }
 }

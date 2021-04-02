@@ -5,14 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  var loginStatus = prefs.getBool('isLogged');
-  print("Login status: $loginStatus");
+
+  ///check if user is logged in
+  AuthentificationService as = AuthentificationService();
+  var loginStatus = await as.checkLogin();
+
   runApp(MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: new ThemeData(scaffoldBackgroundColor: const Color(0xFFF1F4F7)),
-      home: loginStatus == null ? LoginPage() : HomePage())
+      home: loginStatus == false ? LoginPage() : HomePage()),
   );
-  //runApp(MaterialApp(home: HomePage()));
 }
 

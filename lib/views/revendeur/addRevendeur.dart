@@ -1,3 +1,4 @@
+import 'package:bc_app/views/widgets/appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:bc_app/services/revendeurService.dart';
 
@@ -24,31 +25,7 @@ class _AddRevendeurState extends State<AddRevendeur> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0.0,
-        centerTitle: true,
-        title: Text("Bonbino Confort",
-            style: TextStyle(
-                fontFamily: 'Varela',
-                fontSize: 20.0,
-                color: Color(0xFF545D68))),
-        actions: [
-          IconButton(
-            icon:
-            const Icon(Icons.notifications_none, color: Color(0xFF545D68)),
-            tooltip: 'Show Notification',
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Show Notification')));
-            },
-          ),
-        ],
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color:  Color(0xFF545D68)),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-      ),
+      appBar: MyAppBar(),
       body: Center(
           child: Padding(
             padding: const EdgeInsets.fromLTRB(12.0, 0, 12.0, 0),
