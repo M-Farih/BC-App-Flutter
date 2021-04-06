@@ -2,7 +2,7 @@ import 'package:bc_app/services/authentificationService.dart';
 import 'package:bc_app/views/authentification/loginPage.dart';
 import 'package:bc_app/views/home/homePage.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+//import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
 
@@ -10,7 +10,8 @@ Future<void> main() async {
 
   ///check if user is logged in
   AuthentificationService as = AuthentificationService();
-  var loginStatus = await as.checkLogin();
+  //var loginStatus = await as.checkLogin();
+  var loginStatus = true;
 
   runApp(MaterialApp(
       debugShowCheckedModeBanner: false,

@@ -79,7 +79,7 @@ class ProductDetail extends StatelessWidget {
                       child: Text(
                         '$description',
                         style: TextStyle(
-                            fontSize: 10.0, fontWeight: FontWeight.normal),
+                            fontSize: 12.0, fontWeight: FontWeight.normal),
                         textDirection: TextDirection.ltr,
                       ),
                     ),

@@ -5,6 +5,7 @@ class ProductService{
 
   static List<Product> products = List<Product>();
 
+  ///fill
   static Future <List<Product>> fillProduct() async{
 
     Product p1 = new Product(1, 'images/1.png', 'MATELAS DE BÉBÉ', 400.0 , 'Le matelas est un élément essentiel du couchage de bébé. Votre bébé passe près de 18 heures par jour sur son matelas durant ses premiers mois. On considère qu’un bébé passe autant d’heures sur son matelas en 2 ans qu’un adulte en passe en 5 à 6 ans. Avec le matelas de bébé de Bonbino Confort on privilégie la sécurité, le confort et la qualité de l’air qu’il respire. Ainsi votre enfant sera confortablement installé dans son lit et pourra bénéficier de nuits calmes avec moins de réveils nocturnes. Il pourra ainsi bénéficier d’un sommeil de qualité qui aide à son bon développement physique et psychologique.', 'MATELAS', ['120*60', '140*70'], ['Bleu bebe', 'Rose bebe']);
@@ -22,10 +23,5 @@ class ProductService{
     return products;
   }
 
-  static Future<Product> printProduct() async{
-    for( final p in products){
-      print('product=====> ${p.colors}');
-    }
-  }
 
 }

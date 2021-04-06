@@ -1,15 +1,14 @@
 import 'package:bc_app/services/authentificationService.dart';
 import 'package:bc_app/services/contactingService.dart';
-import 'package:bc_app/views/authentification/loginPage.dart';
 import 'package:bc_app/views/product/productCategories.dart';
 import 'package:bc_app/views/profil/profilPage.dart';
+import 'package:bc_app/views/sugg_recc/suggestion.dart';
 import 'package:bc_app/views/widgets/appbar.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'dashboard/dashboard.dart';
 import 'package:bubble_bottom_bar/bubble_bottom_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -110,13 +109,16 @@ class _HomePageState extends State<HomePage> {
             backgroundColor: Color(0xFFFC8F6E),
             label: 'اقتراحات',
             labelStyle: TextStyle(fontSize: 18.0, color: Colors.black54),
-            onTap: () => print('SECOND CHILD'),
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => SuggestionPage()));
+            },
           ),
           SpeedDialChild(
             child: Icon(Icons.feedback, color: Colors.white),
             backgroundColor: Color(0xFFF67B97),
             label: 'مطالبة',
-            labelStyle: TextStyle(fontSize: 18.0, color: Colors.black54),
+            labelStyle: TextStyle(fontSize: 18.0, color: Colors.black54,),
             onTap: () => print('THIRD CHILD'),
           ),
         ],

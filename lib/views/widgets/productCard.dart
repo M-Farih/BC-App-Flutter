@@ -58,6 +58,7 @@ class ProductCard extends StatelessWidget {
                     style: TextStyle(
                         fontSize: 10.0, fontWeight: FontWeight.normal),
                     textDirection: TextDirection.ltr,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ),

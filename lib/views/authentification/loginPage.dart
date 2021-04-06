@@ -88,7 +88,7 @@ class _LoginState extends State<LoginPage> {
                         ),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: buildTextField("كلمه السر", passwordController),
+                          child: buildTextField("كلمة السر", passwordController),
                         )
                     ),
                   ),
@@ -169,22 +169,23 @@ class _LoginState extends State<LoginPage> {
   void _login() {
    if(emailController.text.trim().toLowerCase().isNotEmpty && passwordController.text.trim().isNotEmpty){
      setState(() {
-       LoaderDialog.showLoadingDialog(context, _LoaderDialog);
+       LoaderDialog.showLoadingDialog(context, _LoaderDialog, 'جاري الاتصال');
 
        authService.login(emailController.text, passwordController.text).whenComplete(() {
 
          if(!authService.error){
            print('error state');
-           Navigator.of(_LoaderDialog.currentContext,rootNavigator: true).pop();
+           Navigator.of(context,rootNavigator: true).pop();
 
            Flushbar(
              flushbarPosition: FlushbarPosition.TOP,
              message:  "حصل خطأ فى الاتصال",
              duration:  Duration(seconds: 3),
            )..show(context);
-         }else{
+         }
+         else{
            print('success state');
-           Navigator.of(_LoaderDialog.currentContext,rootNavigator: true).pop();
+           Navigator.of(context ,rootNavigator: true).pop();
            ScaffoldMessenger.of(context).showSnackBar(
                const SnackBar(content: Text('تم تسجيل الدخول بنجاح')));
            Navigator.pushReplacement(context,
@@ -196,8 +197,11 @@ class _LoginState extends State<LoginPage> {
    }
 
    else{
-     ScaffoldMessenger.of(context).showSnackBar(
-         const SnackBar(content: Text('المرجو ادخال المعلومات')));
+     Flushbar(
+       flushbarPosition: FlushbarPosition.TOP,
+       message:  'المرجو ادخال كامل المعلومات',
+       duration:  Duration(seconds: 3),
+     )..show(context);
    }
 
   }
@@ -216,12 +220,12 @@ class _LoginState extends State<LoginPage> {
         ),
         border: InputBorder.none,
         prefixIcon: hintText == "البريد الإلكتروني" ? Icon(Icons.email) : Icon(Icons.lock),
-        suffixIcon: hintText == "كلمه السر" ? IconButton(
+        suffixIcon: hintText == "كلمة السر" ? IconButton(
           onPressed: _toggleVisibility,
           icon: _isHidden ? Icon(Icons.visibility_off) : Icon(Icons.visibility),
         ) : null,
       ),
-      obscureText: hintText == "Password" ? _isHidden : false,
+      obscureText: hintText == "كلمة السر" ? _isHidden : false,
     );
   }
 

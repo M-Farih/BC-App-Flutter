@@ -35,7 +35,6 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget  {
               ),
               GestureDetector(
                 onTap: () => _disconnect(context),
-                //onTap: () => print('hhh'),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 10.0),
                   child: Icon(

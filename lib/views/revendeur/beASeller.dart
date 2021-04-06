@@ -1,15 +1,24 @@
+import 'package:bc_app/services/contactingService.dart';
 import 'package:bc_app/views/authentification/loginPage.dart';
 import 'package:bc_app/views/widgets/appbar.dart';
+import 'package:bc_app/views/widgets/loaderDialog.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
-
-
 
 class BeASeller extends StatefulWidget {
   @override
   _BeASellerState createState() => _BeASellerState();
+  void closeLoader(){
+
+    final GlobalKey<State> _loaderDialog = new GlobalKey<State>();
+    Navigator.of(_loaderDialog.currentContext,rootNavigator: true).pop();
+  }
 }
 
 class _BeASellerState extends State<BeASeller> {
+  ContactingService cs = new ContactingService();
+
+  final GlobalKey<State> _loaderDialog = new GlobalKey<State>();
 
   final nameController = TextEditingController();
   final phoneController = TextEditingController();
@@ -26,22 +35,6 @@ class _BeASellerState extends State<BeASeller> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
-                    padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 10.0),
-                    child: Card(
-                        color: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SizedBox(
-                            width: MediaQuery.of(context).size.width - 80,
-                              child: buildTextField('الإسم الكامل')
-                          ),
-                        )
-                    ),
-                  ),
-              Padding(
                 padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 10.0),
                 child: Card(
                     color: Colors.white,
@@ -52,10 +45,8 @@ class _BeASellerState extends State<BeASeller> {
                       padding: const EdgeInsets.all(8.0),
                       child: SizedBox(
                           width: MediaQuery.of(context).size.width - 80,
-                          child: buildTextField('رقم الهاتف')
-                      ),
-                    )
-                ),
+                          child: buildTextField('الإسم الكامل')),
+                    )),
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 10.0),
@@ -68,17 +59,30 @@ class _BeASellerState extends State<BeASeller> {
                       padding: const EdgeInsets.all(8.0),
                       child: SizedBox(
                           width: MediaQuery.of(context).size.width - 80,
-                          child: buildTextField('البريد الإلكتروني')
-                      ),
-                    )
-                ),
+                          child: buildTextField('رقم الهاتف')),
+                    )),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 10.0),
+                child: Card(
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SizedBox(
+                          width: MediaQuery.of(context).size.width - 80,
+                          child: buildTextField('البريد الإلكتروني')),
+                    )),
               ),
               Center(
                 child: ButtonTheme(
                   minWidth: 150.0,
                   height: 50.0,
                   child: RaisedButton(
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)),
                     onPressed: () {
                       _sendRequest();
                     },
@@ -87,29 +91,28 @@ class _BeASellerState extends State<BeASeller> {
                     child: Text(
                       'ارسال الطلب',
                       textDirection: TextDirection.rtl,
-                      style: TextStyle(
-                          fontSize: 19.0
-                      ),
+                      style: TextStyle(fontSize: 19.0),
                     ),
                   ),
                 ),
               ),
               GestureDetector(
-                onTap: (){
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => LoginPage()));
+                onTap: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => LoginPage()));
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(top: 10.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.arrow_back, size: 20.0,),
+                      Icon(
+                        Icons.arrow_back,
+                        size: 20.0,
+                      ),
                       Text(
                         'رجوع',
-                        style: TextStyle(
-                            fontSize: 20.0
-                        ),
+                        style: TextStyle(fontSize: 20.0),
                         textDirection: TextDirection.rtl,
                       )
                     ],
@@ -123,24 +126,30 @@ class _BeASellerState extends State<BeASeller> {
     );
   }
 
-  Widget buildTextField(String hintText){
+  Widget buildTextField(String hintText) {
     var myController = TextEditingController();
     var myIcon;
-    switch (hintText){
-      case 'الإسم الكامل': {
-        myController = nameController;
-        myIcon = Icons.person;
-      }break;
+    switch (hintText) {
+      case 'الإسم الكامل':
+        {
+          myController = nameController;
+          myIcon = Icons.person;
+        }
+        break;
 
-      case 'رقم الهاتف': {
-        myController = phoneController;
-        myIcon = Icons.phone_android;
-      }break;
+      case 'رقم الهاتف':
+        {
+          myController = phoneController;
+          myIcon = Icons.phone_android;
+        }
+        break;
 
-      case 'البريد الإلكتروني': {
-        myController = emailController;
-        myIcon = Icons.mail;
-      }break;
+      case 'البريد الإلكتروني':
+        {
+          myController = emailController;
+          myIcon = Icons.mail;
+        }
+        break;
     }
     return TextField(
       controller: myController,
@@ -156,11 +165,49 @@ class _BeASellerState extends State<BeASeller> {
     );
   }
 
-  Future<void> _sendRequest() async {
-    print('input name ==> ${nameController.text}');
-    print('input phone ==> ${phoneController.text}');
-    print('input email ==> ${emailController.text}');
+  void _sendRequest() {
+    var name = nameController.text;
+    var phone = phoneController.text;
+    var email = emailController.text;
 
+    if (name.isNotEmpty &&
+        phone.trim().isNotEmpty &&
+        email.toLowerCase().trim().isNotEmpty)
+    {
+      LoaderDialog.showLoadingDialog(context, _loaderDialog, 'جاري الارسال');
+      cs.mail(name, phone, email).then((value) {
+        return new Future.delayed(const Duration(seconds: 5), () {
 
+           Navigator.of(context).pop();
+
+           print('ccccc ${cs.isSent}');
+           if(cs.isSent){
+             Flushbar(
+               flushbarPosition: FlushbarPosition.TOP,
+               message:  "لقد تم ارسال طلبكم",
+               duration:  Duration(seconds: 3),
+             )..show(context);
+           }else{
+             Flushbar(
+               flushbarPosition: FlushbarPosition.TOP,
+               title: 'حصل خطا ما',
+               message:  "المرجو اعادة المحاولة لاحقا",
+               duration:  Duration(seconds: 3),
+             )..show(context);
+           }
+
+          }
+        );
+      });
+
+    }
+    else{
+      Flushbar(
+        flushbarPosition: FlushbarPosition.TOP,
+        message:  'المرجو ادخال كامل المعلومات',
+        duration:  Duration(seconds: 3),
+      )..show(context);
+    }
   }
+
 }

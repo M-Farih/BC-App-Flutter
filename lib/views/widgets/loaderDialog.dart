@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class LoaderDialog {
 
-  static Future<void> showLoadingDialog(BuildContext context, GlobalKey key) async {
+  static Future<void> showLoadingDialog(BuildContext context, GlobalKey key, String text) async {
     var wid = MediaQuery.of(context).size.width / 2;
     return showDialog<void>(
       context: context,
@@ -11,7 +11,7 @@ class LoaderDialog {
         return Padding(
           padding: EdgeInsets.only(left: 20 , right: 20),
           child: Dialog(
-              key: key,
+              //key: key,
               backgroundColor: Colors.white,
               child: Container(
                 width: 200.0,
@@ -23,7 +23,7 @@ class LoaderDialog {
                       CircularProgressIndicator(),
                       SizedBox(height: 10.0),
                       Text(
-                          'جاري الاتصال',
+                          '$text',
                         style: TextStyle(
                           fontSize: 20.0
                         ),
