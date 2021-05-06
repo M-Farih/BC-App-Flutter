@@ -73,9 +73,9 @@ class ProductDetail extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0),
-                    child: Flexible(
+                  Flexible(
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
                       child: Text(
                         '$description',
                         style: TextStyle(

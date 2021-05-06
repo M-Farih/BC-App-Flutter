@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:bc_app/providers/authProvider.dart';
 import 'package:bc_app/services/authentificationService.dart';
 import 'package:bc_app/views/home/homePage.dart';
 import 'package:bc_app/views/revendeur/beASeller.dart';
@@ -6,9 +7,12 @@ import 'package:bc_app/views/widgets/loaderDialog.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 
 class LoginPage extends StatefulWidget {
+  static String routeName = 'login';
+
   LoginPage({Key key}) : super(key: key);
 
   @override
@@ -17,14 +21,14 @@ class LoginPage extends StatefulWidget {
 
 class _LoginState extends State<LoginPage> {
 
-  final GlobalKey<State> _LoaderDialog = new GlobalKey<State>();
+  final _key = GlobalKey<FormState>();
 
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
   AuthentificationService authService = new AuthentificationService();
 
-  String errorMessage = '';
+  bool _isHidden = true;
 
   @override
   void dispose() {
@@ -34,17 +38,19 @@ class _LoginState extends State<LoginPage> {
     super.dispose();
   }
 
-
-  bool _isHidden = true;
-
-  void _toggleVisibility(){
-    setState(() {
-      _isHidden = !_isHidden;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      //Provider.of<AuthProvider>(context, listen: false).login();
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
+    var authProvider = Provider.of<AuthProvider>(context, listen: false);
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
@@ -54,7 +60,7 @@ class _LoginState extends State<LoginPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ///logo
+                  /// logo
                   Row(
 
                       children: [
@@ -66,40 +72,58 @@ class _LoginState extends State<LoginPage> {
                       ],
                     ),
                   /// login input form
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 10.0),
-                    child: Card(
-                        color: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+                  Form(
+                    key: _key,
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 10.0),
+                          child: Card(
+                              color: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: buildTextField("البريد الإلكتروني", emailController),
+                              )
+                          ),
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: buildTextField("البريد الإلكتروني", emailController),
-                        )
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 20.0),
+                          child: Card(
+                              color: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: buildTextField("كلمة السر", passwordController),
+                              )
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 20.0),
-                    child: Card(
-                        color: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: buildTextField("كلمة السر", passwordController),
-                        )
-                    ),
-                  ),
+
+                  /// login btn
                   Center(
                     child: ButtonTheme(
                       minWidth: MediaQuery.of(context).size.width - 50.0,
                       height: 50.0,
                       child: RaisedButton(
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                        onPressed: () {
-                          _login();
+                        onPressed: () async {
+                          //_login();
+                          if(_key.currentState.validate()){
+                            _key.currentState.save();
+                            bool login = await authProvider.login(emailController.text, passwordController.text);
+                            if(login){
+                              Navigator.of(context).pushReplacementNamed('home');
+                            }else
+                              print('can\'t login');
+                          }else
+                            print('is not validate');
                         },
                         color: Color(0xFF2C7DBF),
                         textColor: Colors.white,
@@ -133,7 +157,7 @@ class _LoginState extends State<LoginPage> {
                           child: RaisedButton(
                             shape: CircleBorder(),
                             onPressed: () {
-                              _beAseller();
+                              Navigator.of(context).pushReplacementNamed('be_a_seller');
                             },
                             color: Color(0xFF2C7DBF),
                             textColor: Colors.white,
@@ -165,52 +189,22 @@ class _LoginState extends State<LoginPage> {
     );
   }
 
-
-  void _login() {
-   if(emailController.text.trim().toLowerCase().isNotEmpty && passwordController.text.trim().isNotEmpty){
-     setState(() {
-       LoaderDialog.showLoadingDialog(context, _LoaderDialog, 'جاري الاتصال');
-
-       authService.login(emailController.text, passwordController.text).whenComplete(() {
-
-         if(!authService.error){
-           print('error state');
-           Navigator.of(context,rootNavigator: true).pop();
-
-           Flushbar(
-             flushbarPosition: FlushbarPosition.TOP,
-             message:  "حصل خطأ فى الاتصال",
-             duration:  Duration(seconds: 3),
-           )..show(context);
-         }
-         else{
-           print('success state');
-           Navigator.of(context ,rootNavigator: true).pop();
-           ScaffoldMessenger.of(context).showSnackBar(
-               const SnackBar(content: Text('تم تسجيل الدخول بنجاح')));
-           Navigator.pushReplacement(context,
-               MaterialPageRoute(builder: (BuildContext ctx) => HomePage()));
-           print("user logged in");
-         }
-       });
-     });
-   }
-
-   else{
-     Flushbar(
-       flushbarPosition: FlushbarPosition.TOP,
-       message:  'المرجو ادخال كامل المعلومات',
-       duration:  Duration(seconds: 3),
-     )..show(context);
-   }
-
+  void _toggleVisibility(){
+    setState(() {
+      _isHidden = !_isHidden;
+    });
   }
-  void _beAseller(){
-    Navigator.pushReplacement(context,
-        MaterialPageRoute(builder: (BuildContext ctx) => BeASeller()));
-  }
+
   Widget buildTextField(String hintText, controller){
-    return TextField(
+    return TextFormField(
+      validator: (v) {
+        if (v.isEmpty) {
+          return 'input required';
+        }
+        else{
+          return null;
+        }
+      },
       controller: controller == emailController ? emailController: passwordController,
       decoration: InputDecoration(
         hintText: hintText,

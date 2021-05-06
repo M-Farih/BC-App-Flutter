@@ -1,31 +1,34 @@
+import 'package:bc_app/providers/contactProvider.dart';
 import 'package:bc_app/services/contactingService.dart';
 import 'package:bc_app/views/authentification/loginPage.dart';
 import 'package:bc_app/views/widgets/appbar.dart';
 import 'package:bc_app/views/widgets/loaderDialog.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class BeASeller extends StatefulWidget {
   @override
   _BeASellerState createState() => _BeASellerState();
-  void closeLoader(){
-
-    final GlobalKey<State> _loaderDialog = new GlobalKey<State>();
-    Navigator.of(_loaderDialog.currentContext,rootNavigator: true).pop();
-  }
 }
 
 class _BeASellerState extends State<BeASeller> {
-  ContactingService cs = new ContactingService();
 
-  final GlobalKey<State> _loaderDialog = new GlobalKey<State>();
-
+  final _key = GlobalKey<FormState>();
   final nameController = TextEditingController();
   final phoneController = TextEditingController();
   final emailController = TextEditingController();
 
+  static bool isEmail(String em){
+    String p = r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$";
+    RegExp regExp = new RegExp(p);
+
+    return regExp.hasMatch(em);
+  }
+
   @override
   Widget build(BuildContext context) {
+    var contactProvider = Provider.of<ContactProvider>(context, listen: true);
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
@@ -34,48 +37,64 @@ class _BeASellerState extends State<BeASeller> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 10.0),
-                child: Card(
-                    color: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SizedBox(
-                          width: MediaQuery.of(context).size.width - 80,
-                          child: buildTextField('الإسم الكامل')),
-                    )),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 10.0),
-                child: Card(
-                    color: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SizedBox(
-                          width: MediaQuery.of(context).size.width - 80,
-                          child: buildTextField('رقم الهاتف')),
-                    )),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 10.0),
-                child: Card(
-                    color: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SizedBox(
-                          width: MediaQuery.of(context).size.width - 80,
-                          child: buildTextField('البريد الإلكتروني')),
-                    )),
-              ),
+              Form(
+                key: _key,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 10.0),
+                        child: Card(
+                            color: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: SizedBox(
+                                  width: MediaQuery.of(context).size.width - 80,
+                                  child: buildTextField('الإسم الكامل')),
+                            )),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 10.0),
+                        child: Card(
+                            color: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: SizedBox(
+                                  width: MediaQuery.of(context).size.width - 80,
+                                  child: buildTextField('رقم الهاتف')),
+                            )),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 10.0),
+                        child: Card(
+                            color: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: SizedBox(
+                                  width: MediaQuery.of(context).size.width - 80,
+                                  child: buildTextField('البريد الإلكتروني')),
+                            )),
+                      ),
+                ],
+              )),
+
+             contactProvider.isBusy
+              ?Column(
+               children: [
+                 SizedBox(height: 10),
+                 CircularProgressIndicator(),
+                 SizedBox(height: 10),
+               ],
+             )
+              :SizedBox(),
               Center(
                 child: ButtonTheme(
                   minWidth: 150.0,
@@ -84,7 +103,22 @@ class _BeASellerState extends State<BeASeller> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
                     onPressed: () {
-                      _sendRequest();
+                      if(_key.currentState.validate()){
+                        _key.currentState.save();
+                        contactProvider.MailBc(nameController.text, phoneController.text, emailController.text).whenComplete(() => {
+                          setState(() {
+                            nameController.text = "";
+                            phoneController.text = "";
+                            emailController.text = "";
+                            Flushbar(
+                              message: 'لقد تم ارسال طلبكم',
+                              duration: Duration(seconds: 3),
+                            )..show(context);
+                          })
+                        });
+                      }
+                      else
+                        print('is not validate');
                     },
                     color: Color(0xFF2C7DBF),
                     textColor: Colors.white,
@@ -92,9 +126,9 @@ class _BeASellerState extends State<BeASeller> {
                       'ارسال الطلب',
                       textDirection: TextDirection.rtl,
                       style: TextStyle(fontSize: 19.0),
-                    ),
+                    )
                   ),
-                ),
+                )
               ),
               GestureDetector(
                 onTap: () {
@@ -114,7 +148,7 @@ class _BeASellerState extends State<BeASeller> {
                         'رجوع',
                         style: TextStyle(fontSize: 20.0),
                         textDirection: TextDirection.rtl,
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -129,11 +163,13 @@ class _BeASellerState extends State<BeASeller> {
   Widget buildTextField(String hintText) {
     var myController = TextEditingController();
     var myIcon;
+    var _keyboardType;
     switch (hintText) {
       case 'الإسم الكامل':
         {
           myController = nameController;
           myIcon = Icons.person;
+          _keyboardType = TextInputType.text;
         }
         break;
 
@@ -141,6 +177,7 @@ class _BeASellerState extends State<BeASeller> {
         {
           myController = phoneController;
           myIcon = Icons.phone_android;
+          _keyboardType = TextInputType.number;
         }
         break;
 
@@ -148,11 +185,37 @@ class _BeASellerState extends State<BeASeller> {
         {
           myController = emailController;
           myIcon = Icons.mail;
+          _keyboardType = TextInputType.emailAddress;
         }
         break;
     }
-    return TextField(
+    return TextFormField(
+      validator: (v) {
+        if (v.isEmpty) {
+          return 'input requird';
+        }
+        else if(myController == emailController){
+          if(!isEmail(v)){
+            return 'Invalid Email format';
+          }
+          else {
+            return null;
+          }
+        }
+        else if(myController == phoneController){
+          if(v.length != 10){
+            return 'short phone number';
+          }
+          else
+            return null;
+        }
+
+        else {
+          return null;
+        }
+      },
       controller: myController,
+      keyboardType: _keyboardType,
       decoration: InputDecoration(
         hintText: hintText,
         hintStyle: TextStyle(
@@ -163,51 +226,6 @@ class _BeASellerState extends State<BeASeller> {
         prefixIcon: Icon(myIcon),
       ),
     );
-  }
-
-  void _sendRequest() {
-    var name = nameController.text;
-    var phone = phoneController.text;
-    var email = emailController.text;
-
-    if (name.isNotEmpty &&
-        phone.trim().isNotEmpty &&
-        email.toLowerCase().trim().isNotEmpty)
-    {
-      LoaderDialog.showLoadingDialog(context, _loaderDialog, 'جاري الارسال');
-      cs.mail(name, phone, email).then((value) {
-        return new Future.delayed(const Duration(seconds: 5), () {
-
-           Navigator.of(context).pop();
-
-           print('ccccc ${cs.isSent}');
-           if(cs.isSent){
-             Flushbar(
-               flushbarPosition: FlushbarPosition.TOP,
-               message:  "لقد تم ارسال طلبكم",
-               duration:  Duration(seconds: 3),
-             )..show(context);
-           }else{
-             Flushbar(
-               flushbarPosition: FlushbarPosition.TOP,
-               title: 'حصل خطا ما',
-               message:  "المرجو اعادة المحاولة لاحقا",
-               duration:  Duration(seconds: 3),
-             )..show(context);
-           }
-
-          }
-        );
-      });
-
-    }
-    else{
-      Flushbar(
-        flushbarPosition: FlushbarPosition.TOP,
-        message:  'المرجو ادخال كامل المعلومات',
-        duration:  Duration(seconds: 3),
-      )..show(context);
-    }
   }
 
 }
