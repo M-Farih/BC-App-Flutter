@@ -1,7 +1,10 @@
+import 'package:bc_app/providers/authProvider.dart';
+import 'package:bc_app/providers/productProvider.dart';
 import 'package:bc_app/views/product/productCategories.dart';
 import 'package:bc_app/views/widgets/appbar.dart';
 import 'package:bc_app/views/widgets/productCard.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProductList extends StatefulWidget {
 
@@ -14,12 +17,27 @@ class ProductList extends StatefulWidget {
 }
 
 class _ProductListState extends State<ProductList> {
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<AuthProvider>(context, listen: false).getUserFromSP();
+      Provider.of<ProductProvider>(context, listen: false).getProducts('1');
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-
+    var authProvider = Provider.of<AuthProvider>(context, listen: true);
+    var productProvider = Provider.of<ProductProvider>(context, listen: true);
     return Scaffold(
-      appBar: MyAppBar(),
-      body: SingleChildScrollView(
+      appBar: MyAppBar(isSeller: authProvider.currentUsr.idrole == 3 ?true :false),
+      body: productProvider.isBusy
+          ?Center(child: CircularProgressIndicator())
+          :SingleChildScrollView(
         child: Column(
           children: [
             GestureDetector(
@@ -31,18 +49,17 @@ class _ProductListState extends State<ProductList> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Icon(Icons.arrow_back),
+                    Icon(Icons.arrow_back, size: 17),
                     Text(
                       'المنتوجات',
                       style: TextStyle(
-                          fontSize: 20.0
+                          fontSize: 17
                       ),
                     )
                   ],
                 ),
               ),
             ),
-
             GridView.count(
               childAspectRatio: 0.6,
               primary: false,
@@ -51,15 +68,19 @@ class _ProductListState extends State<ProductList> {
               crossAxisSpacing: 10,
               mainAxisSpacing: 10,
               crossAxisCount: 2,
-              children: <Widget>[
-                ProductCard(name: 'Sleepwell',imgPath: 'images/1.png', desc: 'Le matelas est un élément essentiel du couchage de bébé. Votre bébé passe près de 18 heures par jour sur son matelas durant ses premiers mois. On considère qu’un bébé passe autant d’heures sur son matelas en 2 ans qu’un adulte en passe en 5 à 6 ans. Avec le matelas de bébé de Bonbino Confort on privilégie la sécurité, le confort et la qualité de l’air qu’il respire. Ainsi votre enfant sera confortablement installé dans son lit et pourra bénéficier de nuits calmes avec moins de réveils nocturnes. Il pourra ainsi bénéficier d’un sommeil de qualité qui aide à son bon développement physique et psychologique.',),
-                ProductCard(name: 'Sleepwell',imgPath: 'images/1.png', desc: 'Le matelas est un élément essentiel du couchage de bébé. Votre bébé passe près de 18 heures par jour sur son matelas durant ses premiers mois. On considère qu’un bébé passe autant d’heures sur son matelas en 2 ans qu’un adulte en passe en 5 à 6 ans. Avec le matelas de bébé de Bonbino Confort on privilégie la sécurité, le confort et la qualité de l’air qu’il respire. Ainsi votre enfant sera confortablement installé dans son lit et pourra bénéficier de nuits calmes avec moins de réveils nocturnes. Il pourra ainsi bénéficier d’un sommeil de qualité qui aide à son bon développement physique et psychologique.',)
-               ],
+              children: List.generate(productProvider.product.length, (index){
+                return ProductCard(
+                             name: productProvider.product[index].name,
+                             desc: productProvider.product[index].description,
+                             imgPath: productProvider.product[index].image.replaceAll('"', '').trim(),
+                              id: productProvider.product[index].idproduct.toString(),
+                           );
+              })
             ),
-
           ],
         ),
       )
+
     );
   }
 }

@@ -1,7 +1,9 @@
+import 'package:bc_app/providers/authProvider.dart';
 import 'package:bc_app/views/widgets/appbar.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class ProductDetail extends StatelessWidget {
+class ProductDetail extends StatefulWidget {
   final assetPath, title, description;
   final double price;
 
@@ -12,9 +14,23 @@ class ProductDetail extends StatelessWidget {
       this.description});
 
   @override
+  _ProductDetailState createState() => _ProductDetailState();
+}
+
+class _ProductDetailState extends State<ProductDetail> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<AuthProvider>(context, listen: false).getUserFromSP();
+    });
+  }
+  @override
   Widget build(BuildContext context) {
+    var authProvider = Provider.of<AuthProvider>(context, listen: true);
     return Scaffold(
-        appBar: MyAppBar(),
+        appBar: MyAppBar(isSeller: authProvider.currentUsr.idrole == 3 ?true :false),
         body: Column(
           children: [
             GestureDetector(
@@ -26,17 +42,19 @@ class ProductDetail extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Icon(Icons.arrow_back),
+                    Icon(Icons.arrow_back, size: 17),
                     Text(
                       'المنتوجات',
-                      style: TextStyle(fontSize: 20.0),
+                      style: TextStyle(
+                          fontSize: 17
+                      ),
                     )
                   ],
                 ),
               ),
             ),
             Container(
-              height: MediaQuery.of(context).size.height / 1.4,
+              height: MediaQuery.of(context).size.height * 0.6,
               width: MediaQuery.of(context).size.width - 80,
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -57,7 +75,17 @@ class ProductDetail extends StatelessWidget {
               child: Column(
                 children: [
                   SizedBox(height: 20.0),
-                  Image.asset('$assetPath'),
+                  Container(
+                    width: double.infinity,
+                    height: 160,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: NetworkImage("${widget.assetPath}"),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    child: Text('') /* add child content here */,
+                  ),
                   SizedBox(height: 20.0),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -65,7 +93,7 @@ class ProductDetail extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 20.0),
                         child: Text(
-                          '$title',
+                          '${widget.title}',
                           style: TextStyle(
                               fontSize: 25.0, fontWeight: FontWeight.bold),
                           textDirection: TextDirection.ltr,
@@ -77,7 +105,7 @@ class ProductDetail extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(20.0),
                       child: Text(
-                        '$description',
+                        '${widget.description}',
                         style: TextStyle(
                             fontSize: 12.0, fontWeight: FontWeight.normal),
                         textDirection: TextDirection.ltr,

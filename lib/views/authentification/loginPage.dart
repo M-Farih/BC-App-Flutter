@@ -1,14 +1,9 @@
-import 'dart:convert';
 import 'package:bc_app/providers/authProvider.dart';
-import 'package:bc_app/services/authentificationService.dart';
-import 'package:bc_app/views/home/homePage.dart';
-import 'package:bc_app/views/revendeur/beASeller.dart';
-import 'package:bc_app/views/widgets/loaderDialog.dart';
-import 'package:flushbar/flushbar.dart';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'package:progress_dialog/progress_dialog.dart';
 
 class LoginPage extends StatefulWidget {
   static String routeName = 'login';
@@ -25,8 +20,6 @@ class _LoginState extends State<LoginPage> {
 
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-
-  AuthentificationService authService = new AuthentificationService();
 
   bool _isHidden = true;
 
@@ -47,30 +40,28 @@ class _LoginState extends State<LoginPage> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     var authProvider = Provider.of<AuthProvider>(context, listen: false);
+    var progressDialog = ProgressDialog(context);
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
+        backgroundColor: Color(0xFFF1F4F7),
           resizeToAvoidBottomInset: false,
           body: SingleChildScrollView(
             child: Center(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  SizedBox(height: 80),
                   /// logo
                   Row(
-
-                      children: [
-                        Container(
-                          height: MediaQuery.of(context).size.height * 0.45,
-                            width: MediaQuery.of(context).size.width,
-                            child: Image(image: AssetImage('images/logo3d.png'))
-                        )
-                      ],
-                    ),
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset('assets/images/logo3d.png', height: 250,),
+                    ],
+                  ),
                   /// login input form
                   Form(
                     key: _key,
@@ -114,14 +105,30 @@ class _LoginState extends State<LoginPage> {
                       child: RaisedButton(
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                         onPressed: () async {
-                          //_login();
                           if(_key.currentState.validate()){
                             _key.currentState.save();
+                            progressDialog.show();
                             bool login = await authProvider.login(emailController.text, passwordController.text);
                             if(login){
+                              progressDialog.hide();
                               Navigator.of(context).pushReplacementNamed('home');
-                            }else
+                              Flushbar(
+                                flushbarPosition: FlushbarPosition.TOP,
+                                message:  "تسجيل الدخول",
+                                duration:  Duration(seconds: 3),
+                              )..show(context);
+                            }else{
+                              progressDialog.hide();
+                              Flushbar(
+                                flushbarPosition: FlushbarPosition.TOP,
+                                backgroundColor: Colors.red,
+                                message:  "اسم المستخدم أو كلمة المرور غير صحيحة",
+                                duration:  Duration(seconds: 3),
+                              )..show(context);
                               print('can\'t login');
+                            }
+
+
                           }else
                             print('is not validate');
                         },
@@ -132,18 +139,6 @@ class _LoginState extends State<LoginPage> {
                           style: TextStyle(
                             fontSize: 19.0
                           ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        'هل نسيت كلمة السر',
-                        textDirection: TextDirection.rtl,
-                        style: TextStyle(
-                          color: Colors.black87
                         ),
                       ),
                     ),
@@ -199,7 +194,7 @@ class _LoginState extends State<LoginPage> {
     return TextFormField(
       validator: (v) {
         if (v.isEmpty) {
-          return 'input required';
+          return 'ادخل الحقل';
         }
         else{
           return null;

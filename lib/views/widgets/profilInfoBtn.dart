@@ -5,14 +5,15 @@ class ProfilInfoBtn extends StatelessWidget {
   final String text;
   final int color;
   final int textColor;
+  final double btnHeight, btnWidth;
 
-  ProfilInfoBtn({this.text, this.color, this.textColor});
+  ProfilInfoBtn({this.text, this.color, this.textColor, this.btnHeight, this.btnWidth});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 35.0,
-      width: 80.0,
+      height: btnHeight,//35
+      width: btnWidth,//80
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -27,7 +28,8 @@ class ProfilInfoBtn extends StatelessWidget {
       ),
      decoration: BoxDecoration(
        color: Color(color),
-       borderRadius: BorderRadius.circular(50.0)
+       borderRadius: BorderRadius.circular(50.0),
+       border: Border.all(color: Color(0xFF1B7DBB))
      ),
     );
   }

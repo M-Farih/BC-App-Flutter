@@ -1,10 +1,10 @@
 import 'package:bc_app/providers/contactProvider.dart';
-import 'package:bc_app/services/contactingService.dart';
 import 'package:bc_app/views/authentification/loginPage.dart';
 import 'package:bc_app/views/widgets/appbar.dart';
 import 'package:bc_app/views/widgets/loaderDialog.dart';
-import 'package:flushbar/flushbar.dart';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
 
 class BeASeller extends StatefulWidget {
@@ -29,6 +29,8 @@ class _BeASellerState extends State<BeASeller> {
   @override
   Widget build(BuildContext context) {
     var contactProvider = Provider.of<ContactProvider>(context, listen: true);
+    var progressDialog = ProgressDialog(context);
+
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
@@ -41,6 +43,20 @@ class _BeASellerState extends State<BeASeller> {
                 key: _key,
                   child: Column(
                     children: [
+
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+                        child: Text(
+                            'خدمتك هي مهمتنا',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Color(0xFF131313)
+                          ),
+                          textDirection: TextDirection.rtl,
+                        ),
+                      ),
+                      SizedBox(height: 20),
+
                       Padding(
                         padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 10.0),
                         child: Card(
@@ -85,31 +101,23 @@ class _BeASellerState extends State<BeASeller> {
                       ),
                 ],
               )),
-
-             contactProvider.isBusy
-              ?Column(
-               children: [
-                 SizedBox(height: 10),
-                 CircularProgressIndicator(),
-                 SizedBox(height: 10),
-               ],
-             )
-              :SizedBox(),
               Center(
                 child: ButtonTheme(
                   minWidth: 150.0,
-                  height: 50.0,
+                  height: 45.0,
                   child: RaisedButton(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
                     onPressed: () {
                       if(_key.currentState.validate()){
                         _key.currentState.save();
+                        progressDialog.show();
                         contactProvider.MailBc(nameController.text, phoneController.text, emailController.text).whenComplete(() => {
                           setState(() {
                             nameController.text = "";
                             phoneController.text = "";
                             emailController.text = "";
+                            progressDialog.hide();
                             Flushbar(
                               message: 'لقد تم ارسال طلبكم',
                               duration: Duration(seconds: 3),
@@ -189,41 +197,45 @@ class _BeASellerState extends State<BeASeller> {
         }
         break;
     }
-    return TextFormField(
-      validator: (v) {
-        if (v.isEmpty) {
-          return 'input requird';
-        }
-        else if(myController == emailController){
-          if(!isEmail(v)){
-            return 'Invalid Email format';
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: TextFormField(
+        validator: (v) {
+          if (v.isEmpty) {
+            return 'ادخل الحقل';
           }
+          else if(myController == emailController){
+            if(!isEmail(v)){
+              return 'البريد الالكتروني غير صحيح';
+            }
+            else {
+              return null;
+            }
+          }
+          else if(myController == phoneController){
+            if(v.length != 10){
+              return 'رقم الهاتف غير صحيح';
+            }
+            else
+              return null;
+          }
+
           else {
             return null;
           }
-        }
-        else if(myController == phoneController){
-          if(v.length != 10){
-            return 'short phone number';
-          }
-          else
-            return null;
-        }
-
-        else {
-          return null;
-        }
-      },
-      controller: myController,
-      keyboardType: _keyboardType,
-      decoration: InputDecoration(
-        hintText: hintText,
-        hintStyle: TextStyle(
-          color: Colors.grey,
-          fontSize: 16.0,
+        },
+        controller: myController,
+        keyboardType: _keyboardType,
+        decoration: InputDecoration(
+          hintText: hintText,
+          hintTextDirection: TextDirection.rtl,
+          hintStyle: TextStyle(
+            color: Colors.grey,
+            fontSize: 16.0,
+          ),
+          border: InputBorder.none,
+          prefixIcon: Icon(myIcon)
         ),
-        border: InputBorder.none,
-        prefixIcon: Icon(myIcon),
       ),
     );
   }

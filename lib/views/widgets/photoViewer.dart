@@ -11,8 +11,7 @@ class MyPhotoViewer extends StatelessWidget {
       backgroundColor: Colors.white,
         body: Container(
           child: PhotoView(
-            imageProvider: AssetImage(imageUrl),
-
+            imageProvider: AssetImage('$imageUrl'),
           ),
         )
     );

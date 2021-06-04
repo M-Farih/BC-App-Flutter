@@ -1,27 +1,39 @@
-
-
 class User{
 
-  final int id;
-  final String fname, lname, username, password, company, ice, city, address, telephone, cNumber;
+  final int iduser, idrole, idagent, agentIduser;
+  final String firstName, lastName, userName, email, password, entrepriseName, ice, city, address,
+      telephone, clientNumber, agentName, profileImage, solde, ristourne;
 
-  User(this.id, this.fname, this.lname, this.username, this.password, this.company, this.ice, this.city, this.address, this.telephone, this.cNumber);
+  User(this.iduser, this.idagent, this.firstName, this.lastName, this.userName, this.email, this.password,
+      this.entrepriseName, this.ice, this.city, this.address, this.telephone,
+      this.clientNumber, this.agentIduser, this.agentName, this.idrole, this.profileImage, this.solde, this.ristourne);
 
 
-  dynamic toJson() => {'id': id, 'fname': fname, 'lname': lname, 'username': username,
-    'password': password, 'company': company, 'ice': ice, 'city': city, 'address': address, 'telephone': telephone, 'cNumber': cNumber
+  dynamic toJson() => {'iduser': iduser, 'idagent': idagent, 'firstName': firstName, 'lastName': lastName,
+    'userName': userName, 'email': email, 'password': password, 'entrepriseName': entrepriseName, 'ice': ice,
+    'city': city, 'address': address, 'telephone': telephone, 'code': clientNumber,
+    'agentIduser': agentIduser, 'agentName': agentName, 'idrole': idrole,
+    'profileImage': profileImage, 'solde': solde, 'ristourne': ristourne
   };
 
   User.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        fname = json['fname'],
-        lname = json['lname'],
-        username = json['username'],
+      : iduser = json['iduser'],
+        idagent = json['idagent'],
+        firstName = json['firstName'],
+        lastName = json['lastName'],
+        userName = json['userName'],
+        email = json['email'],
         password = json['password'],
-        company = json['company'],
+        entrepriseName = json['entrepriseName'],
         ice = json['ice'],
         city = json['city'],
         address = json['address'],
         telephone = json['telephone'],
-        cNumber = json['cNumber'];
+        clientNumber = json['code'],
+        agentIduser = json['agentIduser'],
+        agentName = json['agentName'],
+        idrole = json['idrole'],
+        solde = json['solde'],
+        ristourne = json['ristourne'],
+        profileImage = json['profileImage'];
 }
