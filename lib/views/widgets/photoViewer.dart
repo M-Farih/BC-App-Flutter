@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 
@@ -11,7 +12,7 @@ class MyPhotoViewer extends StatelessWidget {
       backgroundColor: Colors.white,
         body: Container(
           child: PhotoView(
-            imageProvider: AssetImage('$imageUrl'),
+            imageProvider: NetworkImage('$imageUrl'),
           ),
         )
     );

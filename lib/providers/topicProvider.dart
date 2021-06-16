@@ -11,6 +11,12 @@ class TopicProvider extends ChangeNotifier{
   List<Topic> _topics =List();
   List<Topic> get topics  => _topics;
 
+  List<Topic> _suggestions =List();
+  List<Topic> get suggestions  => _suggestions;
+
+  List<Topic> _reclamations =List();
+  List<Topic> get reclamations  => _reclamations;
+
   Future<List<Topic>> getTopics(int iduser, int idtype_reason) async{
     print( '$iduser ||| $idtype_reason');
     isBusy = true;
@@ -22,6 +28,45 @@ class TopicProvider extends ChangeNotifier{
       print('data body -> ${data['data']}');
       _topics.clear();
       data['data'].forEach((t)=>_topics.add(Topic.fromJson(t)));
+      isBusy = false;
+      notifyListeners();
+    }
+    return _topics;
+  }
+
+  Future<List<Topic>> getSuggestions(int iduser, int idtype_reason) async{
+    print( '$iduser ||| $idtype_reason');
+    isBusy = true;
+    notifyListeners();
+    var response = await _topicService.getTopics(iduser, idtype_reason);
+    if(response.statusCode == 200){
+      print('getting suggestions');
+      var data = jsonDecode(response.body);
+      print('data count -> ${data['data'].length}');
+      print('data body -> ${data['data']}');
+      print('data body -> ${data['data']}');
+      _suggestions.clear();
+      data['data'].forEach((t)=>_suggestions.add(Topic.fromJson(t)));
+      print('_suggestions -> ${_suggestions.length}');
+      isBusy = false;
+      notifyListeners();
+    }
+    return _topics;
+  }
+
+  Future<List<Topic>> getReclamations(int iduser, int idtype_reason) async{
+    print( '$iduser ||| $idtype_reason');
+    isBusy = true;
+    notifyListeners();
+    var response = await _topicService.getTopics(iduser, idtype_reason);
+    if(response.statusCode == 200){
+      print('getting reclamation');
+      var data = jsonDecode(response.body);
+      print('data count -> ${data['data'].length}');
+      print('data body -> ${data['data']}');
+      _reclamations.clear();
+      data['data'].forEach((t)=>_reclamations.add(Topic.fromJson(t)));
+      print('_reclamations -> ${_reclamations.length}');
       isBusy = false;
       notifyListeners();
     }

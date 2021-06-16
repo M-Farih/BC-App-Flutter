@@ -37,8 +37,29 @@ class _BeASellerState extends State<BeASeller> {
         resizeToAvoidBottomInset: false,
         body: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              SizedBox(height: 50),
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => LoginPage()));
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Icon(Icons.arrow_back, size: 17),
+                      Text('رجوع',
+                        style: TextStyle(
+                            fontSize: 17
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(height: 50),
               Form(
                 key: _key,
                   child: Column(
@@ -47,7 +68,7 @@ class _BeASellerState extends State<BeASeller> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
                         child: Text(
-                            'خدمتك هي مهمتنا',
+                            'خدمتك أولويتنا',
                           style: TextStyle(
                             fontSize: 20,
                             color: Color(0xFF131313)
@@ -137,29 +158,6 @@ class _BeASellerState extends State<BeASeller> {
                     )
                   ),
                 )
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => LoginPage()));
-                },
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.arrow_back,
-                        size: 20.0,
-                      ),
-                      Text(
-                        'رجوع',
-                        style: TextStyle(fontSize: 20.0),
-                        textDirection: TextDirection.rtl,
-                      ),
-                    ],
-                  ),
-                ),
               ),
             ],
           ),

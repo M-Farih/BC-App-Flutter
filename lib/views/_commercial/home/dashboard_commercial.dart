@@ -1,5 +1,6 @@
 import 'package:bc_app/providers/authProvider.dart';
 import 'package:bc_app/providers/nombre_total_revendeur_provider.dart';
+import 'package:bc_app/providers/ristourneProvider.dart';
 import 'package:bc_app/views/widgets/NombreRevendeurWidget.dart';
 import 'package:bc_app/views/widgets/ristourneWidget.dart';
 import 'package:flutter/cupertino.dart';
@@ -30,6 +31,7 @@ class _Dashboard_commercialState extends State<Dashboard_commercial> {
   Widget build(BuildContext context) {
     var nbrRevendeur = Provider.of<NombreTotalRevendeurProvider>(context, listen: true);
     var authProvider = Provider.of<AuthProvider>(context, listen: true);
+    var ristourneProvider = Provider.of<RistourneProvider>(context, listen: true);
     return Scaffold(
       backgroundColor: Color(0xff2C7DBF),
       body: nbrRevendeur.isBusy
@@ -69,7 +71,7 @@ class _Dashboard_commercialState extends State<Dashboard_commercial> {
                         NombreRevendeurWidget(nbrRevendeur: nbrRevendeur),
 
                         SizedBox(height: 30),
-                        RestourneWidget()
+                        RistourneWidget(isLocal: false, imageLink: ristourneProvider.image)
                       ],
                     ),
 

@@ -5,6 +5,7 @@ import 'package:bc_app/providers/nombre_total_revendeur_provider.dart';
 import 'package:bc_app/providers/productProvider.dart';
 import 'package:bc_app/providers/promotionProvider.dart';
 import 'package:bc_app/providers/reasonProvider.dart';
+import 'package:bc_app/providers/ristourneProvider.dart';
 import 'package:bc_app/providers/topicProvider.dart';
 import 'package:bc_app/providers/userProvider.dart';
 import 'package:get_it/get_it.dart';
@@ -20,4 +21,5 @@ void setupLocator(){
   locator.registerFactory(() => NombreTotalRevendeurProvider());
   locator.registerFactory(() => ProductProvider());
   locator.registerFactory(() => PromotionProvider());
+  locator.registerFactory(() => RistourneProvider());
 }

@@ -39,19 +39,6 @@ class _AddUserState extends State<AddUser> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       int role_id = await Provider.of<AuthProvider>(context, listen: false)
           .checkLoginAndRole();
-
-      switch (role_id) {
-        case 1:
-          return print('admin');
-        case 2:
-          print('commercial');
-          break;
-        case 3:
-          print('revendeur');
-          break;
-        default:
-          Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
-      }
     });
   }
 
@@ -74,7 +61,7 @@ class _AddUserState extends State<AddUser> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Ajouter un nouveau utilisateur', style: TextStyle(
+                  Text('Ajouter un nouvel administrateur', style: TextStyle(
                       fontSize: 22, fontWeight: FontWeight.bold),),
                 ],
               ),

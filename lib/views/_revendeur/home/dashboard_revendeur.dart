@@ -1,7 +1,10 @@
+import 'package:bc_app/providers/authProvider.dart';
+import 'package:bc_app/providers/ristourneProvider.dart';
 import 'package:bc_app/views/widgets/ristourneWidget.dart';
 import 'package:bc_app/views/widgets/sliderVertical.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 
 class Dashboard_revendeur extends StatefulWidget {
@@ -25,14 +28,23 @@ class _Dashboard_revendeurState extends State<Dashboard_revendeur> {
     max = max * 1.5;
     print('the bigger number --> ${numbers.last}');
     numbers2 = numbers.asMap();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      Provider.of<RistourneProvider>(context, listen: false).getRistourneImage();
+      Provider.of<AuthProvider>(context, listen: false).getUserFromSP();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    var ristourneProvider = Provider.of<RistourneProvider>(context, listen: true);
+    var authProvider = Provider.of<AuthProvider>(context, listen: true);
     return Scaffold(
       //resizeToAvoidBottomInset: false,
       backgroundColor: Color(0xff2C7DBF),
-      body: SingleChildScrollView(
+      body: ristourneProvider.isBusy
+        ?Center(child: CircularProgressIndicator())
+        :SingleChildScrollView(
         child: Center(
             child: Column(
               children: [
@@ -58,7 +70,7 @@ class _Dashboard_revendeurState extends State<Dashboard_revendeur> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 30.0),
                       child: Text(
-                        '32 765,00 Dhs',
+                        '${authProvider.currentUsr.solde} Dhs',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 30.0,
@@ -109,7 +121,7 @@ class _Dashboard_revendeurState extends State<Dashboard_revendeur> {
                       ),
 
                       SizedBox(height: 20),
-                      RestourneWidget()
+                      RistourneWidget(isLocal: false, imageLink: ristourneProvider.image)
                     ],
                   ),
 

@@ -1,5 +1,6 @@
 import 'package:bc_app/models/topic.dart';
 import 'package:bc_app/providers/authProvider.dart';
+import 'package:bc_app/providers/contactProvider.dart';
 import 'package:bc_app/providers/topicProvider.dart';
 import 'package:bc_app/views/_revendeur/sugg_recl/listReclamation.dart';
 import 'package:bc_app/views/_revendeur/sugg_recl/reclamation.dart';
@@ -16,17 +17,14 @@ class ReclamationMenu extends StatefulWidget {
 
 class _ReclamationMenuState extends State<ReclamationMenu> {
 
-  List<Topic> suggesions = List();
-  List<Topic> reclamations = List();
-
   void initState() {
     // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<AuthProvider>(context, listen: false).getUserFromSP().whenComplete(() async {
         int idUser = Provider.of<AuthProvider>(context, listen: false).currentUsr.iduser;
-        suggesions = await Provider.of<TopicProvider>(context, listen: false).getTopics(idUser, 1);
-        reclamations = await Provider.of<TopicProvider>(context, listen: false).getTopics(idUser, 2);
+        Provider.of<TopicProvider>(context, listen: false).getSuggestions(idUser, 1);
+        await Provider.of<TopicProvider>(context, listen: false).getReclamations(idUser, 2);
       });
     });
   }
@@ -34,6 +32,7 @@ class _ReclamationMenuState extends State<ReclamationMenu> {
   @override
   Widget build(BuildContext context) {
     var authProvider = Provider.of<AuthProvider>(context, listen: true);
+    var contactProvider = Provider.of<ContactProvider>(context, listen: true);
     var topicProvider = Provider.of<TopicProvider>(context, listen: true);
     return Scaffold(
       backgroundColor: Color(0xFFF1F4F7),
@@ -58,7 +57,7 @@ class _ReclamationMenuState extends State<ReclamationMenu> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text('اقتراح جديد', textDirection: TextDirection.rtl, style: TextStyle(color: Colors.white, fontSize: 15)),
+                          Text('اقتراح جديد', textDirection: TextDirection.rtl, style: TextStyle(color: Colors.white, fontSize: 12)),
                           SizedBox(width: 10),
                           Icon(Icons.thumb_up, color: Colors.white, size: 18),
                         ],
@@ -83,7 +82,7 @@ class _ReclamationMenuState extends State<ReclamationMenu> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text('شكاية جديدة', textDirection: TextDirection.rtl, style: TextStyle(color: Colors.white, fontSize: 15)),
+                          Text('شكاية جديدة', textDirection: TextDirection.rtl, style: TextStyle(color: Colors.white, fontSize: 12)),
                           SizedBox(width: 10),
                           Icon(Icons.feedback, color: Colors.white, size: 18),
                         ],
@@ -108,18 +107,14 @@ class _ReclamationMenuState extends State<ReclamationMenu> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text('اتصال', textDirection: TextDirection.rtl, style: TextStyle(color: Colors.white, fontSize: 15)),
+                          Text('اتصال', textDirection: TextDirection.rtl, style: TextStyle(color: Colors.white, fontSize: 12)),
                           SizedBox(width: 10),
                           Icon(Icons.call, color: Colors.white, size: 18),
                         ],
                       ),
                     ),
                     onTap: (){
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => ReclamationPage(
-                            idtype_reason: 2,
-                          ))
-                      );
+                      contactProvider.call('0679453876');
                     },
                   ),
                 ],
@@ -127,7 +122,7 @@ class _ReclamationMenuState extends State<ReclamationMenu> {
 
               ///suggestion
               SizedBox(height: 40),
-              suggesions.length <= 0
+              topicProvider.suggestions.length <= 0
                   ?Text('لا يوجد اقتراحات', style: TextStyle(color: Colors.black54),)
                   :Column(
                     children: [
@@ -138,14 +133,14 @@ class _ReclamationMenuState extends State<ReclamationMenu> {
                         ],
                       ),
                       ReclamationCard(
-                        image: 'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg',
-                        reason: 'reason',
-                        rec_id: 14,
-                        status: 1,
-                        date: '12-4-2020',
-                        topic: 'topic',
-                        message: 'message',
-                        username: 'username',
+                        image: topicProvider.suggestions.first.userImg,
+                        reason: topicProvider.suggestions.first.reason,
+                        rec_id: topicProvider.suggestions.first.idtopic,
+                        status: topicProvider.suggestions.first.indicator,
+                        date: topicProvider.suggestions.first.created_at,
+                        topic: topicProvider.suggestions.first.reason,
+                        message: topicProvider.suggestions.first.description,
+                        username: topicProvider.suggestions.first.usersName,
                       ),
                       SizedBox(height: 5),
                       GestureDetector(
@@ -169,7 +164,7 @@ class _ReclamationMenuState extends State<ReclamationMenu> {
 
               ///reclamation
               Divider(),
-              suggesions.length <= 0
+              topicProvider.reclamations.length <= 0
                   ?Text('لا يوجد شكايات', style: TextStyle(color: Colors.black54))
                   :Column(
                 children: [
@@ -180,14 +175,14 @@ class _ReclamationMenuState extends State<ReclamationMenu> {
                     ],
                   ),
                   ReclamationCard(
-                    image: 'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg',
-                    reason: 'reason',
-                    rec_id: 14,
-                    status: 1,
-                    date: '12-4-2020',
-                    topic: 'topic',
-                    message: 'message',
-                    username: 'username',
+                    image: topicProvider.reclamations.first.userImg,
+                    reason: topicProvider.reclamations.first.reason,
+                    rec_id: topicProvider.reclamations.first.idtopic,
+                    status: topicProvider.reclamations.first.indicator,
+                    date: topicProvider.reclamations.first.created_at,
+                    topic: topicProvider.reclamations.first.reason,
+                    message: topicProvider.reclamations.first.description,
+                    username: topicProvider.reclamations.first.usersName,
                   ),
                   SizedBox(height: 5),
                   GestureDetector(

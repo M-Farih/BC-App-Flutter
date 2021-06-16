@@ -20,8 +20,10 @@ class _ProductCategoriesState extends State<ProductCategories> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    print('product page');
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<PromotionProvider>(context, listen: false).getPromotions();
+      Provider.of<PromotionProvider>(context, listen: false).getPdfLink();
       int role_id = await Provider.of<AuthProvider>(context, listen: false)
           .checkLoginAndRole();
 
@@ -49,7 +51,7 @@ class _ProductCategoriesState extends State<ProductCategories> {
     var authProvider = Provider.of<AuthProvider>(context, listen: true);
     var promoProvider = Provider.of<PromotionProvider>(context, listen: true);
     return Scaffold(
-      body: authProvider.busy
+      body: authProvider.userChekcerIsBusy
           ? Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
               child: Center(
@@ -173,8 +175,8 @@ class _ProductCategoriesState extends State<ProductCategories> {
                                   ),
                                   onPressed: () async {
                                     print('download pdf...');
-                                    const url =
-                                        'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
+                                    String url = promoProvider.pdfLink;
+                                    print('url --> $url');
                                     if (await canLaunch(url)) {
                                       await launch(url);
                                     } else {
@@ -231,7 +233,7 @@ class _ProductCategoriesState extends State<ProductCategories> {
                           children: [
                             Padding(
                               padding:
-                                  const EdgeInsets.fromLTRB(20, 20.0, 5, 20),
+                                  const EdgeInsets.all(20),
                               child: Text(
                                 authProvider.currentUsr.idrole == 3
                                     ? 'منتجاتنا'

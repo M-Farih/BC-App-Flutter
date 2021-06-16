@@ -1,6 +1,9 @@
+import 'package:bc_app/providers/authProvider.dart';
 import 'package:bc_app/providers/nombre_total_revendeur_provider.dart';
+import 'package:bc_app/providers/ristourneProvider.dart';
 import 'package:bc_app/providers/topicProvider.dart';
 import 'package:bc_app/views/_admin/sugg_recc/ListReclamationsAdmin.dart';
+import 'package:bc_app/views/product/productAdd.dart';
 import 'package:bc_app/views/widgets/NombreRevendeurWidget.dart';
 import 'package:bc_app/views/widgets/reclamationStatistiquesCard.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +23,7 @@ class _Dashboard_adminState extends State<Dashboard_admin> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    print('dashboard admin');
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<NombreTotalRevendeurProvider>(context, listen: false)
           .getStatisticsByCity();
@@ -39,6 +43,8 @@ class _Dashboard_adminState extends State<Dashboard_admin> {
           .getSuggestionsEnCoursCount();
       Provider.of<TopicProvider>(context, listen: false)
           .getSuggestionsTraiteesCount();
+      Provider.of<RistourneProvider>(context, listen: false).getRistourneImage();
+
     });
   }
 
@@ -46,6 +52,7 @@ class _Dashboard_adminState extends State<Dashboard_admin> {
   Widget build(BuildContext context) {
     var nbrRevendeur = Provider.of<NombreTotalRevendeurProvider>(context, listen: true);
     var topicProvider = Provider.of<TopicProvider>(context, listen: true);
+    var authProvider = Provider.of<AuthProvider>(context, listen: true);
     return Scaffold(
       backgroundColor: Color(0xFFF1F4F7),
       body: nbrRevendeur.isBusy
@@ -60,7 +67,7 @@ class _Dashboard_adminState extends State<Dashboard_admin> {
                       children: [
                         Padding(
                           padding:
-                              const EdgeInsets.fromLTRB(15.0, 30.0, 15.0, 30),
+                          const EdgeInsets.fromLTRB(15.0, 30.0, 15.0, 30),
                           child: GestureDetector(
                             child: Text(
                               'Statistiques',
@@ -78,6 +85,107 @@ class _Dashboard_adminState extends State<Dashboard_admin> {
                       ],
                     ),
                     NombreRevendeurWidget(nbrRevendeur: nbrRevendeur),
+                    SizedBox(height: 40,),
+
+                    /// acces rapide
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 25),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GestureDetector(
+                              child: Container(
+                                width: MediaQuery.of(context).size.width * 0.40,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                    color: Color(0xFF2C7DBF)
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.edit, color: Colors.white,),
+                                    Text('Modifier une promotion', style: TextStyle(color: Colors.white, fontSize: 12),)
+                                  ],
+                                ),
+                              ),
+                              onTap: (){
+                                Navigator.of(context).pushNamed('add-promotion');
+                              }
+                          ),
+                          GestureDetector(
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.40,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                  color: Color(0xFF2C7DBF)
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.add, color: Colors.white,),
+                                  Text('Ajouter un produit', style: TextStyle(color: Colors.white, fontSize: 12),)
+                                ],
+                              ),
+                            ),
+                            onTap: (){
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => ProductAdd(isAdd: true)));
+                            },
+                          )
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GestureDetector(
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.40,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                  color: Color(0xFF2C7DBF)
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.edit, color: Colors.white,),
+                                  Text('Modifier la ristourne', style: TextStyle(color: Colors.white, fontSize: 12),)
+                                ],
+                              ),
+                            ),
+                            onTap: (){
+                              Navigator.of(context).pushNamed('ristourne-page');
+                              print('modifier restourne');
+                            },
+                          ),
+                          authProvider.currentUsr.idrole == 0
+                              ?GestureDetector(
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.40,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                  color: Color(0xFF2C7DBF)
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.add, color: Colors.white,),
+                                  Text('Ajouter un administrateur', style: TextStyle(color: Colors.white, fontSize: 10),)
+                                ],
+                              ),
+                            ),
+                            onTap: (){
+                              Navigator.of(context).pushNamed('add-user');
+                              print('add user');
+                            },
+                          )
+                              :SizedBox()
+                        ],
+                      ),
+                    ),
+
                     /// Reclamations
                     Padding(
                       padding: const EdgeInsets.symmetric(
@@ -153,7 +261,7 @@ class _Dashboard_adminState extends State<Dashboard_admin> {
                           ),
                         ],
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),

@@ -139,7 +139,10 @@ class _ListReclamationAdminState extends State<ListReclamationAdmin> {
                           title: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('${topicProvider.topics[index].usersName}'),
+                              Container(
+                                  child: Text('${topicProvider.topics[index].usersName}', overflow: TextOverflow.ellipsis,),
+                                width: MediaQuery.of(context).size.width * 0.3,
+                              ),
                               Text('$statusName',
                                   style: TextStyle(color: Color(statusColor))),
                             ],
@@ -180,7 +183,8 @@ class _ListReclamationAdminState extends State<ListReclamationAdmin> {
                                       phone: topicProvider.topics[index].telephone,
                                       sellerName: topicProvider.topics[index].usersName,
                                       record: topicProvider.topics[index].record,
-                                    )));
+                                    ))
+                            );
                           }
 
                       )),

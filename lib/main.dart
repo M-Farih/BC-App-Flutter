@@ -6,6 +6,7 @@ import 'package:bc_app/providers/nombre_total_revendeur_provider.dart';
 import 'package:bc_app/providers/productProvider.dart';
 import 'package:bc_app/providers/promotionProvider.dart';
 import 'package:bc_app/providers/reasonProvider.dart';
+import 'package:bc_app/providers/ristourneProvider.dart';
 import 'package:bc_app/providers/topicProvider.dart';
 import 'package:bc_app/providers/userProvider.dart';
 import 'package:bc_app/providers/locator.dart';
@@ -49,6 +50,9 @@ class MyApp extends StatelessWidget {
           ),
           ChangeNotifierProvider(
               create: (context) => locator<PromotionProvider>()
+          ),
+          ChangeNotifierProvider(
+              create: (context) => locator<RistourneProvider>()
           ),
         ],
         child: StartApp()

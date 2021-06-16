@@ -54,4 +54,16 @@ class ProductProvider extends ChangeNotifier{
     notifyListeners();
     isBusy = false;
   }
+
+  Future<void> deleteProduct(String id) async{
+    print('del');
+    isBusy = true;
+    notifyListeners();
+    var response = await _productService.deleteProduct(id);
+    if(response.statusCode == 200 || response.statusCode == 201){
+      isBusy = false;
+      notifyListeners();
+      print('${response.body}');
+    }
+  }
 }

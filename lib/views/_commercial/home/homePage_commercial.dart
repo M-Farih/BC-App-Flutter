@@ -1,5 +1,6 @@
 import 'package:bc_app/providers/authProvider.dart';
 import 'package:bc_app/providers/contactProvider.dart';
+import 'package:bc_app/providers/ristourneProvider.dart';
 import 'package:bc_app/views/_commercial/sellers/listSellers.dart';
 import 'package:bc_app/views/authentification/loginPage.dart';
 import 'package:bc_app/views/product/productCategories.dart';
@@ -48,6 +49,7 @@ class _HomePage_CommercialState extends State<HomePage_Commercial> {
           Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
       }
       Provider.of<ContactProvider>(context, listen: false);
+      Provider.of<RistourneProvider>(context, listen: false).getRistourneImage();
     });
   }
 
@@ -55,7 +57,7 @@ class _HomePage_CommercialState extends State<HomePage_Commercial> {
   Widget build(BuildContext context) {
     var authProvider = Provider.of<AuthProvider>(context, listen: false);
     var contactProvider = Provider.of<ContactProvider>(context, listen: false);
-    return authProvider.busy
+    return authProvider.userChekcerIsBusy
       ?Center(child: CircularProgressIndicator())
       :Scaffold(
       resizeToAvoidBottomInset: true,

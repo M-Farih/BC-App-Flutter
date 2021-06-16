@@ -80,7 +80,8 @@ class _ReclamationDetailsState extends State<ReclamationDetails> {
                     Column(
                       children: [
                         ///back btn & icon-title
-                        Row(
+                        widget.reason == 2
+                            ?Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Center(
@@ -98,7 +99,9 @@ class _ReclamationDetailsState extends State<ReclamationDetails> {
                                         children: [
                                           Icon(Icons.arrow_back, size: 16,),
                                           Text(
-                                            'رجوع',
+                                            authProvider.currentUsr.idrole == 3
+                                                ?'رجوع'
+                                                :'Retour',
                                             style: TextStyle(fontSize: 16),
                                           )
                                         ],
@@ -115,7 +118,9 @@ class _ReclamationDetailsState extends State<ReclamationDetails> {
                                 child: Row(
                                   children: [
                                     Text(
-                                      'شكاية',
+                                      authProvider.currentUsr.idrole == 3
+                                          ?'شكاية'
+                                              :'Reclamation',
                                       style: TextStyle(
                                           color: Color(0xFFF67B97),
                                           fontSize: 20.0),
@@ -128,6 +133,68 @@ class _ReclamationDetailsState extends State<ReclamationDetails> {
                                         color: Color(0xFFF67B97),
                                         borderRadius:
                                             BorderRadius.circular(50.0),
+                                      ),
+                                      child: Icon(Icons.feedback,
+                                          color: Colors.white),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                            :Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Center(
+                              child: Row(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(20.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.start,
+                                        children: [
+                                          Icon(Icons.arrow_back, size: 16,),
+                                          Text(
+                                            authProvider.currentUsr.idrole == 3
+                                                ?'رجوع'
+                                                :'Retour',
+                                            style: TextStyle(fontSize: 16),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 20.0),
+                                ],
+                              ),
+                            ),
+                            Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      authProvider.currentUsr.idrole == 3
+                                          ?'اقتراح'
+                                          :'Suggestion',
+                                      style: TextStyle(
+                                          color: Color(0xFFF67B97),
+                                          fontSize: 20.0),
+                                    ),
+                                    SizedBox(width: 15.0),
+                                    Container(
+                                      height: 40.0,
+                                      width: 40.0,
+                                      decoration: BoxDecoration(
+                                        color: Color(0xFFF67B97),
+                                        borderRadius:
+                                        BorderRadius.circular(50.0),
                                       ),
                                       child: Icon(Icons.feedback,
                                           color: Colors.white),

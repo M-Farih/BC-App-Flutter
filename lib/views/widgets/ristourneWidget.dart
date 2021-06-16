@@ -1,12 +1,22 @@
+import 'dart:io';
+
 import 'package:bc_app/views/widgets/photoViewer.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class RestourneWidget extends StatefulWidget {
+class RistourneWidget extends StatefulWidget {
+  final String imageLink;
+  final File imagePath;
+  final bool isLocal;
+
+  const RistourneWidget({Key key, this.imageLink, this.isLocal, this.imagePath})
+      : super(key: key);
+
   @override
-  _RestourneWidgetState createState() => _RestourneWidgetState();
+  _RistourneWidgetState createState() => _RistourneWidgetState();
 }
 
-class _RestourneWidgetState extends State<RestourneWidget> {
+class _RistourneWidgetState extends State<RistourneWidget> {
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -27,7 +37,7 @@ class _RestourneWidgetState extends State<RestourneWidget> {
                 ),
               ],
             ),
-            width: MediaQuery.of(context).size.width -50,
+            width: MediaQuery.of(context).size.width - 50,
             height: 230.0,
             child: Center(
                 child: GestureDetector(
@@ -35,33 +45,47 @@ class _RestourneWidgetState extends State<RestourneWidget> {
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text('أساس حساب الخصم',
-                                  style: TextStyle(
-                                      color: Colors.black54,
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.bold
+                          Container(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    'أساس حساب الخصم',
+                                    style: TextStyle(
+                                        color: Colors.black54,
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.bold),
+                                    textDirection: TextDirection.rtl,
                                   ),
-                                  textDirection: TextDirection.rtl,
-                                ),
-                              )
-                            ],
+                                )
+                              ],
+                            ),
                           ),
-                          Image.asset('assets/images/restourne.png'),
+                          Container(
+                              width: MediaQuery.of(context).size.width - 50,
+                              height: 166,
+                              child: !widget.isLocal
+                                  ? Image.network(
+                                      '${widget.imageLink}',
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Image.file(
+                                    widget.imagePath,
+                                      fit: BoxFit.cover,
+                                    )),
                         ],
                       ),
                     ),
                     onTap: () {
                       print("image clicked!!!");
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => MyPhotoViewer(imageUrl: 'assets/images/restourne.png')));
-                    }
-                )
-            ),
+                          builder: (context) => MyPhotoViewer(
+                              imageUrl:
+                              widget.imageLink
+                          )));
+                    })),
           ),
         ),
       ],

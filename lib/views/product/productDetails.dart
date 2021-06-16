@@ -44,7 +44,9 @@ class _ProductDetailState extends State<ProductDetail> {
                   children: [
                     Icon(Icons.arrow_back, size: 17),
                     Text(
-                      'المنتوجات',
+                      authProvider.currentUsr.idrole == 3
+                          ?'المنتوجات'
+                          :'Produits',
                       style: TextStyle(
                           fontSize: 17
                       ),

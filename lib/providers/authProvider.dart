@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AuthProvider extends BaseProvider{
 
   bool busy = true;
+  bool userChekcerIsBusy = true;
 
   AuthService _authService = AuthService();
   List<User> _users = List();
@@ -56,22 +57,28 @@ class AuthProvider extends BaseProvider{
 
   bool loggedIn = false;
   Future<int> checkLoginAndRole() async{
-    busy = true;
-    int role_id = 0;
+    userChekcerIsBusy = true;
+    notifyListeners();
+    int role_id;
     final prefs = await SharedPreferences.getInstance();
     final key = 'isLogged';
     loggedIn = prefs.get(key) ?? false;
-
+    print('1--');
     if(loggedIn){
       await getUserFromSP();
       role_id = _currentUsr.idrole;
-      busy = false;
+      print('2--');
+      userChekcerIsBusy = false;
+      notifyListeners();
       return role_id;
 
-    }else
-      busy = false;
+    }else {
+      userChekcerIsBusy = false;
+      notifyListeners();
+      print('3-- $userChekcerIsBusy');
       return role_id;
 
+    }
   }
 
   Future<void> setLogin() async{

@@ -57,7 +57,6 @@ class UserService extends BaseApi {
       "userName": "$username",
       "password": "$password"
     };
-
     return await api.httpPut("/users", "$id", jsonEncode(user));
   }
 }

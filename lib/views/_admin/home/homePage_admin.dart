@@ -27,25 +27,8 @@ class _HomePage_adminState extends State<HomePage_admin> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    print('admin home page');
     WidgetsBinding.instance.addPostFrameCallback((_) async{
-      int role_id = await Provider.of<AuthProvider>(context, listen: false).checkLoginAndRole();
-
-      switch(role_id){
-        case 0:
-          print('super admin');
-          break;
-        case 1:
-          print('admin');
-          break;
-        case 2:
-          print('commercial');
-          break;
-        case 3:
-          print('revendeur');
-          break;
-        default:
-          Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
-      }
       Provider.of<ContactProvider>(context, listen: false);
     });
   }
@@ -54,12 +37,12 @@ class _HomePage_adminState extends State<HomePage_admin> {
   Widget build(BuildContext context) {
     var authProvider = Provider.of<AuthProvider>(context, listen: true);
     var contactProvider = Provider.of<ContactProvider>(context, listen: true);
-    return authProvider.busy
-        ?Center(child: CircularProgressIndicator())
+    return authProvider.userChekcerIsBusy
+        ?Center(child: Text('home page admin...'))
         :Scaffold(
       resizeToAvoidBottomInset: true,
       ///appbar
-      appBar: MyAppBar(isSeller: authProvider.currentUsr.idrole == 3 ?true :false, roleId: authProvider.currentUsr.idrole),
+      appBar: MyAppBar(isSeller: false, roleId: 1),
 
       ///body
       body: tabs[_currentIndex],

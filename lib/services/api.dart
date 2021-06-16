@@ -237,7 +237,7 @@ class Api {
 
   Future<http.Response> httpDelete(String path, String endPoint) async{
     String basicAuth = 'Basic ' + base64Encode(utf8.encode('$username:$password'));
-    var response = await http.post(
+    var response = await http.delete(
         Uri.parse('$baseUrl/$path/$endPoint'),
         headers: {'Accept': 'Application/json', 'authorization': basicAuth},
     );

@@ -56,7 +56,8 @@ class _ReclamationCardState extends State<ReclamationCard> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('$statusName',
+                      Text(
+                          '$statusName',
                           style: widget.status == 0
                               ? TextStyle(color: Colors.blue)
                               : widget.status == 1

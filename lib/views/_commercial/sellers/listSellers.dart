@@ -18,7 +18,9 @@ class _ListSellersState extends State<ListSellers> {
     // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<UserProvider>(context, listen: false).getSellersByAgent(33);
+      Provider.of<AuthProvider>(context, listen: false).getUserFromSP();
+      int idagent = Provider.of<AuthProvider>(context, listen: false).currentUsr.idagent;
+      Provider.of<UserProvider>(context, listen: false).getSellersByAgent(idagent);
       Provider.of<AuthProvider>(context, listen: false).getUserFromSP();
     });
   }

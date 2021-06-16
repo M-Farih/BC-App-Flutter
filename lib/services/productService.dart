@@ -126,4 +126,7 @@ class ProductService extends BaseApi{
     }
   }
 
+  Future<http.Response> deleteProduct(String id) async{
+    return await api.httpDelete('/products', '$id');
+  }
 }

@@ -208,14 +208,18 @@ class _ProfilePageState extends State<ProfilePage> {
                           SizedBox(height: 05.0),
                           authProvider.currentUsr == null
                               ? Text('')
-                              : Text(
+                              : Container(
+                            width: MediaQuery.of(context).size.width * 0.60,
+                                child: Text(
                             '${authProvider.currentUsr.firstName +' '+authProvider.currentUsr.lastName}',
                             textDirection: TextDirection.rtl,
+                            overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 25.0),
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20.0),
                           ),
+                              ),
                           authProvider.currentUsr == null
                               ?Text('')
                               :Text(
@@ -223,7 +227,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 18
+                                fontSize: 15
                             ),
                           ),
                         ],

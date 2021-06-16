@@ -56,7 +56,7 @@ class _HomePage_RevendeurState extends State<HomePage_Revendeur> {
   Widget build(BuildContext context) {
     var authProvider = Provider.of<AuthProvider>(context, listen: false);
     var contactProvider = Provider.of<ContactProvider>(context, listen: false);
-    return authProvider.busy
+    return authProvider.userChekcerIsBusy
       ?Center(child: CircularProgressIndicator())
       :Scaffold(
       ///appbar
