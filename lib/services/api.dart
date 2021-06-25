@@ -97,9 +97,9 @@ class Api {
         headers: { 'Accept': 'Application/json', 'authorization': basicAuth},
         body: json.encode({
           "description": object['description'],
-          "record": '$fileLink',
           "idreason": object['idreason'],
-          "iduser": object['iduser']
+          "iduser": object['iduser'],
+          "record": null
         }),
       ).then((response){
         print('updated user:: ${response.body}');

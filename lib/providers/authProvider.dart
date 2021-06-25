@@ -14,6 +14,7 @@ class AuthProvider extends BaseProvider{
   List<User> _users = List();
   User _currentUsr;
   int iduser;
+  String solde;
 
   List<User> get users => _users;
   User get currentUsr => _currentUsr;
@@ -33,7 +34,6 @@ class AuthProvider extends BaseProvider{
         setLogin();
         notifyListeners();
         busy = false;
-
       }
       else{
         canPass = false;
@@ -113,6 +113,7 @@ class AuthProvider extends BaseProvider{
     final prefs = await SharedPreferences.getInstance();
     var user = jsonDecode(prefs.getString('user'));
     print('user from Sp ==> ${user[0]['iduser']}');
+    print('user from Sp ==> ${user[0]}');
     _currentUsr = null;
     _currentUsr = User.fromJson(user[0]);
     //await Future.delayed(Duration(seconds: 5));
@@ -129,4 +130,19 @@ class AuthProvider extends BaseProvider{
     _currentUsr = new User(_tempUser.idrole, _tempUser.idagent, firstName, lastName, _tempUser.userName, _tempUser.email, _tempUser.password, entrepriseName, ice, city, address, telephone, _tempUser.clientNumber, _tempUser.agentIduser, _tempUser.agentName, _tempUser.idrole, profileImage, _tempUser.solde, _tempUser.ristourne);
   }
 
+  Future<void> getUserSolde(int id) async{
+    print('get id 1');
+    busy = true;
+    notifyListeners();
+    var response = await _authService.getUserSolde(id);
+    print('get id 2  ${response.statusCode}');
+    if (response.statusCode == 200) {
+      ///fill user model
+      var data = jsonDecode(response.body);
+      solde = data['data'][0]['solde'];
+      print('get id 3');
+      notifyListeners();
+      busy = false;
+    }
+  }
 }

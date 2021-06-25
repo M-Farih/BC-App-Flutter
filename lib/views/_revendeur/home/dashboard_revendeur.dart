@@ -32,6 +32,8 @@ class _Dashboard_revendeurState extends State<Dashboard_revendeur> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<RistourneProvider>(context, listen: false).getRistourneImage();
       Provider.of<AuthProvider>(context, listen: false).getUserFromSP();
+      int id = Provider.of<AuthProvider>(context, listen: false).currentUsr.iduser;
+      Provider.of<AuthProvider>(context, listen: false).getUserSolde(id);
     });
   }
 
@@ -70,7 +72,7 @@ class _Dashboard_revendeurState extends State<Dashboard_revendeur> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 30.0),
                       child: Text(
-                        '${authProvider.currentUsr.solde} Dhs',
+                        '${authProvider.solde} Dhs',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 30.0,
@@ -121,7 +123,7 @@ class _Dashboard_revendeurState extends State<Dashboard_revendeur> {
                       ),
 
                       SizedBox(height: 20),
-                      RistourneWidget(isLocal: false, imageLink: ristourneProvider.image)
+                          RistourneWidget(isLocal: false, imageLink: ristourneProvider.image)
                     ],
                   ),
 

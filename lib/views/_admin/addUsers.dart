@@ -55,7 +55,37 @@ class _AddUserState extends State<AddUser> {
         child: Center(
           child: Column(
             children: [
-              SizedBox(height: 90,),
+              /// back btn & icon-title
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Center(
+                    child: Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Icon(Icons.arrow_back),
+                                Text(
+                                  'Retour',
+                                  style: TextStyle(fontSize: 20.0),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 20,),
 
               /// title
               Row(

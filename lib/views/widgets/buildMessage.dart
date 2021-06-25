@@ -7,11 +7,11 @@ import 'package:provider/provider.dart';
 
 class BuildMessage extends StatefulWidget {
   final String name, date, message, senderName, img;
-  final int senderId;
+  final int senderId, senderRoleId;
 
   ///"https://bc.meks.ma/BC/uploaded_files/image/cc2b2aa97c41db11f89dfcdd4b121b59.png" logo BC
 
-  BuildMessage({this.name, this.date, this.message, this.senderId, this.senderName, this.img});
+  BuildMessage({this.name, this.date, this.message, this.senderId, this.senderName, this.img, this.senderRoleId});
 
   @override
   _BuildMessageState createState() => _BuildMessageState();
@@ -30,6 +30,8 @@ class _BuildMessageState extends State<BuildMessage> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<AuthProvider>(context, listen: false).getUserFromSP();
     });
+
+    print('snder role id --> ${widget.senderRoleId}');
   }
 
   ///admin box decoration
@@ -83,15 +85,19 @@ class _BuildMessageState extends State<BuildMessage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        CircleAvatar(backgroundImage: NetworkImage(widget.img),),
+                        widget.senderRoleId == 1
+                            ?CircleAvatar(backgroundImage: AssetImage('assets/images/adminbc.png'))
+                            :CircleAvatar(backgroundImage: NetworkImage(widget.img),),
                        Padding(
                          padding: const EdgeInsets.all(6.0),
                          child: Column(
                            crossAxisAlignment: CrossAxisAlignment.start,
                            children: [
-                             Text('${widget.senderName}'),
+                             authProvider.currentUsr.idrole == 3
+                                 ?Text(widget.senderRoleId == 1 ?'العمبل' :'${widget.senderName}')
+                                 :Text('${widget.senderName}'),
                              Text('${widget.date}',
-                                 style: TextStyle(fontSize: 10.0)),
+                                 style: TextStyle(fontSize: 10.0, color: Colors.black54)),
                            ],
                          ),
                        )
@@ -104,7 +110,7 @@ class _BuildMessageState extends State<BuildMessage> {
                           child: Text(
                             '${widget.message}',
                             style: TextStyle(),
-                            //overflow: TextOverflow.ellipsis,
+                            textDirection: TextDirection.rtl,
                           ),
                         )
                       ],

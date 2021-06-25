@@ -121,7 +121,8 @@ class _ListReclamationAdminState extends State<ListReclamationAdmin> {
                     topLeft: Radius.circular(20),
                   )
               ),
-              child: ListView.builder(
+              child: topicProvider.topics.length != 0
+                  ?ListView.builder(
                 shrinkWrap: true,
                 itemCount: topicProvider.topics.length,
                 itemBuilder: (context, index) {
@@ -129,68 +130,70 @@ class _ListReclamationAdminState extends State<ListReclamationAdmin> {
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: Container(
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(width: 0.5, color: Color(
-                              0xFFCBCBCB)),
-                        ),
-                      ),
-                      child: ListTile(
-                          title: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                  child: Text('${topicProvider.topics[index].usersName}', overflow: TextOverflow.ellipsis,),
-                                width: MediaQuery.of(context).size.width * 0.3,
-                              ),
-                              Text('$statusName',
-                                  style: TextStyle(color: Color(statusColor))),
-                            ],
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(width: 0.5, color: Color(
+                                0xFFCBCBCB)),
                           ),
-                          subtitle: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Flexible(
-                                child: Container(
-                                  child: Text(
-                                    '${topicProvider.topics[index].description}',
-                                    overflow: TextOverflow.ellipsis,
+                        ),
+                        child: ListTile(
+                            title: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  child: Text('${topicProvider.topics[index].usersName}', overflow: TextOverflow.ellipsis,),
+                                  width: MediaQuery.of(context).size.width * 0.3,
+                                ),
+                                Text('$statusName',
+                                    style: TextStyle(color: Color(statusColor))),
+                              ],
+                            ),
+                            subtitle: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Flexible(
+                                  child: Container(
+                                    child: Text(
+                                      '${topicProvider.topics[index].description}',
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Text(
-                                  '${timeago.format(DateTime.parse(
-                                      topicProvider.topics[index].created_at), locale: 'fr')}'),
-                            ],
-                          ),
-                          leading: CircleAvatar(
-                            backgroundColor: Colors.transparent,
-                            backgroundImage:
-                            NetworkImage('${topicProvider.topics[index].userImg.toString().replaceAll('"','').trim()}'),
-                          ),
-                          onTap: () {
-                            print('///// audio ---> ${topicProvider.topics[index].record}');
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>ReclamationDetails(
-                                      img: topicProvider.topics[index].userImg.toString().replaceAll('"','').trim(),
-                                      status: topicProvider.topics[index].indicator,
-                                      reason: topicProvider.topics[index].reason,
-                                      Message: topicProvider.topics[index].description,
-                                      rec_id: topicProvider.topics[index].idtopic,
-                                      date: topicProvider.topics[index].created_at,
-                                      phone: topicProvider.topics[index].telephone,
-                                      sellerName: topicProvider.topics[index].usersName,
-                                      record: topicProvider.topics[index].record,
-                                    ))
-                            );
-                          }
+                                Text(
+                                    '${timeago.format(DateTime.parse(
+                                        topicProvider.topics[index].created_at), locale: 'fr')}'),
+                              ],
+                            ),
+                            leading: CircleAvatar(
+                              backgroundColor: Colors.transparent,
+                              backgroundImage:
+                              NetworkImage('${topicProvider.topics[index].userImg.toString().replaceAll('"','').trim()}'),
+                            ),
+                            onTap: () {
+                              print('///// audio ---> ${topicProvider.topics[index].record}');
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>ReclamationDetails(
+                                        img: topicProvider.topics[index].userImg.toString().replaceAll('"','').trim(),
+                                        status: topicProvider.topics[index].indicator,
+                                        reason: topicProvider.topics[index].reason,
+                                        Message: topicProvider.topics[index].description,
+                                        rec_id: topicProvider.topics[index].idtopic,
+                                        date: topicProvider.topics[index].created_at,
+                                        phone: topicProvider.topics[index].telephone,
+                                        sellerName: topicProvider.topics[index].usersName,
+                                        record: topicProvider.topics[index].record,
+                                      ))
+                              );
+                            }
 
-                      )),
+                        )),
                   );
                 },
-              ),
+              )
+                  :Center(child: Text('Aucune donnée à afficher'),)
+
             ),
           )
         ],

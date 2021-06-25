@@ -68,13 +68,13 @@ class _RistourneWidgetState extends State<RistourneWidget> {
                               height: 166,
                               child: !widget.isLocal
                                   ? Image.network(
-                                      '${widget.imageLink}',
-                                      fit: BoxFit.cover,
-                                    )
+                                '${widget.imageLink}',
+                                fit: BoxFit.contain,
+                              )
                                   : Image.file(
-                                    widget.imagePath,
-                                      fit: BoxFit.cover,
-                                    )),
+                                widget.imagePath,
+                                fit: BoxFit.contain,
+                              )),
                         ],
                       ),
                     ),

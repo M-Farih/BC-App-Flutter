@@ -55,71 +55,47 @@ class _ProductDetailState extends State<ProductDetail> {
                 ),
               ),
             ),
+            SizedBox(height: 20.0),
             Container(
-              height: MediaQuery.of(context).size.height * 0.6,
-              width: MediaQuery.of(context).size.width - 80,
+              width: double.infinity,
+              height: 160,
               decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20.0),
-                boxShadow: [
-                  //background color of box
-                  BoxShadow(
-                    color: Colors.grey,
-                    blurRadius: 25.0, // soften the shadow
-                    spreadRadius: 1.0, //extend the shadow
-                    offset: Offset(
-                      1.0, // Move to right 10  horizontally
-                      5.0, // Move to bottom 10 Vertically
-                    ),
-                  )
-                ],
+                image: DecorationImage(
+                  image: NetworkImage("${widget.assetPath}"),
+                  fit: BoxFit.contain,
+                ),
               ),
-              child: Column(
-                children: [
-                  SizedBox(height: 20.0),
-                  Container(
-                    width: double.infinity,
-                    height: 160,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: NetworkImage("${widget.assetPath}"),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    child: Text('') /* add child content here */,
+              child: Text('') /* add child content here */,
+            ),
+            SizedBox(height: 20.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 20.0),
+                  child: Text(
+                    '${widget.title}',
+                    style: TextStyle(
+                        fontSize: 25.0, fontWeight: FontWeight.bold),
+                    textDirection: TextDirection.ltr,
                   ),
-                  SizedBox(height: 20.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 20.0),
-                        child: Text(
-                          '${widget.title}',
-                          style: TextStyle(
-                              fontSize: 25.0, fontWeight: FontWeight.bold),
-                          textDirection: TextDirection.ltr,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Flexible(
-                    child: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Text(
-                        '${widget.description}',
-                        style: TextStyle(
-                            fontSize: 12.0, fontWeight: FontWeight.normal),
-                        textDirection: TextDirection.ltr,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                ],
+                ),
+              ],
+            ),
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Text(
+                  '${widget.description}',
+                  style: TextStyle(
+                      fontSize: 12.0, fontWeight: FontWeight.normal),
+                  textDirection: TextDirection.ltr,
+                ),
               ),
-            )
+            ),
+            SizedBox(
+              height: 10.0,
+            ),
           ],
         ));
   }

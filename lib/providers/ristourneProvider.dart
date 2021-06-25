@@ -69,10 +69,11 @@ class RistourneProvider extends ChangeNotifier{
     print('ristourne image 1 :::>  ${response.body}');
     if(response.statusCode == 200 || response.statusCode == 201){
       print('ristourne image :::>  ${response.body}');
-      var data = jsonDecode(response.body);
-      _image = data['data'][0]['promo'].toString().replaceAll('"', '');
       isBusy = false;
       notifyListeners();
+      var data = jsonDecode(response.body);
+      _image = data['data'][0]['promo'].toString().replaceAll('"', '');
+
     }
   }
 

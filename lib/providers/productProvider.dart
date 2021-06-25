@@ -24,6 +24,8 @@ class ProductProvider extends ChangeNotifier{
       isBusy = false;
       notifyListeners();
     }
+    isBusy = false;
+    notifyListeners();
   }
 
   Future<void> addProduct(String name, String description, String image, String famille) async{
@@ -45,14 +47,16 @@ class ProductProvider extends ChangeNotifier{
       isBusy = false;
       notifyListeners();
     }
+    isBusy = false;
+    notifyListeners();
   }
 
   Future<void> updateProduct(String name, String description, String image, String famille, String id) async{
     isBusy = true;
     notifyListeners();
     var response =  await _productService.updateProduct(name, description, image, famille, id);
-    notifyListeners();
     isBusy = false;
+    notifyListeners();
   }
 
   Future<void> deleteProduct(String id) async{
@@ -65,5 +69,7 @@ class ProductProvider extends ChangeNotifier{
       notifyListeners();
       print('${response.body}');
     }
+    isBusy = false;
+    notifyListeners();
   }
 }

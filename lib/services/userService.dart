@@ -1,10 +1,13 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:bc_app/providers/authProvider.dart';
 import 'package:bc_app/services/baseApi.dart';
 import 'package:http/http.dart' as http;
 
 class UserService extends BaseApi {
 
+  AuthProvider authProvider = AuthProvider();
 
   Future<http.Response> add(String fname, String lname, String username, String password, String email, String telephone) async{
     Map<String, dynamic> body = {
@@ -21,23 +24,85 @@ class UserService extends BaseApi {
   
 
   Future<http.Response> update
-      (String id, firstName, lastName, entrepriseName, ice,
-      city, address, telephone, role_id, profileImage) async {
-    Map<String, dynamic> user = {
-      "firstName": firstName,
-      "lastName": lastName,
-      "entrepriseName": entrepriseName,
-      "ice": ice,
-      "city": city,
-      "address": address,
-      "telephone": telephone,
-      "idrole": role_id,
-      "profileImage": profileImage,
-      "iduser": id,
-      "userName": "revendeur",
-    };
+      (int id, clientNumber, firstName, lastName, entrepriseName, ice,
+      city, address, telephone, int role_id, profileImage) async {
 
-    return await api.httpPutWithFile("/users", "$id", jsonEncode(user));
+
+    String basicAuth = 'Basic ' + base64Encode(utf8.encode('${api.username}:${api.password}'));
+
+    String fileLink;
+    var response;
+    var request = http.MultipartRequest('POST', Uri.parse('https://bc.meks.ma/BC/v1/common/'));
+    request.headers.addAll({'Accept': 'Application/json', 'authorization': basicAuth});
+
+    String filePath = profileImage.toString();
+
+    if(filePath != ""){
+      print('0');
+      request.files.add(
+          http.MultipartFile(
+              'file',
+              File(filePath).readAsBytes().asStream(),
+              File(filePath).lengthSync(),
+              filename: filePath.split("/").last
+          )
+      );
+      print('1');
+
+      response = await request.send().then((result) async{
+        http.Response.fromStream(result).then((response){
+          if (true)
+          {
+            fileLink = response.body;
+            fileLink = fileLink.replaceAll("\\", "");
+            return http.put(
+              Uri.parse('${api.baseUrl}/users/$id'),
+              headers: { 'Accept': 'Application/json', 'authorization': basicAuth},
+              body: json.encode({
+                "firstName": firstName,
+                "lastName": lastName,
+                "entrepriseName": entrepriseName,
+                "ice": ice,
+                "city": city,
+                "code": clientNumber,
+                "address": address,
+                "telephone": telephone,
+                "idrole": role_id,
+                "iduser": id,
+                "profileImage": fileLink
+              }),
+            ).then((response) async {
+              print('user modified:: ${response.body}');
+              authProvider.saveUserInSP(jsonDecode(response.body));
+            });
+          }
+        });
+      });
+    }
+    else{
+      print('without imahe ++');
+      response = await request.send().then((result) async{
+        return http.put(
+          Uri.parse('${api.baseUrl}/users/$id'),
+          headers: { 'Accept': 'Application/json', 'authorization': basicAuth},
+          body: json.encode({
+            "firstName": firstName,
+            "lastName": lastName,
+            "entrepriseName": entrepriseName,
+            "ice": ice,
+            "city": city,
+            "code": clientNumber,
+            "address": address,
+            "telephone": telephone,
+            "idrole": role_id,
+            "iduser": id
+          }),
+        ).then((response) async {
+          print('user modified:: ${response.body}');
+          authProvider.saveUserInSP(jsonDecode(response.body));
+        });
+      });
+    }
   }
 
   Future<http.Response> getSellersByAgent(int id) async{

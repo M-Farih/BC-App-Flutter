@@ -1,5 +1,6 @@
 import 'package:bc_app/providers/authProvider.dart';
 import 'package:bc_app/providers/productProvider.dart';
+import 'package:bc_app/views/home/homePage.dart';
 import 'package:bc_app/views/product/productCategories.dart';
 import 'package:bc_app/views/widgets/appbar.dart';
 import 'package:bc_app/views/widgets/productCard.dart';
@@ -8,9 +9,9 @@ import 'package:provider/provider.dart';
 
 class ProductList extends StatefulWidget {
 
-  final String category;
+  final String type;
 
-  const ProductList({this.category});
+  const ProductList({Key key, this.type}) : super(key: key);
 
   @override
   _ProductListState createState() => _ProductListState();
@@ -25,7 +26,7 @@ class _ProductListState extends State<ProductList> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<AuthProvider>(context, listen: false).getUserFromSP();
-      Provider.of<ProductProvider>(context, listen: false).getProducts('1');
+      Provider.of<ProductProvider>(context, listen: false).getProducts(widget.type);
     });
   }
 
@@ -42,7 +43,8 @@ class _ProductListState extends State<ProductList> {
           children: [
             GestureDetector(
               onTap: (){
-                Navigator.of(context).pop();
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => HomePage()));
               },
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
@@ -62,7 +64,8 @@ class _ProductListState extends State<ProductList> {
                 ),
               ),
             ),
-            GridView.count(
+            productProvider.product.length != 0
+                ?GridView.count(
               childAspectRatio: 0.6,
               primary: false,
               shrinkWrap: true,
@@ -76,9 +79,11 @@ class _ProductListState extends State<ProductList> {
                              desc: productProvider.product[index].description,
                              imgPath: productProvider.product[index].image.replaceAll('"', '').trim(),
                               id: productProvider.product[index].idproduct.toString(),
+                              type: widget.type,
                            );
               })
-            ),
+            )
+                :Center(child: Text(authProvider.currentUsr.idrole == 3 ?'لا يوجد منتجات للعرض' :'Aucun produit a afficher'),)
           ],
         ),
       )

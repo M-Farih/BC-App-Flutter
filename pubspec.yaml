@@ -51,7 +51,16 @@ dependencies:
   awesome_dialog: ^2.0.0
   url_launcher: ^6.0.3
   lazy_loading_list: ^1.0.1
+  flutter_native_splash: ^0.3.0
+  firebase_core: any
+  firebase_messaging: any
+  flutter_local_notifications: ^5.0.0+4
 
+
+
+flutter_native_splash:
+  color: "#2C7DBF"
+  image: "assets/images/splash.png"
 
 
 
@@ -97,6 +106,7 @@ flutter:
     - assets/images/avatar.png
     - assets/images/bclogo.jpg
     - assets/images/promo.png
+    - assets/images/adminbc.png
     - assets/send.mp3
 
 

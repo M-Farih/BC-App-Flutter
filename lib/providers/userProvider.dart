@@ -17,6 +17,8 @@ class UserProvider extends ChangeNotifier{
   List<User> get sellers => _sellers;
   List<User> get tempSellersList => _tempSellersList;
 
+  int index = 15 , i = 15, usersLength = 0;
+
   UserService _userService = UserService();
 
   Future<void> add(String fname, String lname, String username, String password, String email, String telephone) async{
@@ -30,10 +32,10 @@ class UserProvider extends ChangeNotifier{
     }
   }
 
-  Future<void> update(String id, firstName, lastName, entrepriseName, ice, city, address, telephone, role_id, profileImage) async{
+  Future<void> update(int id, clientNumber, firstName, lastName, entrepriseName, ice, city, address, telephone, int role_id, profileImage) async{
     busy = true;
     notifyListeners();
-    var response = await _userService.update(id, firstName, lastName, entrepriseName, ice,
+    var response = await _userService.update(id, clientNumber,firstName, lastName, entrepriseName, ice,
         city, address, telephone, role_id, profileImage);
     busy = false;
     notifyListeners();
@@ -92,6 +94,10 @@ class UserProvider extends ChangeNotifier{
     }
   }
 
+  onBegin(){
+    usersLength = _sellers.length;
+  }
+
   filterUsersList(String text) {
     if(text.isEmpty){
       _sellers = tempSellersList;
@@ -104,7 +110,10 @@ class UserProvider extends ChangeNotifier{
             element.lastName.toLowerCase().contains(text.toLowerCase()) ||
             element.clientNumber.toLowerCase().contains(text.toLowerCase())
         ){
+          index = filteredUsers.length + 1;
           filteredUsers.add(element);
+          _sellers = filteredUsers;
+          notifyListeners();
         }
       });
 
@@ -114,4 +123,27 @@ class UserProvider extends ChangeNotifier{
     }
   }
 
+  onEndScroll() {
+    print("Scroll End");
+    print("table length --> $usersLength");
+    print("i  --> $i");
+
+     if(usersLength >= 200){
+       if(usersLength >= i){
+         print("table length --> $usersLength");
+
+         index = i;
+         i = i + 20;
+         print("table length 1 --> $i");
+         notifyListeners();
+       }
+       else{
+         i = i - 21;
+         print("table length 2 --> $i");
+         index = usersLength - i;
+         notifyListeners();
+       }
+     }
+
+  }
 }

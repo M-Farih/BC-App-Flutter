@@ -104,7 +104,37 @@ class _PromotionAddState extends State<PromotionAdd> {
               child: Center(
                 child: Column(
                   children: [
-                    SizedBox(height: 50),
+                    /// back btn & icon-title
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Center(
+                          child: Row(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).pushReplacementNamed('home-admin');
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Icon(Icons.arrow_back),
+                                      Text(
+                                        'Retour',
+                                        style: TextStyle(fontSize: 20.0),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20),
                     Text(
                       'Ajouter une nouvelle promotion',
                       style:
@@ -145,7 +175,8 @@ class _PromotionAddState extends State<PromotionAdd> {
                                                       onTap: () => getImage(),
                                                     )
                                                         : GestureDetector(
-                                                      child: Icon(Icons.file_upload,
+                                                      child: Icon(
+                                                          Icons.file_upload,
                                                           size: 30,
                                                           color: Color(0xFF2C7DBF)),
                                                       onTap: () async {
@@ -156,20 +187,7 @@ class _PromotionAddState extends State<PromotionAdd> {
                                                               _image.path, "2")
                                                               .whenComplete(() {
                                                             progressDialog.hide();
-                                                            Navigator.of(context).push(
-                                                                MaterialPageRoute(
-                                                                    builder:
-                                                                        (context) =>
-                                                                        PromotionAdd()));
-                                                            Flushbar(
-                                                              flushbarPosition:
-                                                              FlushbarPosition
-                                                                  .TOP,
-                                                              message:
-                                                              "Promotion ajoutée",
-                                                              duration: Duration(
-                                                                  seconds: 3),
-                                                            )..show(context);
+                                                            _disconnect(context);
                                                           });
                                                         } else {
                                                           Flushbar(
@@ -206,28 +224,15 @@ class _PromotionAddState extends State<PromotionAdd> {
                                                                     _image.path, "2")
                                                                     .whenComplete(() {
                                                                   progressDialog.hide();
-                                                                  Navigator.of(context).push(
-                                                                      MaterialPageRoute(
-                                                                          builder:
-                                                                              (context) =>
-                                                                              PromotionAdd()));
-                                                                  Flushbar(
-                                                                    flushbarPosition:
-                                                                    FlushbarPosition
-                                                                        .TOP,
-                                                                    message:
-                                                                    "Promotion ajoutée",
-                                                                    duration: Duration(
-                                                                        seconds: 3),
-                                                                  )..show(context);
-                                                                });
+                                                                  _disconnect(context);
+                                                                 });
                                                               } else {
                                                                 Flushbar(
                                                                   flushbarPosition:
                                                                   FlushbarPosition
                                                                       .TOP,
                                                                   message:
-                                                                  "Aucune photo selectionée",
+                                                                  "Aucune photo selectionnée",
                                                                   backgroundColor:
                                                                   Colors.red,
                                                                   duration: Duration(
@@ -288,20 +293,7 @@ class _PromotionAddState extends State<PromotionAdd> {
                                                           .addPdf(_pdf.path)
                                                           .whenComplete(() {
                                                         progressDialog.hide();
-                                                        Navigator.of(context).push(
-                                                            MaterialPageRoute(
-                                                                builder:
-                                                                    (context) =>
-                                                                        PromotionAdd()));
-                                                        Flushbar(
-                                                          flushbarPosition:
-                                                              FlushbarPosition
-                                                                  .TOP,
-                                                          message:
-                                                              "Catalogue ajouté",
-                                                          duration: Duration(
-                                                              seconds: 3),
-                                                        )..show(context);
+                                                        _disconnect(context);
                                                       });
                                                     } else {
                                                       Flushbar(
@@ -309,7 +301,7 @@ class _PromotionAddState extends State<PromotionAdd> {
                                                             FlushbarPosition
                                                                 .TOP,
                                                         message:
-                                                            "Aucun catalogue selectioné",
+                                                            "Aucun catalogue selectionné",
                                                         backgroundColor:
                                                             Colors.red,
                                                         duration: Duration(
@@ -380,7 +372,7 @@ class _PromotionAddState extends State<PromotionAdd> {
                                           promoProvider.deletePromo(
                                               promoProvider
                                                   .promotions[index].idpromo
-                                                  .toString());
+                                                  .toString()).whenComplete(() => _disconnect(context));
                                         },
                                       ),
                                     ],
@@ -396,4 +388,36 @@ class _PromotionAddState extends State<PromotionAdd> {
             ),
     );
   }
+}
+
+Future<void> _disconnect(context) async {
+  var authProvider = Provider.of<AuthProvider>(context, listen: false);
+  print('disc clicked');
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(
+          'Confirmation',
+          textDirection: TextDirection.rtl,
+        ),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text('Le catalogue a été ajouté avec succès', textDirection: TextDirection.ltr),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('Ok', style: TextStyle(color: Colors.red),),
+            onPressed: () {
+              Navigator.of(context).pushReplacementNamed('add-promotion');
+            },
+          ),
+        ],
+      );
+    },
+  );
 }

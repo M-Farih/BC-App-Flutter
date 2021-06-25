@@ -77,6 +77,36 @@ class _RistournePageState extends State<RistournePage> {
           :SingleChildScrollView(
             child: Center(
               child: Column(children: <Widget>[
+                /// back btn & icon-title
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Center(
+                      child: Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pushReplacementNamed('home-admin');
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Icon(Icons.arrow_back),
+                                  Text(
+                                    'Retour',
+                                    style: TextStyle(fontSize: 20.0),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
                 Container(
                   margin: EdgeInsets.all(15),
                   child: Column(
@@ -105,7 +135,9 @@ class _RistournePageState extends State<RistournePage> {
                               isLocal = true;
                               _image = _image;
                             });
-                            ristourneProvider.uploadRistournePicture(_image.path);
+                            ristourneProvider.uploadRistournePicture(_image.path).whenComplete((){
+                              _disconnect(context);
+                            });
                           }
                           imageChosen = !imageChosen;
                         },
@@ -183,7 +215,7 @@ class _RistournePageState extends State<RistournePage> {
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         Text(
-                                          "${ristourneProvider.ristournes[index].max != null ?ristourneProvider.ristournes[index].max :ristourneProvider.ristournes[index].min + ' ou plus'}",
+                                          "${ristourneProvider.ristournes[index].max != "-1.00" ?ristourneProvider.ristournes[index].max :'-'}",
                                           style: TextStyle(fontSize: 14),),
                                       ],
                                     )),
@@ -205,6 +237,9 @@ class _RistournePageState extends State<RistournePage> {
                                   child: GestureDetector(
                                     child: Icon(Icons.edit),
                                     onTap: (){
+                                      minController.text = "${ristourneProvider.ristournes[index].min}";
+                                      maxController.text = "${ristourneProvider.ristournes[index].max != "-1.00"  ?ristourneProvider.ristournes[index].max :""}";
+                                      percentageController.text = "${ristourneProvider.ristournes[index].percent.replaceAll('%', '')}";
                                       AwesomeDialog(
                                           context: context,
                                           customHeader: Icon(
@@ -236,7 +271,7 @@ class _RistournePageState extends State<RistournePage> {
                                                       ),
                                                     ),
                                                     controller: minController,
-                                                    keyboardType: TextInputType.multiline,
+                                                    keyboardType: TextInputType.number,
                                                     minLines: 1,
                                                     //Normal textInputField will be displayed
                                                     maxLines:
@@ -257,7 +292,7 @@ class _RistournePageState extends State<RistournePage> {
                                                       ),
                                                     ),
                                                     controller: maxController,
-                                                    keyboardType: TextInputType.multiline,
+                                                    keyboardType: TextInputType.number,
                                                     minLines: 1,
                                                     //Normal textInputField will be displayed
                                                     maxLines:
@@ -278,7 +313,7 @@ class _RistournePageState extends State<RistournePage> {
                                                       ),
                                                     ),
                                                     controller: percentageController,
-                                                    keyboardType: TextInputType.multiline,
+                                                    keyboardType: TextInputType.number,
                                                     minLines: 1,
                                                     //Normal textInputField will be displayed
                                                     maxLines:
@@ -293,20 +328,19 @@ class _RistournePageState extends State<RistournePage> {
                                           btnOkOnPress: (){
                                             progressDialog.show();
                                             print('ok');
-                                            ristourneProvider.updateRistourne(ristourneProvider.ristournes[index].idristourne.toString(), minController.text, maxController.text, percentageController.text).then((v){
-                                              progressDialog.hide();
+                                            ristourneProvider.updateRistourne(ristourneProvider.ristournes[index].idristourne.toString(), minController.text, maxController.text, percentageController.text).whenComplete((){
                                             });
+                                            _disconnect(context);
                                           },
                                         btnCancelText: 'Supprimer',
                                         btnCancelOnPress: (){
                                           progressDialog.show();
-                                          ristourneProvider.deleteRistourne(ristourneProvider.ristournes[index].idristourne.toString()).then((value){
-                                            progressDialog.hide();
+                                          ristourneProvider.deleteRistourne(ristourneProvider.ristournes[index].idristourne.toString()).whenComplete((){
+                                            print('Supprimer');
                                           });
+                                          _disconnect(context);
                                         }
-                                      )..show().whenComplete(() {
-                                        Navigator.of(context).pushReplacementNamed("ristourne-page");
-                                      });
+                                      )..show();
                                     },
                                   )
                               ),
@@ -360,7 +394,7 @@ class _RistournePageState extends State<RistournePage> {
                                           ),
                                         ),
                                         controller: minController,
-                                        keyboardType: TextInputType.multiline,
+                                        keyboardType: TextInputType.number,
                                         minLines: 1,
                                         //Normal textInputField will be displayed
                                         maxLines:
@@ -381,7 +415,7 @@ class _RistournePageState extends State<RistournePage> {
                                           ),
                                         ),
                                         controller: maxController,
-                                        keyboardType: TextInputType.multiline,
+                                        keyboardType: TextInputType.number,
                                         minLines: 1,
                                         //Normal textInputField will be displayed
                                         maxLines:
@@ -402,7 +436,7 @@ class _RistournePageState extends State<RistournePage> {
                                           ),
                                         ),
                                         controller: percentageController,
-                                        keyboardType: TextInputType.multiline,
+                                        keyboardType: TextInputType.number,
                                         minLines: 1,
                                         //Normal textInputField will be displayed
                                         maxLines:
@@ -419,7 +453,7 @@ class _RistournePageState extends State<RistournePage> {
                                 print('ok');
                                 ristourneProvider.addRistourne(minController.text, maxController.text, percentageController.text).whenComplete((){
                                   progressDialog.hide();
-                                  Navigator.of(context).pushNamed('ristourne-page');
+                                  _disconnect(context);
                                 });
                               }
                             )..show();
@@ -434,4 +468,34 @@ class _RistournePageState extends State<RistournePage> {
           )
     );
   }
+}
+Future<void> _disconnect(context) async {
+  print('disc clicked');
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(
+          'Confirmation',
+          textDirection: TextDirection.rtl,
+        ),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text('Le catalogue a été ajouté avec succès', textDirection: TextDirection.ltr),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('Ok', style: TextStyle(color: Colors.red),),
+            onPressed: () {
+              Navigator.of(context).pushReplacementNamed('ristourne-page');
+            },
+          ),
+        ],
+      );
+    },
+  );
 }

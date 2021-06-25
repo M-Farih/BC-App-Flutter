@@ -59,71 +59,74 @@ class _HomePage_CommercialState extends State<HomePage_Commercial> {
     var contactProvider = Provider.of<ContactProvider>(context, listen: false);
     return authProvider.userChekcerIsBusy
       ?Center(child: CircularProgressIndicator())
-      :Scaffold(
-      resizeToAvoidBottomInset: true,
-      ///appbar
-      appBar: MyAppBar(isSeller: authProvider.currentUsr.idrole == 3 ?true :false, roleId: authProvider.currentUsr.idrole),
+      :WillPopScope(
+      onWillPop: () async => false,
+        child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        ///appbar
+        appBar: MyAppBar(isSeller: authProvider.currentUsr.idrole == 3 ?true :false, roleId: authProvider.currentUsr.idrole),
 
-      ///body
-      body: tabs[_currentIndex],
+        ///body
+        body: tabs[_currentIndex],
 
-      ///bottom bar
-      bottomNavigationBar: BubbleBottomBar(
-        opacity: .2,
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-        elevation: 8,
-        items: <BubbleBottomBarItem>[
-          BubbleBottomBarItem(
-              backgroundColor: Color(0xff2C7DBF),
-              icon: Icon(
-                Icons.home,
-                color: Colors.black,
-              ),
-              activeIcon: Icon(
-                Icons.home,
-                color: Color(0xff2C7DBF),
-              ),
-              title: Text(
-                "Accueil",
-                textDirection: TextDirection.rtl
-              )),
-          BubbleBottomBarItem(
-              backgroundColor: Color(0xff2C7DBF),
-              icon: Icon(
-                Icons.list,
-                color: Colors.black,
-              ),
-              activeIcon: Icon(
-                Icons.list,
-                color: Color(0xff2C7DBF),
-              ),
-              title: Text(
-                  "Catalogue ",
+        ///bottom bar
+        bottomNavigationBar: BubbleBottomBar(
+          opacity: .2,
+          currentIndex: _currentIndex,
+          onTap: (index) {
+            setState(() {
+              _currentIndex = index;
+            });
+          },
+          borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+          elevation: 8,
+          items: <BubbleBottomBarItem>[
+            BubbleBottomBarItem(
+                backgroundColor: Color(0xff2C7DBF),
+                icon: Icon(
+                  Icons.home,
+                  color: Colors.black,
+                ),
+                activeIcon: Icon(
+                  Icons.home,
+                  color: Color(0xff2C7DBF),
+                ),
+                title: Text(
+                  "Accueil",
                   textDirection: TextDirection.rtl
-              )),
-          BubbleBottomBarItem(
-              backgroundColor: Color(0xff2C7DBF),
-              icon: Icon(
-                Icons.people,
-                color: Colors.black,
-              ),
-              activeIcon: Icon(
-                Icons.people,
-                color: Color(0xff2C7DBF),
-              ),
-              title: Text(
-                  "Revendeurs",
-                  textDirection: TextDirection.rtl
-              )),
-        ],
-      ),
-    );
+                )),
+            BubbleBottomBarItem(
+                backgroundColor: Color(0xff2C7DBF),
+                icon: Icon(
+                  Icons.list,
+                  color: Colors.black,
+                ),
+                activeIcon: Icon(
+                  Icons.list,
+                  color: Color(0xff2C7DBF),
+                ),
+                title: Text(
+                    "Catalogue ",
+                    textDirection: TextDirection.rtl
+                )),
+            BubbleBottomBarItem(
+                backgroundColor: Color(0xff2C7DBF),
+                icon: Icon(
+                  Icons.people,
+                  color: Colors.black,
+                ),
+                activeIcon: Icon(
+                  Icons.people,
+                  color: Color(0xff2C7DBF),
+                ),
+                title: Text(
+                    "Revendeurs",
+                    textDirection: TextDirection.rtl
+                )),
+          ],
+        ),
+    ),
+      );
   }
 }
 

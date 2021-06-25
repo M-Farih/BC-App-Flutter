@@ -167,15 +167,14 @@ class _ReclamationState extends State<ReclamationPage> {
                                             const EdgeInsets.only(right: 18.0),
                                         child: Text(
                                           'الأسباب',
-                                          textDirection: TextDirection.rtl,
                                         ),
                                       ),
+                                      value: valueChoosen,
                                       icon: Icon(
                                         // Add this
                                         Icons.arrow_drop_down, // Add this
                                         color: Colors.black45, // Add this
                                       ),
-                                      value: valueChoosen,
                                       onChanged: (newValue) {
                                         setState(() {
                                           valueChoosen = newValue;
@@ -184,16 +183,23 @@ class _ReclamationState extends State<ReclamationPage> {
                                       items: reasonProvider.reasons.map((t) {
                                         return DropdownMenuItem(
                                             value: t.idreason,
-                                            child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 6.0),
-                                                child: Container(
-                                                    child: Text(t.reason,
-                                                        style: TextStyle(
-                                                            fontSize: 15),
-                                                        textDirection:
-                                                            TextDirection
-                                                                .ltr))));
+                                            child: Directionality(
+                                              textDirection: TextDirection.ltr,
+                                              child: Padding(
+                                                  padding: const EdgeInsets.only(
+                                                      right: 16.0),
+                                                  child: Container(
+                                                      child: Row(
+                                                        mainAxisAlignment: MainAxisAlignment.end,
+                                                        children: [
+                                                          Text(t.reason,
+                                                              style: TextStyle(
+                                                                  fontSize: 15),
+                                                            textDirection: TextDirection.rtl,
+                                                          ),
+                                                        ],
+                                                      ))),
+                                            ));
                                       }).toList(),
                                     ),
                                   ),

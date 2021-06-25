@@ -41,7 +41,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
               /// profile
               isSeller
                   ?GestureDetector(
-                onTap: () => Navigator.of(context).pushNamed('profile'),
+                onTap: () => Navigator.of(context).pushReplacementNamed('profile'),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 10.0),
                   child: Icon(

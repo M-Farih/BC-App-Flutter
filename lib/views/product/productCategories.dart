@@ -76,8 +76,7 @@ class _ProductCategoriesState extends State<ProductCategories> {
                                   ),
                                   onPressed: () async {
                                     print('download pdf...');
-                                    const url =
-                                        'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
+                                    String url = promoProvider.pdfLink;
                                     if (await canLaunch(url)) {
                                       await launch(url);
                                     } else {
@@ -298,7 +297,7 @@ class _ProductCategoriesState extends State<ProductCategories> {
                               onTap: () {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) =>
-                                        ProductList(category: "matelas")));
+                                        ProductList(type: "1",)));
                               },
                               child: Padding(
                                 padding: const EdgeInsets.all(10.0),
@@ -311,7 +310,11 @@ class _ProductCategoriesState extends State<ProductCategories> {
                               ),
                             ),
                             GestureDetector(
-                              onTap: () => print('سداري'),
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductList(type: "2",)));
+                              },
                               child: Padding(
                                 padding: const EdgeInsets.all(10.0),
                                 child: CategoryContainer(
@@ -328,7 +331,11 @@ class _ProductCategoriesState extends State<ProductCategories> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             GestureDetector(
-                              onTap: () => print('مختلف'),
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductList(type: "3",)));
+                              },
                               child: Padding(
                                 padding: const EdgeInsets.all(10.0),
                                 child: CategoryContainer(
@@ -340,7 +347,11 @@ class _ProductCategoriesState extends State<ProductCategories> {
                               ),
                             ),
                             GestureDetector(
-                              onTap: () => print('بونج'),
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductList(type: "4",)));
+                              },
                               child: Padding(
                                 padding: const EdgeInsets.all(10.0),
                                 child: CategoryContainer(

@@ -2,11 +2,11 @@ import 'package:bc_app/views/_revendeur/sugg_recl/ReclamationDetails.dart';
 import 'package:flutter/material.dart';
 
 class ReclamationCard extends StatefulWidget {
-  final String message, topic, date, reason, image, record, username;
+  final String message, topic, date, reason, image, record, username, dateToShow, phone;
   final int status, rec_id;
 
   ReclamationCard(
-      {this.topic, this.message, this.date, this.status, this.rec_id, this.reason, this.image, this.record, this.username});
+      {this.topic, this.message, this.date, this.status, this.rec_id, this.reason, this.image, this.record, this.username, this.dateToShow, this.phone});
 
   @override
   _ReclamationCardState createState() => _ReclamationCardState();
@@ -46,7 +46,7 @@ class _ReclamationCardState extends State<ReclamationCard> {
           padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2.0),
           child: Container(
             width: MediaQuery.of(context).size.width,
-            height: 80,
+            height: 90,
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.circular(10.0)),
             child: Padding(
@@ -79,17 +79,28 @@ class _ReclamationCardState extends State<ReclamationCard> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(right: 14),
-                        child: Text('${widget.date}'),
-                      ),
-                      Flexible(
-                        child: Text(
-                          '${widget.message}',
-                          textDirection: TextDirection.ltr,
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                        child: Text('${widget.dateToShow}', style: TextStyle(color: Colors.black54),),
                       ),
                     ],
                   ),
+                  SizedBox(height: 10,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(
+                        child: Row(
+                          children: [
+                            Text(
+                              '${widget.message}',
+                              textDirection: TextDirection.rtl,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                          mainAxisAlignment: MainAxisAlignment.end,
+                        ),
+                      ),
+                    ],
+                  )
                 ],
               ),
             ),
@@ -99,6 +110,7 @@ class _ReclamationCardState extends State<ReclamationCard> {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => ReclamationDetails(
                     img: widget.image,
+                    phone: widget.phone,
                     reason: widget.reason,
                     rec_id: widget.rec_id,
                     Message: widget.message,

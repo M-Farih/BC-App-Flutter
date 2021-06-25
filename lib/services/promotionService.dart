@@ -61,6 +61,7 @@ class PromotionService extends BaseApi{
     String basicAuth = 'Basic ' + base64Encode(utf8.encode('${api.username}:${api.password}'));
 
     String fileLink;
+    String fileLinkToModifiy;
     var response;
     var request = http.MultipartRequest('POST', Uri.parse('https://bc.meks.ma/BC/v1/common/'));
     request.headers.addAll({'Accept': 'Application/json', 'authorization': basicAuth});
@@ -81,13 +82,15 @@ class PromotionService extends BaseApi{
 
       response = await request.send().then((result) async{
         print("111111  ${result}");
+
         http.Response.fromStream(result).then((response) async {
           print("222222  ${response.body}");
+          fileLinkToModifiy = response.body;
           if (true)
           {
             var pdfChecker = await api.httpGet('promo', '?type=1');
             var data = jsonDecode(pdfChecker.body);
-            print('fff --> ${data['data'].toString().length}');
+            print('fff --> ${data['data'][0]['promo']}');
             if(data['data'].toString().length == 2){
               //no pdf found
               print('no pdf found');
@@ -109,8 +112,10 @@ class PromotionService extends BaseApi{
               print('pdf found :)');
               fileLink = response.body;
               fileLink = fileLink.replaceAll("\\", "");
+              print(' *****> ${data['data'][0]['promo']}');
               Map<String, dynamic> body = {
-                "promo": "${data['data'][0]['promo']}",
+                //"promo": "${data['data'][0]['promo']}",
+                "promo": fileLinkToModifiy.replaceAll('\\', '').trim(),
                 "type" : "1"
               };
               return api.httpPut('/promo', '/${data['data'][0]['idpromo']}', jsonEncode(body)).then((value){

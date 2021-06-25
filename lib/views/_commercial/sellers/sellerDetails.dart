@@ -144,14 +144,14 @@ class _SellerDetailsState extends State<SellerDetails> {
                           height: 50,
                           width: 50,
                           decoration: BoxDecoration(
-                            color: Color(0xFF2C7DBF),
+                            color: widget.phoneNumber != "" ? Color(0xFF2C7DBF) :Color(0xFFA0A0A0),
                             borderRadius: BorderRadius.circular(50)
                           ),
                             child: Icon(Icons.call, color: Colors.white,)
                         ),
                         onTap:(){
-                          print('appeler');
-                          contactProvider.call('${widget.phoneNumber}');
+                          print('appeler ${widget.phoneNumber}');
+                          widget.phoneNumber != "" ?contactProvider.call('${widget.phoneNumber}') :print('walo');
                         },
                       ),
                       SizedBox(width: 10),
@@ -160,14 +160,13 @@ class _SellerDetailsState extends State<SellerDetails> {
                             height: 50,
                             width: 50,
                             decoration: BoxDecoration(
-                                color: Color(0xFF2C7DBF),
+                                color: widget.mail != "" ? Color(0xFF2C7DBF) :Color(0xFFA0A0A0),
                                 borderRadius: BorderRadius.circular(50)
                             ),
                             child: Icon(Icons.mail, color: Colors.white,)
                         ),
                         onTap:(){
-                          print('mail');
-                          contactProvider.mailSeller('${widget.mail}');
+                          widget.mail != "" ?contactProvider.mailSeller('${widget.mail}') :print('walo');
                         },
                       ),
                     ],

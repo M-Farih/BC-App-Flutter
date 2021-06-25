@@ -103,7 +103,6 @@ class _Dashboard_adminState extends State<Dashboard_admin> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Icon(Icons.edit, color: Colors.white,),
                                     Text('Modifier une promotion', style: TextStyle(color: Colors.white, fontSize: 12),)
                                   ],
                                 ),
@@ -122,8 +121,7 @@ class _Dashboard_adminState extends State<Dashboard_admin> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(Icons.add, color: Colors.white,),
-                                  Text('Ajouter un produit', style: TextStyle(color: Colors.white, fontSize: 12),)
+                                  Text('Ajouter un produit', style: TextStyle(color: Colors.white, fontSize: 13),)
                                 ],
                               ),
                             ),
@@ -150,8 +148,7 @@ class _Dashboard_adminState extends State<Dashboard_admin> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(Icons.edit, color: Colors.white,),
-                                  Text('Modifier la ristourne', style: TextStyle(color: Colors.white, fontSize: 12),)
+                                  Text('Modifier la ristourne', style: TextStyle(color: Colors.white, fontSize: 13),)
                                 ],
                               ),
                             ),
@@ -171,8 +168,7 @@ class _Dashboard_adminState extends State<Dashboard_admin> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(Icons.add, color: Colors.white,),
-                                  Text('Ajouter un administrateur', style: TextStyle(color: Colors.white, fontSize: 10),)
+                                  Text('Ajouter un admin', style: TextStyle(color: Colors.white, fontSize: 13),)
                                 ],
                               ),
                             ),

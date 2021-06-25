@@ -109,10 +109,12 @@ class _ListReclamationState extends State<ListReclamation> {
                 itemBuilder: (context, int index) {
                   return ReclamationCard(
                     image: topicProvider.topics[index].userImg,
+                    phone: topicProvider.topics[index].telephone,
                     reason: topicProvider.topics[index].reason,
                     rec_id: topicProvider.topics[index].idtopic,
                     status: topicProvider.topics[index].indicator,
                     date: topicProvider.topics[index].created_at,
+                    dateToShow: timeago.format(DateTime.parse(topicProvider.topics[index].created_at), locale: 'ar'),
                     topic: topicProvider.topics[index].reason,
                     message: topicProvider.topics[index].description,
                     username: topicProvider.topics[index].usersName,

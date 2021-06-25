@@ -246,7 +246,7 @@ class _ReclamationDetailsState extends State<ReclamationDetails> {
                                                 ?Text('${timeago.format(DateTime.parse(widget.date), locale: 'ar')}',
                                                 style: TextStyle(
                                                     fontSize: 10.0,
-                                                    color: Colors.black))
+                                                    color: Colors.black54))
                                                 :Text('${timeago.format(DateTime.parse(widget.date), locale: 'fr')}',
                                                 style: TextStyle(
                                                     fontSize: 10.0,
@@ -289,6 +289,7 @@ class _ReclamationDetailsState extends State<ReclamationDetails> {
                                           style: TextStyle(
                                               color: Colors.black,
                                               fontWeight: FontWeight.bold),
+                                          textDirection: TextDirection.rtl,
                                           //overflow: TextOverflow.ellipsis,
                                         ),
                                       )
@@ -304,14 +305,15 @@ class _ReclamationDetailsState extends State<ReclamationDetails> {
                                         child: Text(
                                           '${widget.Message}',
                                           style: TextStyle(color: Colors.black),
-                                          //overflow: TextOverflow.ellipsis,
+                                          textDirection: TextDirection.rtl,
                                         ),
                                       )
                                     ],
                                   ),
                                 ),
+                                SizedBox(height: 20.0),
                                 ///audio player
-                                widget.record != "null"
+                                widget.record != ""
                                     ?Column(
                                   children: [
                                     Divider(color: Colors.grey),
@@ -362,7 +364,7 @@ class _ReclamationDetailsState extends State<ReclamationDetails> {
                         widget.status != 2
                         ?Padding(
                           padding: const EdgeInsets.only(left: 20),
-                          child: authProvider.currentUsr.idrole == 1
+                          child: authProvider.currentUsr.idrole != 3
                               ?Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
@@ -436,7 +438,8 @@ class _ReclamationDetailsState extends State<ReclamationDetails> {
                               SizedBox(
                                 width: 10,
                               ),
-                              Visibility(
+                              widget.phone != ""
+                                  ?Visibility(
                                 visible: authProvider.currentUsr.idrole == 3 ?false :true,
                                 child: GestureDetector(
                                   child: ProfilInfoBtn(
@@ -447,10 +450,13 @@ class _ReclamationDetailsState extends State<ReclamationDetails> {
                                     btnWidth: 120.0,
                                   ),
                                   onTap: (){
-                                    contactProvider.call(widget.phone);
+                                    if(widget.phone != ""){
+                                      contactProvider.call(widget.phone);
+                                    }
                                   },
                                 ),
-                              ),
+                              )
+                                  :SizedBox(),
                               SizedBox(
                                 width: 10,
                               ),
@@ -598,6 +604,7 @@ class _ReclamationDetailsState extends State<ReclamationDetails> {
                                 name: commentProvider.comments[index].Name,
                                 img: commentProvider.comments[index].image != "" ?commentProvider.comments[index].image.replaceAll('"', '').trim() :'https://bc.meks.ma/BC/uploaded_files/image/cc2b2aa97c41db11f89dfcdd4b121b59.png',
                                 message: commentProvider.comments[index].comment,
+                                senderRoleId: commentProvider.comments[index].idrole,
                                 date: timeago.format(DateTime.parse(
                                     commentProvider
                                         .comments[index].created_at), locale: 'ar'),

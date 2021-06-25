@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 class ProductService extends BaseApi{
 
   Future<http.Response> getProducts(String id) async{
-    return await api.httpGet('/products', '?famille=1');
+    return await api.httpGet('/products', '?famille=$id');
   }
 
   Future<http.Response> getProductById(String id) async{
@@ -122,6 +122,19 @@ class ProductService extends BaseApi{
             });
           }
         });
+      });
+    }
+    else{
+      print('without image');
+      return http.put(
+        Uri.parse('${api.baseUrl}/products/$id'),
+        headers: { 'Accept': 'Application/json', 'authorization': basicAuth},
+        body: json.encode({
+          "name":  _list[0].toString(),
+          "description":  _list[1].toString(),
+        }),
+      ).then((response){
+        print('product updated:: ${response.body}');
       });
     }
   }

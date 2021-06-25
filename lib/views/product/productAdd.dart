@@ -107,7 +107,37 @@ class _ProductAddState extends State<ProductAdd> {
         child: Center(
           child: Column(
             children: [
-              SizedBox(height: 50),
+              /// back btn & icon-title
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Center(
+                    child: Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pushReplacementNamed('home-admin');
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Icon(Icons.arrow_back),
+                                Text(
+                                  'Retour',
+                                  style: TextStyle(fontSize: 20.0),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 20),
               widget.isAdd
                   ?Text('Ajouter un nouveau produit', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)
                   :Text('Modifier un produit', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
@@ -169,11 +199,11 @@ class _ProductAddState extends State<ProductAdd> {
                             value: 1,
                           ),
                           DropdownMenuItem(
-                            child: Text("Matelas"),
+                            child: Text("Divers"),
                             value: 2,
                           ),
                           DropdownMenuItem(child: Text("Banquette"), value: 3),
-                          DropdownMenuItem(child: Text("Divers"), value: 4)
+                          DropdownMenuItem(child: Text("Matelas"), value: 4)
                         ],
                         onChanged: (value) {
                           setState(() {
@@ -238,23 +268,32 @@ class _ProductAddState extends State<ProductAdd> {
                             progressDialog.hide();
                             nomController.text = "";
                             descriptionController.text = "";
-                            Flushbar(
-                              flushbarPosition: FlushbarPosition.TOP,
-                              message: "Produit Ajouté",
-                              duration: Duration(seconds: 3),
-                            )..show(context);
+                          }).whenComplete(() {
+                            _disconnect(context);
                           });
                         }
                         else{
                           print('id --? ${widget.id}');
-                          productProvider.updateProduct(nomController.text, descriptionController.text, _image.path, _value.toString(), widget.id).whenComplete(() {
-                            progressDialog.hide();
-                            Flushbar(
-                              flushbarPosition: FlushbarPosition.TOP,
-                              message: "Produit Modifié",
-                              duration: Duration(seconds: 3),
-                            )..show(context);
-                          });
+                          if(imageChosen){
+                            productProvider.updateProduct(nomController.text, descriptionController.text, _image.path, _value.toString(), widget.id).whenComplete(() {
+                              progressDialog.hide();
+                              Flushbar(
+                                flushbarPosition: FlushbarPosition.TOP,
+                                message: "Produit Modifié",
+                                duration: Duration(seconds: 3),
+                              )..show(context);
+                            });
+                          }
+                          else{
+                            productProvider.updateProduct(nomController.text, descriptionController.text, "", _value.toString(), widget.id).whenComplete(() {
+                              progressDialog.hide();
+                              Flushbar(
+                                flushbarPosition: FlushbarPosition.TOP,
+                                message: "Produit Modifié",
+                                duration: Duration(seconds: 3),
+                              )..show(context);
+                            });
+                          }
                         }
                       }
                       else
@@ -302,4 +341,36 @@ class _ProductAddState extends State<ProductAdd> {
       keyboardType: TextInputType.text,
     );
   }
+}
+Future<void> _disconnect(context) async {
+  var authProvider = Provider.of<AuthProvider>(context, listen: false);
+  print('disc clicked');
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(
+          'Confirmation',
+          textDirection: TextDirection.rtl,
+        ),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text('Le catalogue a été ajouté avec succès', textDirection: TextDirection.ltr),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('Ok', style: TextStyle(color: Colors.red),),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => ProductAdd(isAdd: true)));
+            },
+          ),
+        ],
+      );
+    },
+  );
 }

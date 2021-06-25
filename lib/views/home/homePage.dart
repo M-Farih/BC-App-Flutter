@@ -3,7 +3,6 @@ import 'package:bc_app/views/_admin/home/homePage_admin.dart';
 import 'package:bc_app/views/_commercial/home/homePage_commercial.dart';
 import 'package:bc_app/views/_revendeur/home/homePage_revendeur.dart';
 import 'package:bc_app/views/authentification/loginPage.dart';
-import 'package:bc_app/views/testtt.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

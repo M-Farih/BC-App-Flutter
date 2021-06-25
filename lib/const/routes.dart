@@ -1,26 +1,31 @@
 import 'package:bc_app/views/_admin/addUsers.dart';
+import 'package:bc_app/views/_admin/home/homePage_admin.dart';
 import 'package:bc_app/views/_admin/ristournePage.dart';
 import 'package:bc_app/views/_commercial/sellers/sellerDetails.dart';
+import 'package:bc_app/views/_revendeur/home/homePage_revendeur.dart';
 import 'package:bc_app/views/_revendeur/profil/profilPage.dart';
 import 'package:bc_app/views/_revendeur/sugg_recl/ReclamationDetails.dart';
+import 'package:bc_app/views/_revendeur/sugg_recl/listReclamation.dart';
+import 'package:bc_app/views/_revendeur/sugg_recl/reclamation.dart';
 import 'package:bc_app/views/authentification/loginPage.dart';
 import 'package:bc_app/views/home/homePage.dart';
 import 'package:bc_app/views/product/productAdd.dart';
 import 'package:bc_app/views/product/promotionAdd.dart';
 import 'package:bc_app/views/revendeur/beASeller.dart';
 import 'package:bc_app/views/testtt.dart';
-import 'file:///C:/_myproject/flutter/BC-App-Flutter/lib/views/_revendeur/sugg_recl/listReclamation.dart';
-import 'file:///C:/_myproject/flutter/BC-App-Flutter/lib/views/_revendeur/sugg_recl/reclamation.dart';
 import 'package:flutter/material.dart';
 
 const String initialRoute = "home";
 
-class Routes{
-  static Route<dynamic> generateRoute(RouteSettings settings){
-
-    switch(settings.name){
+class Routes {
+  static Route<dynamic> generateRoute(RouteSettings settings) {
+    switch (settings.name) {
       case 'home':
         return MaterialPageRoute(builder: (_) => HomePage());
+      case 'home-admin':
+        return MaterialPageRoute(builder: (_) => HomePage_admin());
+      case 'home-revendeur':
+        return MaterialPageRoute(builder: (_) => HomePage_Revendeur());
       case 'login':
         return MaterialPageRoute(builder: (_) => LoginPage());
       case 'be_a_seller':
@@ -44,13 +49,13 @@ class Routes{
       case 'ristourne-page':
         return MaterialPageRoute(builder: (_) => RistournePage());
 
-      default: return MaterialPageRoute(
-          builder: (_) => Scaffold(
-            body: Center(
-              child: Text('No route defined for ${settings.name}'),
-            ),
-          )
-      );
+      default:
+        return MaterialPageRoute(
+            builder: (_) => Scaffold(
+                  body: Center(
+                    child: Text('No route defined for ${settings.name}'),
+                  ),
+                ));
     }
   }
 }

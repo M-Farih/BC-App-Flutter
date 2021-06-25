@@ -12,20 +12,43 @@ class RistourneService extends BaseApi{
   }
 
   Future<http.Response> addRistourne(String min, String max, String percent) async{
-    Map<String, dynamic> body = {
-      "min": double.parse(min),
-      "max": double.parse(max),
-      "percent": "${percent + '%'}"
-    };
+    Map<String, dynamic> body;
+    if(max == ""){
+      body = {
+        "min": double.parse(min),
+        // "max": double.parse(max),
+        "max": -1,
+        "percent": "${percent + '%'}"
+      };
+    }
+    else{
+      body = {
+        "min": double.parse(min),
+        "max": double.parse(max),
+        "percent": "${percent + '%'}"
+      };
+    }
+
     return await api.httpPost('/ristourne', '',jsonEncode(body));
   }
 
   Future<http.Response> updateRistourne(String id, String min, String max, String percent) async{
-    Map<String, dynamic> body = {
-      "min": double.parse(min),
-      "max": double.parse(max),
-      "percent": "${percent + '%'}"
-    };
+    Map<String, dynamic> body;
+    if(max == ""){
+      body = {
+        "min": double.parse(min),
+        // "max": double.parse(max),
+        "max": -1,
+        "percent": "${percent + '%'}"
+      };
+    }
+    else{
+      body = {
+        "min": double.parse(min),
+        "max": double.parse(max),
+        "percent": "${percent + '%'}"
+      };
+    }
     return await api.httpPut('/ristourne', '$id',jsonEncode(body));
   }
 

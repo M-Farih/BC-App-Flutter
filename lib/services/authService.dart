@@ -13,4 +13,8 @@ class AuthService extends BaseApi{
   Future<http.Response> getUserById(int id) async{
     return await api.httpGet('users', '?id=$id');
   }
+
+  Future<http.Response> getUserSolde(int id) async{
+    return await api.httpGet('users', '?id=$id');
+  }
 }

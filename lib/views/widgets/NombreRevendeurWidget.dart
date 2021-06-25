@@ -28,7 +28,7 @@ class NombreRevendeurWidget extends StatelessWidget {
             ],
           ),
           width: MediaQuery.of(context).size.width -50,
-          height: 150.0,
+          height: 160.0,
           child: Center(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -50,35 +50,46 @@ class NombreRevendeurWidget extends StatelessWidget {
                       Text('${nbrRevendeur.count}', style: TextStyle(color: Colors.blue, fontSize: 50.0, fontWeight: FontWeight.bold),),
                     ],
                   ),
-                  Container(
-                    height: 20,
-                    width: MediaQuery.of(context).size.width-50,
-                    child: ListView.separated(
-                      itemBuilder: (context, index){
-                        return GestureDetector(
-                          child: Text('${nbrRevendeur.sellersCount[index].city}'),
-                          onTap: (){
-                            nbrRevendeur.getCitycount(index);
-                          },
-                        );
-                      },
-                      shrinkWrap: true,
-                      itemCount: nbrRevendeur.sellersCount.length,
-                      scrollDirection: Axis.horizontal,
-                      separatorBuilder: (_ , __) => Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                        child: Text('|', style: TextStyle(color: Colors.grey),),
-                      ),
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  Stack(
+                      alignment: Alignment.bottomCenter,
                     children: [
-                      Icon(Icons.arrow_back_outlined, size: 16, color: Colors.blue.withOpacity(0.3)),
-                      Icon(Icons.touch_app, size: 18, color: Colors.blue.withOpacity(0.3)),
-                      Icon(Icons.arrow_forward_outlined, size: 16, color: Colors.blue.withOpacity(0.3)),
-                    ],
-                  )
+                      Container(
+                        height: 50,
+                        color: Colors.transparent,
+                        width: MediaQuery.of(context).size.width-50,
+                        child: Center(
+                          child: ListView.separated(
+                            itemBuilder: (context, index){
+                              return GestureDetector(
+                                child: Text('${nbrRevendeur.sellersCount[index].city}'),
+                                onTap: (){
+                                  nbrRevendeur.getCitycount(index);
+                                },
+                              );
+                            },
+                            shrinkWrap: true,
+                            itemCount: nbrRevendeur.sellersCount.length,
+                            scrollDirection: Axis.horizontal,
+                            separatorBuilder: (_ , __) => Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                              child: Text('|', style: TextStyle(color: Colors.grey),),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.arrow_back_outlined, size: 16, color: Colors.blue.withOpacity(0.3)),
+                            Icon(Icons.touch_app, size: 18, color: Colors.blue.withOpacity(0.3)),
+                            Icon(Icons.arrow_forward_outlined, size: 16, color: Colors.blue.withOpacity(0.3)),
+                          ],
+                        ),
+                      )
+                    ]
+                  ),
                 ],
 
               ),
