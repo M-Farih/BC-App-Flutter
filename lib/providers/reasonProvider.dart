@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:bc_app/models/reason.dart';
-import 'file:///C:/_myproject/flutter/BC-App-Flutter/lib/services/reasonService.dart';
+import 'package:bc_app/services/reasonService.dart';
 import 'package:flutter/cupertino.dart';
 
 class ReasonProvider extends ChangeNotifier{

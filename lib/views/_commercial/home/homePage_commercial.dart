@@ -4,8 +4,8 @@ import 'package:bc_app/providers/ristourneProvider.dart';
 import 'package:bc_app/views/_commercial/sellers/listSellers.dart';
 import 'package:bc_app/views/authentification/loginPage.dart';
 import 'package:bc_app/views/product/productCategories.dart';
-import 'file:///C:/_myproject/flutter/BC-App-Flutter/lib/views/_revendeur/profil/profilPage.dart';
 import 'package:bc_app/views/widgets/appbar.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:provider/provider.dart';
 import 'dashboard_commercial.dart';
@@ -32,6 +32,11 @@ class _HomePage_CommercialState extends State<HomePage_Commercial> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    /// subscribe to firebase
+    FirebaseMessaging.instance.subscribeToTopic('users');
+    print('commercial subscribed!');
+
     WidgetsBinding.instance.addPostFrameCallback((_) async{
       int role_id = await Provider.of<AuthProvider>(context, listen: false).checkLoginAndRole();
 
@@ -57,6 +62,7 @@ class _HomePage_CommercialState extends State<HomePage_Commercial> {
   Widget build(BuildContext context) {
     var authProvider = Provider.of<AuthProvider>(context, listen: false);
     var contactProvider = Provider.of<ContactProvider>(context, listen: false);
+
     return authProvider.userChekcerIsBusy
       ?Center(child: CircularProgressIndicator())
       :WillPopScope(

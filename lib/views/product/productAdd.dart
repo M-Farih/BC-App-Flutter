@@ -6,6 +6,7 @@ import 'package:bc_app/providers/productProvider.dart';
 import 'package:bc_app/views/authentification/loginPage.dart';
 import 'package:bc_app/views/widgets/appbar.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
@@ -43,16 +44,35 @@ class _ProductAddState extends State<ProductAdd> {
   }
 
   Future getImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    var status = await Permission.storage.status;
+    if (status.isDenied) {
+      print('isDenied');
+      await Permission.storage.request().isGranted.whenComplete(() async {
+        final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
-    setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
-        imageChosen = true;
-      } else {
-        print('No image selected.');
-      }
-    });
+        setState(() {
+          if (pickedFile != null) {
+            _image = File(pickedFile.path);
+            imageChosen = true;
+          } else {
+            print('No image selected.');
+          }
+        });
+      });
+    }
+    else{
+      print('isOk');
+      final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+      setState(() {
+        if (pickedFile != null) {
+          _image = File(pickedFile.path);
+          imageChosen = true;
+        } else {
+          print('No image selected.');
+        }
+      });
+    }
   }
 
   @override
@@ -269,7 +289,7 @@ class _ProductAddState extends State<ProductAdd> {
                             nomController.text = "";
                             descriptionController.text = "";
                           }).whenComplete(() {
-                            _disconnect(context);
+                            _confirmation(context);
                           });
                         }
                         else{
@@ -342,8 +362,7 @@ class _ProductAddState extends State<ProductAdd> {
     );
   }
 }
-Future<void> _disconnect(context) async {
-  var authProvider = Provider.of<AuthProvider>(context, listen: false);
+Future<void> _confirmation(context) async {
   print('disc clicked');
   return showDialog<void>(
     context: context,
@@ -357,7 +376,7 @@ Future<void> _disconnect(context) async {
         content: SingleChildScrollView(
           child: ListBody(
             children: <Widget>[
-              Text('Le catalogue a été ajouté avec succès', textDirection: TextDirection.ltr),
+              Text('Opération terminée avec succès', textDirection: TextDirection.ltr),
             ],
           ),
         ),

@@ -18,13 +18,14 @@ class ReclamationMenu extends StatefulWidget {
 }
 
 class _ReclamationMenuState extends State<ReclamationMenu> {
-
+  String agentPhone;
   void initState() {
     // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<AuthProvider>(context, listen: false).getUserFromSP().whenComplete(() async {
         int idUser = Provider.of<AuthProvider>(context, listen: false).currentUsr.iduser;
+        agentPhone = Provider.of<AuthProvider>(context, listen: false).currentUsr.agentPhone;
         Provider.of<TopicProvider>(context, listen: false).getSuggestions(idUser, 1);
         await Provider.of<TopicProvider>(context, listen: false).getReclamations(idUser, 2);
       });
@@ -99,7 +100,8 @@ class _ReclamationMenuState extends State<ReclamationMenu> {
                     },
                   ),
                   SizedBox(width: 10,),
-                  GestureDetector(
+                  agentPhone != null
+                      ?GestureDetector(
                     child: Container(
                       height: 50,
                       width: MediaQuery.of(context).size.width * 0.25,
@@ -116,9 +118,26 @@ class _ReclamationMenuState extends State<ReclamationMenu> {
                       ),
                     ),
                     onTap: (){
-                      contactProvider.call('0679453876');
+                      contactProvider.call('${agentPhone}');
                     },
-                  ),
+                  )
+                      :GestureDetector(
+                    child: Container(
+                      height: 50,
+                      width: MediaQuery.of(context).size.width * 0.25,
+                      decoration: BoxDecoration(
+                          color: Color(0xFF939393)
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('اتصال', textDirection: TextDirection.rtl, style: TextStyle(color: Colors.white, fontSize: 12)),
+                          SizedBox(width: 10),
+                          Icon(Icons.call, color: Colors.white, size: 18),
+                        ],
+                      ),
+                    ),
+                  )
                 ],
               ),
 

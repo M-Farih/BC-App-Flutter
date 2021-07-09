@@ -60,7 +60,7 @@ class _SliderVerticalWidgetState extends State<SliderVerticalWidget> {
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
-                          fontSize: 12.5,
+                          fontSize: 15,
                         ),
                       ),
                     ],

@@ -196,7 +196,7 @@ Future<void> _confirmation(context, type) async {
         content: SingleChildScrollView(
           child: ListBody(
             children: <Widget>[
-              Text('Opération terminé avec succès', textDirection: TextDirection.ltr),
+              Text('Opération terminée avec succès', textDirection: TextDirection.ltr),
             ],
           ),
         ),

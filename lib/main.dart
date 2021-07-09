@@ -109,7 +109,6 @@ class StartApp extends StatefulWidget {
 }
 
 class _StartAppState extends State<StartApp> {
-
   @override
   void initState() {
     super.initState();
@@ -155,7 +154,12 @@ class _StartAppState extends State<StartApp> {
       }
     });
     FirebaseMessaging.instance.getToken().then((value) => print('token key  $value'));
-    FirebaseMessaging.instance.subscribeToTopic("all");
+    // FirebaseMessaging.instance.subscribeToTopic("all");
+    // FirebaseMessaging.instance.subscribeToTopic("admin");
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async{
+      Provider.of<AuthProvider>(context, listen: false).getUserFromSP();
+    });
   }
 
   void showNotification() {
@@ -175,6 +179,7 @@ class _StartAppState extends State<StartApp> {
 
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       title: 'BC APP',
       theme: ThemeData.light(),

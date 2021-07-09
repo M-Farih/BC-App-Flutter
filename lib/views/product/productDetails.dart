@@ -1,5 +1,6 @@
 import 'package:bc_app/providers/authProvider.dart';
 import 'package:bc_app/views/widgets/appbar.dart';
+import 'package:bc_app/views/widgets/photoViewer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -56,16 +57,26 @@ class _ProductDetailState extends State<ProductDetail> {
               ),
             ),
             SizedBox(height: 20.0),
-            Container(
-              width: double.infinity,
-              height: 160,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage("${widget.assetPath}"),
-                  fit: BoxFit.contain,
+            GestureDetector(
+              child: Container(
+                width: double.infinity,
+                height: 160,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage("${widget.assetPath}"),
+                    fit: BoxFit.contain,
+                  ),
                 ),
+                child: Text('') /* add child content here */,
               ),
-              child: Text('') /* add child content here */,
+              onTap: (){
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => MyPhotoViewer(
+                        imageUrl:
+                        widget.assetPath
+                    )
+                ));
+              },
             ),
             SizedBox(height: 20.0),
             Row(

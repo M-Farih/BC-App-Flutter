@@ -1,6 +1,7 @@
 import 'package:bc_app/views/_admin/addUsers.dart';
 import 'package:bc_app/views/_admin/home/homePage_admin.dart';
 import 'package:bc_app/views/_admin/ristournePage.dart';
+import 'package:bc_app/views/_admin/uploadCsv.dart';
 import 'package:bc_app/views/_commercial/sellers/sellerDetails.dart';
 import 'package:bc_app/views/_revendeur/home/homePage_revendeur.dart';
 import 'package:bc_app/views/_revendeur/profil/profilPage.dart';
@@ -48,6 +49,8 @@ class Routes {
         return MaterialPageRoute(builder: (_) => AddUser());
       case 'ristourne-page':
         return MaterialPageRoute(builder: (_) => RistournePage());
+      case 'upload-csv':
+        return MaterialPageRoute(builder: (_) => UploadCsv());
 
       default:
         return MaterialPageRoute(

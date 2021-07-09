@@ -1,5 +1,5 @@
 import 'package:bc_app/providers/baseProvider.dart';
-import 'file:///C:/_myproject/flutter/BC-App-Flutter/lib/services/contactService.dart';
+import 'package:bc_app/services/contactService.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';

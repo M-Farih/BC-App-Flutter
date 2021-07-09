@@ -1,5 +1,6 @@
 import 'package:bc_app/providers/authProvider.dart';
 import 'package:bc_app/views/authentification/loginPage.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -30,14 +31,6 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
           ///notification & disconnection
           Row(
             children: [
-              /// notification
-              isSeller
-                  ?Icon(
-                      Icons.notifications_active_outlined,
-                      color: Colors.black54,
-                    )
-                  :SizedBox(),
-
               /// profile
               isSeller
                   ?GestureDetector(
@@ -105,8 +98,15 @@ Future<void> _disconnect(context, int roleId) async {
         ),
         actions: <Widget>[
           FlatButton(
-            child: Text(roleId == 3? 'تسجيل الخروج': 'Déconnexion', style: TextStyle(color: Colors.red),),
+            child: Text(roleId == 3? 'تسجيل الخروج' :'Déconnexion', style: TextStyle(color: Colors.red),),
             onPressed: () {
+              FirebaseMessaging.instance.unsubscribeFromTopic("admin").then((value) {
+                print('admin unsubscribed!!');
+              });
+              FirebaseMessaging.instance.unsubscribeFromTopic("users").then((value) {
+                print('users unsubscribed!!');
+              });
+
               authProvider.logout();
               if(roleId == 3){
                 ScaffoldMessenger.of(context)
@@ -115,7 +115,6 @@ Future<void> _disconnect(context, int roleId) async {
                 ScaffoldMessenger.of(context)
                     .showSnackBar(const SnackBar(content: Text('Déconnexion')));
               }
-
               Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
             },
           ),

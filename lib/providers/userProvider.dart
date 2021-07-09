@@ -16,8 +16,7 @@ class UserProvider extends ChangeNotifier{
   User get userById => _userById;
   List<User> get sellers => _sellers;
   List<User> get tempSellersList => _tempSellersList;
-
-  int index = 15 , i = 15, usersLength = 0;
+  int myIndex = 0;
 
   UserService _userService = UserService();
 
@@ -36,7 +35,7 @@ class UserProvider extends ChangeNotifier{
     busy = true;
     notifyListeners();
     var response = await _userService.update(id, clientNumber,firstName, lastName, entrepriseName, ice,
-        city, address, telephone, role_id, profileImage);
+        city, address, telephone, role_id, profileImage, "");
     busy = false;
     notifyListeners();
   }
@@ -52,15 +51,51 @@ class UserProvider extends ChangeNotifier{
     }
   }
 
-  Future<void> getSellers() async{
+  Future<void> getSellers(int idRole) async{
     busy = true;
     notifyListeners();
-    var response = await _userService.getSellers();
-    if(response.statusCode == 200){
-      var data = jsonDecode(response.body);
-      tempSellersList.clear();
-      data['data'].forEach((u) => tempSellersList.add(User.fromJson(u)));
-      _sellers = tempSellersList;
+    if(idRole == 0){
+      var response = await _userService.getSellers();
+      if(response.statusCode == 200){
+        var data = jsonDecode(response.body);
+        tempSellersList.clear();
+        data['data'].forEach((u) => tempSellersList.add(User.fromJson(u)));
+        _sellers = tempSellersList;
+        if(_sellers.length > 150){
+          myIndex = 80;
+        }
+        else{
+          myIndex = _sellers.length;
+        }
+        busy = false;
+        notifyListeners();
+      }
+    }
+    else if(idRole == 1){
+      List<User> _sellersList = List();
+      List<User> _commercialsList = List();
+      var response = await _userService.getSellersByidRole("3");
+      if(response.statusCode == 200){
+        var data = jsonDecode(response.body);
+        _sellersList.clear();
+        data['data'].forEach((u) => tempSellersList.add(User.fromJson(u)));
+        _sellersList = tempSellersList;
+      }
+      response = await _userService.getSellersByidRole("2");
+      if(response.statusCode == 200){
+        var data = jsonDecode(response.body);
+        _commercialsList.clear();
+        data['data'].forEach((u) => tempSellersList.add(User.fromJson(u)));
+        _commercialsList = tempSellersList;
+      }
+      _sellers = new List.from(_commercialsList)..addAll(_sellersList);
+      print('////// ${_sellers[0].userName}');
+      if(_sellers.length > 150){
+        myIndex = 80;
+      }
+      else{
+        myIndex = _sellers.length;
+      }
       busy = false;
       notifyListeners();
     }
@@ -94,10 +129,6 @@ class UserProvider extends ChangeNotifier{
     }
   }
 
-  onBegin(){
-    usersLength = _sellers.length;
-  }
-
   filterUsersList(String text) {
     if(text.isEmpty){
       _sellers = tempSellersList;
@@ -110,40 +141,29 @@ class UserProvider extends ChangeNotifier{
             element.lastName.toLowerCase().contains(text.toLowerCase()) ||
             element.clientNumber.toLowerCase().contains(text.toLowerCase())
         ){
-          index = filteredUsers.length + 1;
           filteredUsers.add(element);
           _sellers = filteredUsers;
+          if(_sellers.length > 10){
+            myIndex = (_sellers.length / 4).toInt();
+          }
+          else{
+            myIndex = _sellers.length;
+          }
           notifyListeners();
         }
       });
-
       _sellers = filteredUsers;
       notifyListeners();
-
     }
   }
 
-  onEndScroll() {
-    print("Scroll End");
-    print("table length --> $usersLength");
-    print("i  --> $i");
-
-     if(usersLength >= 200){
-       if(usersLength >= i){
-         print("table length --> $usersLength");
-
-         index = i;
-         i = i + 20;
-         print("table length 1 --> $i");
-         notifyListeners();
-       }
-       else{
-         i = i - 21;
-         print("table length 2 --> $i");
-         index = usersLength - i;
-         notifyListeners();
-       }
-     }
-
+  Future<void> uploadCsv(String filePath) async{
+    busy = true;
+    notifyListeners();
+    var response =  await _userService.uploadCsv(filePath).whenComplete((){
+      busy = false;
+      notifyListeners();
+    });
   }
+
 }

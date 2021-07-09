@@ -4,9 +4,7 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:bc_app/providers/authProvider.dart';
 import 'package:bc_app/providers/promotionProvider.dart';
 import 'package:bc_app/views/authentification/loginPage.dart';
-import 'package:bc_app/views/product/promotionEdit.dart';
 import 'package:bc_app/views/widgets/appbar.dart';
-import 'package:bc_app/views/widgets/profilInfoBtn.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -187,7 +185,7 @@ class _PromotionAddState extends State<PromotionAdd> {
                                                               _image.path, "2")
                                                               .whenComplete(() {
                                                             progressDialog.hide();
-                                                            _disconnect(context);
+                                                            _confirmation(context);
                                                           });
                                                         } else {
                                                           Flushbar(
@@ -224,7 +222,7 @@ class _PromotionAddState extends State<PromotionAdd> {
                                                                     _image.path, "2")
                                                                     .whenComplete(() {
                                                                   progressDialog.hide();
-                                                                  _disconnect(context);
+                                                                  _confirmation(context);
                                                                  });
                                                               } else {
                                                                 Flushbar(
@@ -293,7 +291,7 @@ class _PromotionAddState extends State<PromotionAdd> {
                                                           .addPdf(_pdf.path)
                                                           .whenComplete(() {
                                                         progressDialog.hide();
-                                                        _disconnect(context);
+                                                        _confirmation(context);
                                                       });
                                                     } else {
                                                       Flushbar(
@@ -372,7 +370,7 @@ class _PromotionAddState extends State<PromotionAdd> {
                                           promoProvider.deletePromo(
                                               promoProvider
                                                   .promotions[index].idpromo
-                                                  .toString()).whenComplete(() => _disconnect(context));
+                                                  .toString()).whenComplete(() => _confirmation(context));
                                         },
                                       ),
                                     ],
@@ -390,7 +388,7 @@ class _PromotionAddState extends State<PromotionAdd> {
   }
 }
 
-Future<void> _disconnect(context) async {
+Future<void> _confirmation(context) async {
   var authProvider = Provider.of<AuthProvider>(context, listen: false);
   print('disc clicked');
   return showDialog<void>(
@@ -405,7 +403,7 @@ Future<void> _disconnect(context) async {
         content: SingleChildScrollView(
           child: ListBody(
             children: <Widget>[
-              Text('Le catalogue a été ajouté avec succès', textDirection: TextDirection.ltr),
+              Text('Opération terminée avec succès', textDirection: TextDirection.ltr),
             ],
           ),
         ),

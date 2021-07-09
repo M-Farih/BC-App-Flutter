@@ -5,6 +5,7 @@ import 'package:bc_app/views/product/productAdd.dart';
 import 'package:bc_app/views/product/productList.dart';
 import 'package:bc_app/views/product/promotionAdd.dart';
 import 'package:bc_app/views/widgets/categoryContainer.dart';
+import 'package:bc_app/views/widgets/photoViewer.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:provider/provider.dart';
@@ -211,8 +212,18 @@ class _ProductCategoriesState extends State<ProductCategories> {
                                         BoxDecoration(
                                           borderRadius: BorderRadius.circular(10)
                                         ),
-                                    child: Image.network(i.promo.replaceAll('"', '').trim(),
-                                        fit: BoxFit.fill),
+                                    child: GestureDetector(
+                                      child: Image.network(i.promo.replaceAll('"', '').trim(),
+                                          fit: BoxFit.fill),
+                                      onTap: (){
+                                        Navigator.of(context).push(MaterialPageRoute(
+                                            builder: (context) => MyPhotoViewer(
+                                                imageUrl:
+                                                i.promo.replaceAll('"', '').trim()
+                                            )
+                                        ));
+                                      },
+                                    ),
                                   ),
                                 );
                               },

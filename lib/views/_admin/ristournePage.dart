@@ -136,7 +136,7 @@ class _RistournePageState extends State<RistournePage> {
                               _image = _image;
                             });
                             ristourneProvider.uploadRistournePicture(_image.path).whenComplete((){
-                              _disconnect(context);
+                              _confirmation(context);
                             });
                           }
                           imageChosen = !imageChosen;
@@ -330,7 +330,7 @@ class _RistournePageState extends State<RistournePage> {
                                             print('ok');
                                             ristourneProvider.updateRistourne(ristourneProvider.ristournes[index].idristourne.toString(), minController.text, maxController.text, percentageController.text).whenComplete((){
                                             });
-                                            _disconnect(context);
+                                            _confirmation(context);
                                           },
                                         btnCancelText: 'Supprimer',
                                         btnCancelOnPress: (){
@@ -338,7 +338,7 @@ class _RistournePageState extends State<RistournePage> {
                                           ristourneProvider.deleteRistourne(ristourneProvider.ristournes[index].idristourne.toString()).whenComplete((){
                                             print('Supprimer');
                                           });
-                                          _disconnect(context);
+                                          _confirmation(context);
                                         }
                                       )..show();
                                     },
@@ -453,7 +453,7 @@ class _RistournePageState extends State<RistournePage> {
                                 print('ok');
                                 ristourneProvider.addRistourne(minController.text, maxController.text, percentageController.text).whenComplete((){
                                   progressDialog.hide();
-                                  _disconnect(context);
+                                  _confirmation(context);
                                 });
                               }
                             )..show();
@@ -469,7 +469,7 @@ class _RistournePageState extends State<RistournePage> {
     );
   }
 }
-Future<void> _disconnect(context) async {
+Future<void> _confirmation(context) async {
   print('disc clicked');
   return showDialog<void>(
     context: context,
@@ -483,7 +483,7 @@ Future<void> _disconnect(context) async {
         content: SingleChildScrollView(
           child: ListBody(
             children: <Widget>[
-              Text('Le catalogue a été ajouté avec succès', textDirection: TextDirection.ltr),
+              Text('Opération terminée avec succès', textDirection: TextDirection.ltr),
             ],
           ),
         ),

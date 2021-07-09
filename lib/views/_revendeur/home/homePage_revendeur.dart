@@ -4,8 +4,8 @@ import 'package:bc_app/views/_revendeur/sugg_recl/reclamation.dart';
 import 'package:bc_app/views/_revendeur/sugg_recl/reclamationMenu.dart';
 import 'package:bc_app/views/authentification/loginPage.dart';
 import 'package:bc_app/views/product/productCategories.dart';
-import 'file:///C:/_myproject/flutter/BC-App-Flutter/lib/views/_revendeur/profil/profilPage.dart';
 import 'package:bc_app/views/widgets/appbar.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:provider/provider.dart';
 import 'dashboard_revendeur.dart';
@@ -32,6 +32,11 @@ class _HomePage_RevendeurState extends State<HomePage_Revendeur> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    /// subscribe to firebase
+    FirebaseMessaging.instance.subscribeToTopic('users');
+    print('revendeur subscribed!');
+
     WidgetsBinding.instance.addPostFrameCallback((_) async{
       int role_id = await Provider.of<AuthProvider>(context, listen: false).checkLoginAndRole();
       Provider.of<AuthProvider>(context, listen: false).getUserFromSP();

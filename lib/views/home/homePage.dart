@@ -28,10 +28,10 @@ class _HomePageState extends State<HomePage> {
     var authProvider = Provider.of<AuthProvider>(context, listen: true);
     return Scaffold(
         body: authProvider.userChekcerIsBusy
-            ?Center(child: Text('home page...'))
+            ?Center(child: CircularProgressIndicator())
             :Center(
             child:
-                  _role_id == 1 ?HomePage_admin()
+                 _role_id == 1 ?HomePage_admin()
                 :_role_id == 2 ?HomePage_Commercial()
                 :_role_id == 3 ?HomePage_Revendeur()
                 :_role_id == 0 ?HomePage_admin()

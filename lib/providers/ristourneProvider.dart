@@ -77,8 +77,7 @@ class RistourneProvider extends ChangeNotifier{
     }
   }
 
-  Future<void>
-  uploadRistournePicture(String filePath) async{
+  Future<void> uploadRistournePicture(String filePath) async{
     isBusy = true;
     notifyListeners();
     var response =  await _ristourneService.uploadRistournePicture(filePath).whenComplete((){

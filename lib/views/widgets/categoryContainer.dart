@@ -19,8 +19,8 @@ class CategoryContainer extends StatelessWidget {
             boxShadow: [
               //background color of box
               BoxShadow(
-                color: Colors.grey,
-                blurRadius: 25.0, // soften the shadow
+                color: Colors.grey.withOpacity(0.7),
+                blurRadius: 15.0, // soften the shadow
                 spreadRadius: 1.0, //extend the shadow
                 offset: Offset(
                   1.0, // Move to right 10  horizontally

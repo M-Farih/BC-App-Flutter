@@ -1,8 +1,9 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:bc_app/models/user.dart';
 import 'package:bc_app/providers/baseProvider.dart';
-import 'file:///C:/_myproject/flutter/BC-App-Flutter/lib/services/authService.dart';
-import 'package:flutter/material.dart';
+import 'package:bc_app/services/api.dart';
+import 'package:bc_app/services/authService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthProvider extends BaseProvider{
@@ -11,10 +12,14 @@ class AuthProvider extends BaseProvider{
   bool userChekcerIsBusy = true;
 
   AuthService _authService = AuthService();
+  Api api = Api();
   List<User> _users = List();
   User _currentUsr;
   int iduser;
   String solde;
+  double banquette, divers, matelas, mousse, max;
+  List<double> famillesSold;
+
 
   List<User> get users => _users;
   User get currentUsr => _currentUsr;
@@ -30,7 +35,18 @@ class AuthProvider extends BaseProvider{
       if(data["data"].length > 0){
         canPass = true;
         saveUserInSP(data);
+        _users.clear();
         data['data'].forEach((u) => _users.add(User.fromJson(u)));
+        print("psps --- ${_users[0].firstConnection}");
+
+        if(_users[0].firstConnection == "0"){
+          Map<String, dynamic> body = {
+            "firstConnection": 1
+          };
+          var upUser = await api.httpPut('users', '${_users[0].iduser}', jsonEncode(body));
+          print('-------*------- ${upUser.body}');
+        }
+
         setLogin();
         notifyListeners();
         busy = false;
@@ -127,7 +143,13 @@ class AuthProvider extends BaseProvider{
     print('updating current user');
     User _tempUser = _currentUsr;
     _currentUsr = null;
-    _currentUsr = new User(_tempUser.idrole, _tempUser.idagent, firstName, lastName, _tempUser.userName, _tempUser.email, _tempUser.password, entrepriseName, ice, city, address, telephone, _tempUser.clientNumber, _tempUser.agentIduser, _tempUser.agentName, _tempUser.idrole, profileImage, _tempUser.solde, _tempUser.ristourne);
+    _currentUsr = new User(_tempUser.idrole, _tempUser.idagent, firstName, lastName,
+        _tempUser.userName, _tempUser.email,_tempUser.password, entrepriseName, ice,
+        city, address, telephone, _tempUser.clientNumber, _tempUser.agentIduser,
+        _tempUser.agentName, _tempUser.idrole, profileImage, _tempUser.solde,
+        _tempUser.ristourne, _tempUser.agentPhone, _tempUser.firstConnection,
+      _tempUser.banquette, _tempUser.divers, _tempUser.mousse, _tempUser.matelas
+    );
   }
 
   Future<void> getUserSolde(int id) async{
@@ -137,12 +159,24 @@ class AuthProvider extends BaseProvider{
     var response = await _authService.getUserSolde(id);
     print('get id 2  ${response.statusCode}');
     if (response.statusCode == 200) {
-      ///fill user model
+      ///fill user model banquette, divers, matelas, mousse;
       var data = jsonDecode(response.body);
       solde = data['data'][0]['solde'];
-      print('get id 3');
-      notifyListeners();
+      banquette = double.parse(data['data'][0]['banquette']);
+      divers = double.parse(data['data'][0]['divers']);
+      matelas = double.parse(data['data'][0]['matelas']);
+      mousse = double.parse(data['data'][0]['mousse']);
+
+      famillesSold = [banquette, divers, matelas, mousse];
+      max = famillesSold[0];
+      for(int i=1;i<famillesSold.length;i++){
+        if(famillesSold[i] > max){
+          max = famillesSold[i];
+        }
+      }
+      max = max * 1.5;
       busy = false;
+      notifyListeners();
     }
   }
 }

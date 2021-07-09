@@ -2,11 +2,10 @@ import 'package:bc_app/providers/authProvider.dart';
 import 'package:bc_app/providers/contactProvider.dart';
 import 'package:bc_app/views/_admin/home/dashboard_admin.dart';
 import 'package:bc_app/views/_admin/sellers/listSellersAdmin.dart';
-import 'package:bc_app/views/_commercial/sellers/listSellers.dart';
-import 'package:bc_app/views/authentification/loginPage.dart';
 import 'package:bc_app/views/product/productCategories.dart';
 import 'package:bc_app/views/widgets/appbar.dart';
 import 'package:bubble_bottom_bar/bubble_bottom_bar.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -27,7 +26,12 @@ class _HomePage_adminState extends State<HomePage_admin> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    print('admin home page');
+
+    /// subscribe to firebase
+    FirebaseMessaging.instance.subscribeToTopic('admin');
+    FirebaseMessaging.instance.subscribeToTopic('users');
+    print('admin subscribed!');
+
     WidgetsBinding.instance.addPostFrameCallback((_) async{
       Provider.of<ContactProvider>(context, listen: false);
     });
@@ -37,8 +41,9 @@ class _HomePage_adminState extends State<HomePage_admin> {
   Widget build(BuildContext context) {
     var authProvider = Provider.of<AuthProvider>(context, listen: true);
     var contactProvider = Provider.of<ContactProvider>(context, listen: true);
+
     return authProvider.userChekcerIsBusy
-        ?Center(child: Text('home page admin...'))
+        ?Center(child: CircularProgressIndicator())
         :WillPopScope(
       onWillPop: () async => false,
           child: Scaffold(
