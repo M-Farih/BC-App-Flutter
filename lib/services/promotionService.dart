@@ -13,6 +13,10 @@ class PromotionService extends BaseApi{
     return await api.httpGet('/promo', '?type=1');
   }
 
+  Future<http.Response> getAnnonces() async{
+    return await api.httpGet('/promo', '?type=4');
+  }
+
   Future<http.Response> addPromo(String image) async{
     String basicAuth = 'Basic ' + base64Encode(utf8.encode('${api.username}:${api.password}'));
 
@@ -122,6 +126,50 @@ class PromotionService extends BaseApi{
                 print('pdf modified:: ${value.body}');
               });
             }
+          }
+        });
+      });
+    }
+  }
+
+  Future<http.Response> addAnnonce(String image) async{
+    String basicAuth = 'Basic ' + base64Encode(utf8.encode('${api.username}:${api.password}'));
+
+    String fileLink;
+    var response;
+    var request = http.MultipartRequest('POST', Uri.parse('https://bc.meks.ma/BC/v1/common/'));
+    request.headers.addAll({'Accept': 'Application/json', 'authorization': basicAuth});
+
+    String filePath = image.toString();
+
+    if(filePath != ""){
+      print('0');
+      request.files.add(
+          http.MultipartFile(
+              'file',
+              File(filePath).readAsBytes().asStream(),
+              File(filePath).lengthSync(),
+              filename: filePath.split("/").last
+          )
+      );
+      print('1');
+
+      response = await request.send().then((result) async{
+        http.Response.fromStream(result).then((response){
+          if (true)
+          {
+            fileLink = response.body;
+            fileLink = fileLink.replaceAll("\\", "");
+            return http.post(
+              Uri.parse('${api.baseUrl}/promo/'),
+              headers: { 'Accept': 'Application/json', 'authorization': basicAuth},
+              body: json.encode({
+                "promo": "$fileLink",
+                "type": 4
+              }),
+            ).then((response){
+              print('annonce added:: ${response.body}');
+            });
           }
         });
       });

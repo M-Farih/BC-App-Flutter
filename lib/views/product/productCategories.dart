@@ -1,5 +1,6 @@
 import 'package:bc_app/providers/authProvider.dart';
 import 'package:bc_app/providers/promotionProvider.dart';
+import 'package:bc_app/views/_admin/home/homePage_admin.dart';
 import 'package:bc_app/views/authentification/loginPage.dart';
 import 'package:bc_app/views/product/productAdd.dart';
 import 'package:bc_app/views/product/productList.dart';
@@ -24,6 +25,7 @@ class _ProductCategoriesState extends State<ProductCategories> {
     print('product page');
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<PromotionProvider>(context, listen: false).getPromotions();
+      Provider.of<PromotionProvider>(context, listen: false).getAnnonces();
       Provider.of<PromotionProvider>(context, listen: false).getPdfLink();
       int role_id = await Provider.of<AuthProvider>(context, listen: false)
           .checkLoginAndRole();
@@ -230,6 +232,137 @@ class _ProductCategoriesState extends State<ProductCategories> {
                             );
                           }).toList(),
                         ),
+
+                        /// annonces
+                        promoProvider.annonces.length > 0
+                            ?Column(
+                          children: [
+                            Visibility(
+                              visible: authProvider.currentUsr.idrole == 3
+                                  ? true
+                                  : false,
+                              child: Row(
+                                mainAxisAlignment: authProvider.currentUsr.idrole == 3
+                                    ?MainAxisAlignment.end
+                                    :MainAxisAlignment.start,
+                                children: [
+                                  //if is seller
+                                  Padding(
+                                    padding: const EdgeInsets.all(20.0),
+                                    child: Text(
+                                      'إعلان',
+                                      style: TextStyle(
+                                          fontSize: 20.0,
+                                          fontWeight: FontWeight.bold),
+                                      textDirection: TextDirection.rtl,
+                                    ),
+                                  ),
+
+                                ],
+                              ),
+                            ),
+                            Visibility(
+                              visible: authProvider.currentUsr.idrole == 3
+                                  ? false
+                                  : true,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  //btn
+                                  Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            20, 20, 5, 20),
+                                        child: Text(
+                                          'Annonces',
+                                          style: TextStyle(
+                                              fontSize: 20.0,
+                                              fontWeight: FontWeight.bold),
+                                          textDirection: TextDirection.rtl,
+                                        ),
+                                      ),
+                                      authProvider.currentUsr.idrole == 1
+                                          ? Row(
+                                        children: [
+                                          SizedBox(width: 10),
+                                          GestureDetector(
+                                            child: Icon(Icons.add,
+                                                color: Color(0xff2C7DBF),
+                                                size: 22),
+                                            onTap: () {
+                                              Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          PromotionAdd()));
+                                            },
+                                          ),
+                                        ],
+                                      )
+                                          : authProvider.currentUsr.idrole == 0
+                                          ?Row(
+                                        children: [
+                                          SizedBox(width: 10),
+                                          GestureDetector(
+                                            child: Icon(Icons.add,
+                                                color: Color(0xff2C7DBF),
+                                                size: 22),
+                                            onTap: () {
+                                              Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          PromotionAdd()));
+                                            },
+                                          ),
+                                        ],
+                                      )
+                                          :SizedBox(),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                            CarouselSlider(
+                              options: CarouselOptions(height: 200, autoPlay: true),
+                              items: promoProvider.annonces.map((i) {
+                                return Builder(
+                                  builder: (BuildContext context) {
+                                    return Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Container(
+                                        width: MediaQuery.of(context).size.width,
+                                        decoration:
+                                        BoxDecoration(
+                                            borderRadius: BorderRadius.circular(10)
+                                        ),
+                                        child: GestureDetector(
+                                          child: Image.network(i.promo.replaceAll('"', '').trim(),
+                                              fit: BoxFit.fill),
+                                          onTap: (){
+                                            Navigator.of(context).push(MaterialPageRoute(
+                                                builder: (context) => MyPhotoViewer(
+                                                    imageUrl:
+                                                    i.promo.replaceAll('"', '').trim()
+                                                )
+                                            ));
+                                          },
+                                          onLongPress: (){
+                                            if(authProvider.currentUsr.idrole == 0){
+                                              promoProvider.deletePromo(i.idpromo.toString()).whenComplete(() {
+                                                _confirmation(context);
+                                              });
+                                            }
+                                          },
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                );
+                              }).toList(),
+                            ),
+                          ],
+                        )
+                            :SizedBox()
                       ],
                     ),
 
@@ -383,4 +516,36 @@ class _ProductCategoriesState extends State<ProductCategories> {
             ),
     );
   }
+}
+
+Future<void> _confirmation(context) async {
+  print('disc clicked');
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(
+          'Confirmation',
+          textDirection: TextDirection.rtl,
+        ),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text('Opération terminée avec succès', textDirection: TextDirection.ltr),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('Ok', style: TextStyle(color: Colors.red),),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => HomePage_admin()));
+            },
+          ),
+        ],
+      );
+    },
+  );
 }

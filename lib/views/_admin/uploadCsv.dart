@@ -56,8 +56,8 @@ class _UploadCsvState extends State<UploadCsv> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          Navigator.of(context).pushReplacementNamed('home-admin');
-                        },
+                          Navigator.of(context).pop();
+                          },
                         child: Padding(
                           padding: const EdgeInsets.all(20.0),
                           child: Row(

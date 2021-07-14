@@ -53,14 +53,15 @@ class _ReclamationMenuState extends State<ReclamationMenu> {
                   GestureDetector(
                     child: Container(
                       height: 50,
-                      width: MediaQuery.of(context).size.width * 0.25,
+                      width: MediaQuery.of(context).size.width * 0.40,
                       decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
                           color: Color(0xFFFC8F6E)
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text('اقتراح جديد', textDirection: TextDirection.rtl, style: TextStyle(color: Colors.white, fontSize: 12)),
+                          Text('اقتراح جديد', textDirection: TextDirection.rtl, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18)),
                           SizedBox(width: 10),
                           Icon(Icons.thumb_up, color: Colors.white, size: 18),
                         ],
@@ -78,14 +79,15 @@ class _ReclamationMenuState extends State<ReclamationMenu> {
                   GestureDetector(
                     child: Container(
                       height: 50,
-                      width: MediaQuery.of(context).size.width * 0.25,
+                      width: MediaQuery.of(context).size.width *  0.40,
                       decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
                           color: Color(0xFFF67B97)
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text('شكاية جديدة', textDirection: TextDirection.rtl, style: TextStyle(color: Colors.white, fontSize: 12)),
+                          Text('شكاية جديدة', textDirection: TextDirection.rtl, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18)),
                           SizedBox(width: 10),
                           Icon(Icons.feedback, color: Colors.white, size: 18),
                         ],
@@ -99,45 +101,6 @@ class _ReclamationMenuState extends State<ReclamationMenu> {
                       );
                     },
                   ),
-                  SizedBox(width: 10,),
-                  agentPhone != null
-                      ?GestureDetector(
-                    child: Container(
-                      height: 50,
-                      width: MediaQuery.of(context).size.width * 0.25,
-                      decoration: BoxDecoration(
-                          color: Color(0xFF7D85E7)
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text('اتصال', textDirection: TextDirection.rtl, style: TextStyle(color: Colors.white, fontSize: 12)),
-                          SizedBox(width: 10),
-                          Icon(Icons.call, color: Colors.white, size: 18),
-                        ],
-                      ),
-                    ),
-                    onTap: (){
-                      contactProvider.call('${agentPhone}');
-                    },
-                  )
-                      :GestureDetector(
-                    child: Container(
-                      height: 50,
-                      width: MediaQuery.of(context).size.width * 0.25,
-                      decoration: BoxDecoration(
-                          color: Color(0xFF939393)
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text('اتصال', textDirection: TextDirection.rtl, style: TextStyle(color: Colors.white, fontSize: 12)),
-                          SizedBox(width: 10),
-                          Icon(Icons.call, color: Colors.white, size: 18),
-                        ],
-                      ),
-                    ),
-                  )
                 ],
               ),
 

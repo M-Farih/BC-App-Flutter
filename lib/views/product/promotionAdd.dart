@@ -48,6 +48,7 @@ class _PromotionAddState extends State<PromotionAdd> {
 
   bool imageChosen = false;
   bool pdfChosen = false;
+  bool annonceChosen = false;
   int _value = 1;
   final _key = GlobalKey<FormState>();
 
@@ -58,6 +59,7 @@ class _PromotionAddState extends State<PromotionAdd> {
       "https://toppng.com/uploads/preview/donna-picarro-dummy-avatar-115633298255iautrofxa.png";
   File _image;
   File _pdf;
+  File _annonce;
   final picker = ImagePicker();
   int pdfIconColor = 0xFF707070;
 
@@ -85,6 +87,20 @@ class _PromotionAddState extends State<PromotionAdd> {
       });
     } else {
       print('no pdf selected');
+    }
+  }
+
+  Future getAnnonce() async {
+    FilePickerResult result = await FilePicker.platform.pickFiles();
+
+    if (result != null) {
+      _annonce = File(result.files.single.path);
+      annonceChosen = true;
+      setState(() {
+        pdfIconColor = 0xFF2C7DBF;
+      });
+    } else {
+      print('no annonce selected');
     }
   }
 
@@ -148,6 +164,7 @@ class _PromotionAddState extends State<PromotionAdd> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
+                              ///promo
                               Column(
                                 children: [
                                   Card(
@@ -258,6 +275,7 @@ class _PromotionAddState extends State<PromotionAdd> {
                                   )
                                 ],
                               ),
+                              ///pdf
                               Column(
                                 children: [
                                   Card(
@@ -319,14 +337,131 @@ class _PromotionAddState extends State<PromotionAdd> {
                             ],
                           ),
                         ),
+                        authProvider.currentUsr.idrole == 0
+                            ?Padding(
+                          padding: const EdgeInsets.only(bottom: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Column(
+                                children: [
+                                  Card(
+                                    child: Container(
+                                      height: 180,
+                                      width: MediaQuery.of(context).size.width * 0.6,
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            width: 140,
+                                            height: 140,
+                                            child: _annonce == null
+                                                ? Center(
+                                                child:
+                                                !annonceChosen
+                                                    ? GestureDetector(
+                                                  child: Icon(
+                                                    Icons.photo_camera,
+                                                    color: Colors.black54,
+                                                    size: 50,
+                                                  ),
+                                                  onTap: () => getAnnonce(),
+                                                )
+                                                    : GestureDetector(
+                                                  child: Icon(
+                                                      Icons.file_upload,
+                                                      size: 30,
+                                                      color: Color(0xFF2C7DBF)),
+                                                  onTap: () async {
+                                                    if (_annonce != null) {
+                                                      progressDialog.show();
+                                                      promoProvider
+                                                          .addAnnonce(
+                                                          _annonce.path)
+                                                          .whenComplete(() {
+                                                        progressDialog.hide();
+                                                        _confirmation(context);
+                                                      });
+                                                    } else {
+                                                      Flushbar(
+                                                        flushbarPosition:
+                                                        FlushbarPosition
+                                                            .TOP,
+                                                        message:
+                                                        "Aucune photo selectionée",
+                                                        backgroundColor:
+                                                        Colors.red,
+                                                        duration: Duration(
+                                                            seconds: 3),
+                                                      )..show(context);
+                                                    }
+                                                  },
+                                                )
+                                            )
+                                                : Stack(
+                                                fit: StackFit.expand,
+                                                children:[
+                                                  Image.file(
+                                                    _annonce,
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                  Padding(
+                                                      padding: EdgeInsets.all(8.0),
+                                                      child: RaisedButton(
+                                                          color: Colors.white.withOpacity(0.6),
+                                                          onPressed: (){
+                                                            if (_annonce != null) {
+                                                              progressDialog.show();
+                                                              promoProvider
+                                                                  .addAnnonce(
+                                                                  _annonce.path)
+                                                                  .whenComplete(() {
+                                                                progressDialog.hide();
+                                                                _confirmation(context);
+                                                              });
+                                                            } else {
+                                                              Flushbar(
+                                                                flushbarPosition:
+                                                                FlushbarPosition
+                                                                    .TOP,
+                                                                message:
+                                                                "Aucune photo selectionnée",
+                                                                backgroundColor:
+                                                                Colors.red,
+                                                                duration: Duration(
+                                                                    seconds: 3),
+                                                              )..show(context);
+                                                            }
+                                                          },
+                                                          child: Icon(
+                                                            Icons.upload_rounded,
+                                                            color: Colors.white,
+                                                            size: 40,
+                                                          )
+                                                      )
+                                                  ),
+                                                ]
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    'Annonce',
+                                    style: TextStyle(color: Colors.black54),
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        )
+                            :SizedBox()
                       ],
                     ),
 
-                    /// modifier
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                      child: Divider(height: 60),
-                    ),
+                    Divider(height: 60),
+
                     Text(
                       'Supprimer une promotion',
                       style:

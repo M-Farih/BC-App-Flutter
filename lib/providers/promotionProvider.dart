@@ -11,8 +11,12 @@ class PromotionProvider extends ChangeNotifier{
   List<Promotion> _promotions = List();
   List<Promotion> get promotions => _promotions;
 
+  List<Promotion> _annonces = List();
+  List<Promotion> get annonces => _annonces;
+
   String _pdfLink;
   String get pdfLink => _pdfLink;
+
 
   Future <void> getPromotions() async{
     isBusy = true;
@@ -22,6 +26,19 @@ class PromotionProvider extends ChangeNotifier{
       var data = jsonDecode(response.body);
       _promotions.clear();
       data['data'].forEach((p)=> _promotions.add(Promotion.fromJson(p)));
+      isBusy = false;
+      notifyListeners();
+    }
+  }
+
+  Future <void> getAnnonces() async{
+    isBusy = true;
+    notifyListeners();
+    var response = await _promotionService.getAnnonces();
+    if(response.statusCode == 200){
+      var data = jsonDecode(response.body);
+      _annonces.clear();
+      data['data'].forEach((p)=> _annonces.add(Promotion.fromJson(p)));
       isBusy = false;
       notifyListeners();
     }
@@ -40,6 +57,15 @@ class PromotionProvider extends ChangeNotifier{
     isBusy = true;
     notifyListeners();
     var response = await _promotionService.addPdf(image).whenComplete(() {
+      isBusy = false;
+      notifyListeners();
+    });
+  }
+
+  Future<void> addAnnonce(String image) async{
+    isBusy = true;
+    notifyListeners();
+    var response = await _promotionService.addAnnonce(image).whenComplete(() {
       isBusy = false;
       notifyListeners();
     });

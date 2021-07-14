@@ -103,7 +103,11 @@ class _Dashboard_adminState extends State<Dashboard_admin> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text('Modifier une promotion', style: TextStyle(color: Colors.white, fontSize: 12),)
+                                    //Text('Modifier une promotion', style: TextStyle(color: Colors.white, fontSize: 12),)
+                                    authProvider.currentUsr.idrole == 0
+                                        ?Text('Promotion  et Annonce', style: TextStyle(color: Colors.white, fontSize: 12),)
+                                        :Text('Modifier une promotion', style: TextStyle(color: Colors.white, fontSize: 12),)
+
                                   ],
                                 ),
                               ),
