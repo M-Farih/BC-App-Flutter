@@ -16,11 +16,11 @@ class Api {
 
   Api._internal();
 
-  /// https://bc.meks.ma/BC/v1   /users   ?userName=MFarih&password=j4574287
+  ///  https://appmob.bonbinoconfort.ma/v1  /users   ?userName=MFarih&password=j4574287
 
   String username = 'TelcoBill_Api_User_V2|1|6';
   String password = '4398eefebc6342f42cd25e93250484fe76e19427bccc9c3d538a4c02faa267e81a6e4cdcb9ff10d90ef809fe2426d28cac87c2a314a9913aed56b64f687e616f';
-  String baseUrl = "https://bc.meks.ma/BC/v1";
+  String baseUrl = "https://appmob.bonbinoconfort.ma/v1";
 
 
   Future<http.Response> httpGet(String path, String endPoint) async{
@@ -50,7 +50,7 @@ class Api {
     String fileLink;
     var response;
 
-    var request = http.MultipartRequest('POST', Uri.parse('https://bc.meks.ma/BC/v1/common/'));
+    var request = http.MultipartRequest('POST', Uri.parse('${baseUrl}/v1/common/'));
     request.headers.addAll({'Accept': 'Application/json', 'authorization': basicAuth});
 
     var object = jsonDecode(body);
@@ -126,7 +126,7 @@ class Api {
 
     var response;
 
-    var request = http.MultipartRequest('POST', Uri.parse('https://bc.meks.ma/BC/v1/common/'));
+    var request = http.MultipartRequest('POST', Uri.parse('${_api.baseUrl}/v1/common/'));
     request.headers.addAll({'Accept': 'Application/json', 'authorization': basicAuth});
 
     var object = jsonDecode(body);

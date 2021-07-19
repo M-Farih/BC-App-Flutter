@@ -10,6 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class HomePage_admin extends StatefulWidget {
+  final int index;
+
+  const HomePage_admin({Key key, this.index}) : super(key: key);
   @override
   _HomePage_adminState createState() => _HomePage_adminState();
 }
@@ -26,6 +29,10 @@ class _HomePage_adminState extends State<HomePage_admin> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    if(widget.index != null){
+      _currentIndex = widget.index;
+    }
 
     /// subscribe to firebase
     FirebaseMessaging.instance.subscribeToTopic('admin');

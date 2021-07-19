@@ -1,4 +1,3 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:bc_app/providers/authProvider.dart';
 import 'package:bc_app/providers/userProvider.dart';
 import 'package:bc_app/views/_commercial/sellers/sellerDetails.dart';
@@ -68,7 +67,7 @@ class _ListSellersState extends State<ListSellers> {
                     /// sellers list
                     ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: userProvider.myIndex,
+                      itemCount: userProvider.sellers.length,
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
                         return Container(
@@ -126,6 +125,10 @@ class _ListSellersState extends State<ListSellers> {
                                             password: userProvider.sellers[index].password,
                                             solde: userProvider.sellers[index].solde,
                                             ristourne: userProvider.sellers[index].ristourne,
+                                            matelas: userProvider.sellers[index].matelas,
+                                            banquette: userProvider.sellers[index].banquette,
+                                            mousse: userProvider.sellers[index].mousse,
+                                            divers: userProvider.sellers[index].divers,
                                             profileImg: '${userProvider.sellers[index].profileImage != "" ? userProvider.sellers[index].profileImage.replaceAll('"', '') : "https://ui-avatars.com/api/?background=FFFFF&color=2C7DBF&name=${userProvider.sellers[index].firstName}+${userProvider.sellers[index].lastName}"}'))
                                     );
                                   })

@@ -25,7 +25,7 @@ class ProductService extends BaseApi{
       "image": "$image",
     };
 
-    var request = http.MultipartRequest('POST', Uri.parse('https://bc.meks.ma/BC/v1/common/'));
+    var request = http.MultipartRequest('POST', Uri.parse('${api.baseUrl}/common/'));
     request.headers.addAll({'Accept': 'Application/json', 'authorization': basicAuth});
 
     var _list = body.values.toList();
@@ -82,7 +82,7 @@ class ProductService extends BaseApi{
       "image": "$image",
     };
 
-    var request = http.MultipartRequest('POST', Uri.parse('https://bc.meks.ma/BC/v1/common/'));
+    var request = http.MultipartRequest('POST', Uri.parse('${api.baseUrl}/common/'));
     request.headers.addAll({'Accept': 'Application/json', 'authorization': basicAuth});
 
     var _list = body.values.toList();

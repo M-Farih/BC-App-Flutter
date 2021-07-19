@@ -1,12 +1,16 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:bc_app/providers/authProvider.dart';
 import 'package:bc_app/providers/userProvider.dart';
+import 'package:bc_app/views/_commercial/home/homePage_commercial.dart';
+import 'package:bc_app/views/_revendeur/home/homePage_revendeur.dart';
 import 'package:bc_app/views/widgets/appbar.dart';
 import 'package:bc_app/views/widgets/profilInfoBtn.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
+
+import 'home/homePage_admin.dart';
 
 class AddUser extends StatefulWidget {
   @override
@@ -240,7 +244,16 @@ class _AddUserState extends State<AddUser> {
                               emailController.text, telephoneController.text
                           ).whenComplete(() {
                             progressDialog.hide();
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) =>
+                                authProvider.currentUsr.idrole == 3
+                                    ?HomePage_Revendeur(index: 2)
+                                    :authProvider.currentUsr.idrole == 2
+                                    ?HomePage_Commercial(index: 2)
+                                    :HomePage_admin(index: 2)
+                            ));
                             Flushbar(
+                              flushbarPosition: FlushbarPosition.TOP,
                               message: 'Admin ajouté',
                               duration: Duration(seconds: 3),
                             )

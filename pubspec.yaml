@@ -44,7 +44,6 @@ dependencies:
   bubble: ^1.2.1
   provider: 5.0.0
   get_it: ^3.1.0
-  timeago: ^3.0.2
   material_floating_search_bar: ^0.3.4
   progress_dialog: ^1.2.4
   carousel_slider: ^3.0.0

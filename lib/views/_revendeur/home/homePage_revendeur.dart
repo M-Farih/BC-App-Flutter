@@ -14,7 +14,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HomePage_Revendeur extends StatefulWidget {
+  final int index;
 
+  const HomePage_Revendeur({Key key, this.index}) : super(key: key);
   @override
   _HomePage_RevendeurState createState() => _HomePage_RevendeurState();
 }
@@ -33,8 +35,13 @@ class _HomePage_RevendeurState extends State<HomePage_Revendeur> {
     // TODO: implement initState
     super.initState();
 
+    if(widget.index != null){
+      _currentIndex = widget.index;
+    }
+
     /// subscribe to firebase
     FirebaseMessaging.instance.subscribeToTopic('users');
+    FirebaseMessaging.instance.subscribeToTopic('revendeurs');
     print('revendeur subscribed!');
 
     WidgetsBinding.instance.addPostFrameCallback((_) async{

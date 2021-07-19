@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:bc_app/models/user.dart';
+import 'package:bc_app/providers/authProvider.dart';
 import 'package:bc_app/services/userService.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -19,6 +20,7 @@ class UserProvider extends ChangeNotifier{
   int myIndex = 0;
 
   UserService _userService = UserService();
+  AuthProvider authProvider = AuthProvider();
 
   Future<void> add(String fname, String lname, String username, String password, String email, String telephone) async{
     busy = true;
@@ -54,6 +56,7 @@ class UserProvider extends ChangeNotifier{
   Future<void> getSellers(int idRole) async{
     busy = true;
     notifyListeners();
+    await authProvider.getUserFromSP();
     if(idRole == 0){
       var response = await _userService.getSellers();
       if(response.statusCode == 200){
@@ -61,6 +64,7 @@ class UserProvider extends ChangeNotifier{
         tempSellersList.clear();
         data['data'].forEach((u) => tempSellersList.add(User.fromJson(u)));
         _sellers = tempSellersList;
+        _sellers.removeWhere((element) => element.iduser == authProvider.iduser);
         if(_sellers.length > 150){
           myIndex = 80;
         }
@@ -89,6 +93,7 @@ class UserProvider extends ChangeNotifier{
         _commercialsList = tempSellersList;
       }
       _sellers = new List.from(_commercialsList)..addAll(_sellersList);
+      _sellers.removeWhere((element) => element.iduser == authProvider.iduser);
       print('////// ${_sellers[0].userName}');
       if(_sellers.length > 150){
         myIndex = 80;
@@ -106,6 +111,7 @@ class UserProvider extends ChangeNotifier{
     notifyListeners();
     var response = await _userService.getSellersByAgent(id);
     if(response.statusCode == 200){
+      print(' */*/*/* ${response.body}');
       var data = jsonDecode(response.body);
       tempSellersList.clear();
       data['data'].forEach((u) => tempSellersList.add(User.fromJson(u)));

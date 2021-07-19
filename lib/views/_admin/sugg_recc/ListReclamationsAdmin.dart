@@ -4,7 +4,6 @@ import 'package:bc_app/views/_revendeur/sugg_recl/ReclamationDetails.dart';
 import 'package:bc_app/views/widgets/appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 class ListReclamationAdmin extends StatefulWidget {
   final int idtype_reason, indicator;
@@ -160,14 +159,15 @@ class _ListReclamationAdminState extends State<ListReclamationAdmin> {
                                   ),
                                 ),
                                 Text(
-                                    '${timeago.format(DateTime.parse(
-                                        topicProvider.topics[index].created_at), locale: 'fr')}'),
+                                    '${topicProvider.topics[index].created_at}'),
                               ],
                             ),
                             leading: CircleAvatar(
                               backgroundColor: Colors.transparent,
                               backgroundImage:
-                              NetworkImage('${topicProvider.topics[index].userImg.toString().replaceAll('"','').trim()}'),
+                                topicProvider.topics[index].userImg != ""
+                                    ?NetworkImage('${topicProvider.topics[index].userImg.toString().replaceAll('"','').trim()}')
+                                    :NetworkImage("https://ui-avatars.com/api/?background=FFFFF&color=2C7DBF&name=${topicProvider.topics[index].usersName}")
                             ),
                             onTap: () {
                               print('///// audio ---> ${topicProvider.topics[index].record}');
@@ -177,13 +177,14 @@ class _ListReclamationAdminState extends State<ListReclamationAdmin> {
                                       builder: (context) =>ReclamationDetails(
                                         img: topicProvider.topics[index].userImg.toString().replaceAll('"','').trim(),
                                         status: topicProvider.topics[index].indicator,
-                                        reason: topicProvider.topics[index].reason,
+                                        reason: topicProvider.topics[index].idtype_reason.toString(),
                                         Message: topicProvider.topics[index].description,
                                         rec_id: topicProvider.topics[index].idtopic,
                                         date: topicProvider.topics[index].created_at,
                                         phone: topicProvider.topics[index].telephone,
                                         sellerName: topicProvider.topics[index].usersName,
                                         record: topicProvider.topics[index].record,
+                                        topic: topicProvider.topics[index].reason,
                                       ))
                               );
                             }

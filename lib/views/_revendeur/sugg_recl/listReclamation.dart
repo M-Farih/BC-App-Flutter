@@ -1,10 +1,12 @@
 import 'package:bc_app/providers/authProvider.dart';
 import 'package:bc_app/providers/topicProvider.dart';
+import 'package:bc_app/views/_admin/home/homePage_admin.dart';
+import 'package:bc_app/views/_commercial/home/homePage_commercial.dart';
+import 'package:bc_app/views/_revendeur/home/homePage_revendeur.dart';
 import 'package:bc_app/views/widgets/appbar.dart';
 import 'package:bc_app/views/widgets/reclamationCard.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 class ListReclamation extends StatefulWidget {
   final int idreason;
@@ -52,7 +54,14 @@ class _ListReclamationState extends State<ListReclamation> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            Navigator.of(context).pushReplacementNamed('home');
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) =>
+                                authProvider.currentUsr.idrole == 3
+                                    ?HomePage_Revendeur(index: 2)
+                                    :authProvider.currentUsr.idrole == 2
+                                    ?HomePage_Commercial(index: 2)
+                                    :HomePage_admin(index: 2)
+                            ));
                           },
                           child: Padding(
                             padding: const EdgeInsets.all(20.0),
@@ -110,11 +119,11 @@ class _ListReclamationState extends State<ListReclamation> {
                   return ReclamationCard(
                     image: topicProvider.topics[index].userImg,
                     phone: topicProvider.topics[index].telephone,
-                    reason: topicProvider.topics[index].reason,
+                    reason: topicProvider.topics[index].idtype_reason.toString(),
                     rec_id: topicProvider.topics[index].idtopic,
                     status: topicProvider.topics[index].indicator,
                     date: topicProvider.topics[index].created_at,
-                    dateToShow: timeago.format(DateTime.parse(topicProvider.topics[index].created_at), locale: 'ar'),
+                    dateToShow: topicProvider.topics[index].created_at,
                     topic: topicProvider.topics[index].reason,
                     message: topicProvider.topics[index].description,
                     username: topicProvider.topics[index].usersName,

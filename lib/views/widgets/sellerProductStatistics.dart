@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class sellerProductStatistics extends StatelessWidget {
-  final String productImage, productName, productPrice;
+  final String productImage, familleName, famillePrice;
   final int textColor;
   const sellerProductStatistics({
-    Key key, this.productImage, this.productName, this.productPrice, this.textColor
+    Key key, this.productImage, this.textColor, this.familleName, this.famillePrice
   }) : super(key: key);
 
   @override
@@ -38,7 +38,7 @@ class sellerProductStatistics extends StatelessWidget {
                     children: [
                       Image.asset("${productImage}", scale: 0.3,),
                       SizedBox(width: 10),
-                      Text('${productName}',style: TextStyle(color: Colors.black54, fontSize: 18))
+                      Text('${familleName}',style: TextStyle(color: Colors.black54, fontSize: 18))
                     ],
                   ),
                 ),
@@ -46,7 +46,8 @@ class sellerProductStatistics extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Row(
                     children: [
-                      Text('${productPrice}.00 Dhs', style: TextStyle(color: Color(textColor), fontSize: 19))
+                     Text('${famillePrice} Dhs', style: TextStyle(color: Color(textColor), fontSize: 19))
+
                     ],
                   ),
                 )

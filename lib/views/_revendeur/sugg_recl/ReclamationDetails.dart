@@ -4,19 +4,20 @@ import 'package:bc_app/providers/authProvider.dart';
 import 'package:bc_app/providers/commentProvider.dart';
 import 'package:bc_app/providers/contactProvider.dart';
 import 'package:bc_app/providers/topicProvider.dart';
+import 'package:bc_app/views/_revendeur/home/homePage_revendeur.dart';
 import 'package:bc_app/views/widgets/appbar.dart';
 import 'package:bc_app/views/widgets/buildMessage.dart';
 import 'package:bc_app/views/widgets/profilInfoBtn.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 class ReclamationDetails extends StatefulWidget {
   final int rec_id, status;
-  final String Message, date, reason, img, phone, sellerName, record;
+  final String Message, date, reason, img, phone, sellerName, record, topic;
+  final bool isReclamation;
 
   ReclamationDetails(
-      {this.rec_id, this.Message, this.status, this.date, this.reason, this.img, this.phone, this.sellerName, this.record});
+      {this.rec_id, this.Message, this.status, this.date, this.reason, this.img, this.phone, this.sellerName, this.record, this.isReclamation, this.topic});
 
   @override
   _ReclamationDetailsState createState() => _ReclamationDetailsState();
@@ -58,6 +59,7 @@ class _ReclamationDetailsState extends State<ReclamationDetails> {
         statusColor = 0xFF1DC1C3;
         break;
     }
+    print('-------- /  ${widget.reason}  /------------');
   }
 
   @override
@@ -80,7 +82,7 @@ class _ReclamationDetailsState extends State<ReclamationDetails> {
                     Column(
                       children: [
                         ///back btn & icon-title
-                        widget.reason == 2
+                        widget.reason == "2"
                             ?Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -89,8 +91,12 @@ class _ReclamationDetailsState extends State<ReclamationDetails> {
                                 children: [
                                   GestureDetector(
                                     onTap: () {
-                                      Navigator.of(context).pop();
-                                    },
+                                      authProvider.currentUsr.idrole != 3
+                                          ?Navigator.of(context).pop()
+                                          :Navigator.of(context).push(MaterialPageRoute(
+                                          builder: (context) =>HomePage_Revendeur(index: 2)
+                                      ));
+                                      },
                                     child: Padding(
                                       padding: const EdgeInsets.all(20.0),
                                       child: Row(
@@ -120,7 +126,7 @@ class _ReclamationDetailsState extends State<ReclamationDetails> {
                                     Text(
                                       authProvider.currentUsr.idrole == 3
                                           ?'شكاية'
-                                              :'Reclamation',
+                                              :'Réclamation',
                                       style: TextStyle(
                                           color: Color(0xFFF67B97),
                                           fontSize: 20.0),
@@ -184,7 +190,7 @@ class _ReclamationDetailsState extends State<ReclamationDetails> {
                                           ?'اقتراح'
                                           :'Suggestion',
                                       style: TextStyle(
-                                          color: Color(0xFFF67B97),
+                                          color: Color(0xFFFC8F6E),
                                           fontSize: 20.0),
                                     ),
                                     SizedBox(width: 15.0),
@@ -192,11 +198,11 @@ class _ReclamationDetailsState extends State<ReclamationDetails> {
                                       height: 40.0,
                                       width: 40.0,
                                       decoration: BoxDecoration(
-                                        color: Color(0xFFF67B97),
+                                        color: Color(0xFFFC8F6E),
                                         borderRadius:
                                         BorderRadius.circular(50.0),
                                       ),
-                                      child: Icon(Icons.feedback,
+                                      child: Icon(Icons.thumb_up,
                                           color: Colors.white),
                                     )
                                   ],
@@ -235,7 +241,11 @@ class _ReclamationDetailsState extends State<ReclamationDetails> {
                                       children: [
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
-                                          child: CircleAvatar(backgroundImage: NetworkImage('${widget.img.replaceAll('"', '').trim()}'),),
+                                          child: CircleAvatar(backgroundImage: NetworkImage(
+                                            widget.img != ""
+                                                ?'${widget.img.replaceAll('"', '').trim()}'
+                                                :'https://ui-avatars.com/api/?background=FFFFF&color=2C7DBF&name=${widget.sellerName}'
+                                          ),),
                                         ),
                                         Column(
                                           crossAxisAlignment:
@@ -243,11 +253,11 @@ class _ReclamationDetailsState extends State<ReclamationDetails> {
                                           children: [
                                             Text('${widget.sellerName}'),
                                             authProvider.currentUsr.idrole == 3
-                                                ?Text('${timeago.format(DateTime.parse(widget.date), locale: 'ar')}',
+                                                ?Text('${widget.date}',
                                                 style: TextStyle(
                                                     fontSize: 10.0,
                                                     color: Colors.black54))
-                                                :Text('${timeago.format(DateTime.parse(widget.date), locale: 'fr')}',
+                                                :Text('${widget.date}',
                                                 style: TextStyle(
                                                     fontSize: 10.0,
                                                     color: Colors.black)),
@@ -285,7 +295,7 @@ class _ReclamationDetailsState extends State<ReclamationDetails> {
                                     children: [
                                       Expanded(
                                         child: Text(
-                                          '${widget.reason}',
+                                          '${widget.topic}',
                                           style: TextStyle(
                                               color: Colors.black,
                                               fontWeight: FontWeight.bold),
@@ -588,7 +598,7 @@ class _ReclamationDetailsState extends State<ReclamationDetails> {
                           padding: const EdgeInsets.all(8.0),
                           child: authProvider.currentUsr.idrole == 3
                               ?Text(widget.status == 2 ? 'لقد تمت معالجة طلبكم' : '', style: TextStyle(color: Colors.grey))
-                              :Text(widget.status == 2 ? 'Réclamation clôturé' : '', style: TextStyle(color: Colors.grey),),
+                              :Text(widget.status == 2 ? 'Demande clôturée' : '', style: TextStyle(color: Colors.grey),),
 
                         ),
 
@@ -602,12 +612,10 @@ class _ReclamationDetailsState extends State<ReclamationDetails> {
                                 senderName: commentProvider.comments[index].Name,
                                 senderId: commentProvider.comments[index].iduser,
                                 name: commentProvider.comments[index].Name,
-                                img: commentProvider.comments[index].image != "" ?commentProvider.comments[index].image.replaceAll('"', '').trim() :'https://bc.meks.ma/BC/uploaded_files/image/cc2b2aa97c41db11f89dfcdd4b121b59.png',
+                                img: commentProvider.comments[index].image != "" ?commentProvider.comments[index].image.replaceAll('"', '').trim() :'https://ui-avatars.com/api/?background=FFFFF&color=2C7DBF&name=${commentProvider.comments[index].Name}',
                                 message: commentProvider.comments[index].comment,
                                 senderRoleId: commentProvider.comments[index].idrole,
-                                date: timeago.format(DateTime.parse(
-                                    commentProvider
-                                        .comments[index].created_at), locale: 'ar'),
+                                date: commentProvider.comments[index].created_at,
                               );
                             }),
                         SizedBox(height: 20.0),

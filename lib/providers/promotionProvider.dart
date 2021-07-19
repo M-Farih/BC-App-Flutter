@@ -39,6 +39,7 @@ class PromotionProvider extends ChangeNotifier{
       var data = jsonDecode(response.body);
       _annonces.clear();
       data['data'].forEach((p)=> _annonces.add(Promotion.fromJson(p)));
+      print('*******   ${_annonces.length}');
       isBusy = false;
       notifyListeners();
     }
@@ -97,7 +98,6 @@ class PromotionProvider extends ChangeNotifier{
     var response = await _promotionService.getPdfLink();
     if(response.statusCode == 200){
       var data = jsonDecode(response.body);
-      print('pdf link ---> ${data['data'][0]['promo']}');
       _pdfLink = data['data'][0]['promo'].toString().replaceAll('"', '');
       isBusy = false;
       notifyListeners();

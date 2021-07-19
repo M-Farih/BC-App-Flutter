@@ -180,7 +180,7 @@ class _RistournePageState extends State<RistournePage> {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text('Pourcentage', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+                                    Text('%', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
                                   ],
                                 )),
                           ),

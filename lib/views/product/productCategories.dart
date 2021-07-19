@@ -9,6 +9,7 @@ import 'package:bc_app/views/widgets/categoryContainer.dart';
 import 'package:bc_app/views/widgets/photoViewer.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -53,6 +54,7 @@ class _ProductCategoriesState extends State<ProductCategories> {
   Widget build(BuildContext context) {
     var authProvider = Provider.of<AuthProvider>(context, listen: true);
     var promoProvider = Provider.of<PromotionProvider>(context, listen: true);
+    var progressDialog = ProgressDialog(context);
     return Scaffold(
       body: authProvider.userChekcerIsBusy
           ? Center(child: CircularProgressIndicator())
@@ -60,6 +62,7 @@ class _ProductCategoriesState extends State<ProductCategories> {
               child: Center(
                 child: Column(
                   children: [
+
                     ///our promos
                     Column(
                       children: [
@@ -93,7 +96,7 @@ class _ProductCategoriesState extends State<ProductCategories> {
                                   ),
                                   label: Text(
                                       authProvider.currentUsr.idrole == 3
-                                          ? "تحميل"
+                                          ? "تحميل العروض"
                                           : "Télécharger"),
                                 ),
                               ),
@@ -111,7 +114,8 @@ class _ProductCategoriesState extends State<ProductCategories> {
                             ],
                           ),
                         ),
-                        Visibility(
+                        promoProvider.promotions.length > 0
+                            ?Visibility(
                           visible: authProvider.currentUsr.idrole == 3
                               ? false
                               : true,
@@ -198,10 +202,12 @@ class _ProductCategoriesState extends State<ProductCategories> {
                               ),
                             ],
                           ),
-                        ),
+                        )
+                            :SizedBox(),
 
-                        /// carousel
-                        CarouselSlider(
+                        /// carousel:SizedBox(),
+                        promoProvider.promotions.length > 0
+                            ?CarouselSlider(
                           options: CarouselOptions(height: 200, autoPlay: true),
                           items: promoProvider.promotions.map((i) {
                             return Builder(
@@ -231,7 +237,9 @@ class _ProductCategoriesState extends State<ProductCategories> {
                               },
                             );
                           }).toList(),
-                        ),
+                        )
+                            :SizedBox(),
+
 
                         /// annonces
                         promoProvider.annonces.length > 0
@@ -322,47 +330,67 @@ class _ProductCategoriesState extends State<ProductCategories> {
                                 ],
                               ),
                             ),
-                            CarouselSlider(
-                              options: CarouselOptions(height: 200, autoPlay: true),
-                              items: promoProvider.annonces.map((i) {
-                                return Builder(
-                                  builder: (BuildContext context) {
-                                    return Padding(
-                                      padding: const EdgeInsets.all(8.0),
+
+                            Padding(
+                              padding: const EdgeInsets.all(20),
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                height: 150,
+                                decoration:
+                                BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10)
+                                ),
+                                child: Stack(
+                                  children: [
+                                    GestureDetector(
                                       child: Container(
                                         width: MediaQuery.of(context).size.width,
-                                        decoration:
-                                        BoxDecoration(
-                                            borderRadius: BorderRadius.circular(10)
-                                        ),
-                                        child: GestureDetector(
-                                          child: Image.network(i.promo.replaceAll('"', '').trim(),
-                                              fit: BoxFit.fill),
-                                          onTap: (){
-                                            Navigator.of(context).push(MaterialPageRoute(
-                                                builder: (context) => MyPhotoViewer(
-                                                    imageUrl:
-                                                    i.promo.replaceAll('"', '').trim()
-                                                )
-                                            ));
+                                        child: Image.network(promoProvider.annonces[0].promo.replaceAll('"', '').trim(),
+                                            fit: BoxFit.cover),
+                                      ),
+                                      onTap: (){
+                                        Navigator.of(context).push(MaterialPageRoute(
+                                            builder: (context) => MyPhotoViewer(
+                                                imageUrl:
+                                                promoProvider.annonces[0].promo.replaceAll('"', '').trim()
+                                            )
+                                        ));
+                                      },
+                                    ),
+                                    authProvider.currentUsr.idrole == 0
+                                        ?Positioned(
+                                      child: SizedBox(
+                                        height: 30,
+                                        width: 30,
+                                        child: FlatButton(
+                                          padding: EdgeInsets.zero,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                              BorderRadius.circular(50.0),
+                                              side: BorderSide(
+                                                  color: Colors.white)),
+                                          color: Color(0xFFF5F6F9),
+                                          onPressed: () {
+                                            progressDialog.show();
+                                            promoProvider.deletePromo(promoProvider.annonces[0].idpromo.toString()).whenComplete((){
+                                              progressDialog.hide();
+                                              _confirmation(context);
+                                            });
                                           },
-                                          onLongPress: (){
-                                            if(authProvider.currentUsr.idrole == 0){
-                                              promoProvider.deletePromo(i.idpromo.toString()).whenComplete(() {
-                                                _confirmation(context);
-                                              });
-                                            }
-                                          },
+                                          child: Icon(Icons.clear,
+                                              size: 21.0),
                                         ),
                                       ),
-                                    );
-                                  },
-                                );
-                              }).toList(),
-                            ),
+                                      top: 1,
+                                      right: 1,)
+                                        :SizedBox()
+                                  ],
+                                ),
+                              ),
+                            )
                           ],
                         )
-                            :SizedBox()
+                            :SizedBox(),
                       ],
                     ),
 
@@ -448,7 +476,7 @@ class _ProductCategoriesState extends State<ProductCategories> {
                                 child: CategoryContainer(
                                     imgUrl: 'assets/images/mousse.png',
                                     text: authProvider.currentUsr.idrole == 3
-                                        ? 'اتات'
+                                        ? 'أثاث'
                                         : 'Salon',
                                     color: 0xFF81BA48),
                               ),

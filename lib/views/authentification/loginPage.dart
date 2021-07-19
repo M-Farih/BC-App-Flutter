@@ -76,7 +76,7 @@ class _LoginState extends State<LoginPage> {
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: buildTextField("البريد الإلكتروني", emailController),
+                                child: buildTextField("اسم المستخدم", emailController),
                               )
                           ),
                         ),

@@ -14,6 +14,7 @@ class Dashboard_revendeur extends StatefulWidget {
 
 class _Dashboard_revendeurState extends State<Dashboard_revendeur> {
 
+
   @override
   void initState() {
     // TODO: implement initState
@@ -48,10 +49,11 @@ class _Dashboard_revendeurState extends State<Dashboard_revendeur> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 0),
                   child: Text(
-                    'المردود السنوي',
+                    'المردود السنوي من ${authProvider.from} الى ${authProvider.to}',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 20.0,
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold
                     ),
                     textDirection: TextDirection.rtl,
                   ),
@@ -62,7 +64,7 @@ class _Dashboard_revendeurState extends State<Dashboard_revendeur> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 30.0),
+                  padding: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 30.0),
                   child: Text(
                     '${authProvider.solde} Dhs',
                     style: TextStyle(

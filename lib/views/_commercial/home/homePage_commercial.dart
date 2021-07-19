@@ -14,6 +14,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HomePage_Commercial extends StatefulWidget {
+  final int index;
+
+  const HomePage_Commercial({Key key, this.index}) : super(key: key);
 
   @override
   _HomePage_CommercialState createState() => _HomePage_CommercialState();
@@ -32,6 +35,10 @@ class _HomePage_CommercialState extends State<HomePage_Commercial> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    if(widget.index != null){
+      _currentIndex = widget.index;
+    }
 
     /// subscribe to firebase
     FirebaseMessaging.instance.subscribeToTopic('users');

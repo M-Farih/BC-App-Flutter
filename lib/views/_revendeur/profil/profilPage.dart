@@ -2,6 +2,9 @@ import 'dart:io';
 
 import 'package:bc_app/providers/authProvider.dart';
 import 'package:bc_app/providers/userProvider.dart';
+import 'package:bc_app/views/_admin/home/homePage_admin.dart';
+import 'package:bc_app/views/_commercial/home/homePage_commercial.dart';
+import 'package:bc_app/views/_revendeur/home/homePage_revendeur.dart';
 import 'package:bc_app/views/widgets/appbar.dart';
 import 'package:bc_app/views/widgets/infoContainer.dart';
 import 'package:bc_app/views/widgets/profilInfoBtn.dart';
@@ -79,7 +82,7 @@ class _ProfilePageState extends State<ProfilePage> {
       city = authProvider.currentUsr.city;
       address = authProvider.currentUsr.address;
       phone = authProvider.currentUsr.telephone;
-      image = authProvider.currentUsr.profileImage != null
+      image = authProvider.currentUsr.profileImage.isNotEmpty
           ? authProvider.currentUsr.profileImage.replaceAll('"', '')
           : "https://ui-avatars.com/api/?background=FFFFF&color=2C7DBF&name=$lname+$fname";
       agentIduser = authProvider.currentUsr.agentIduser;
@@ -120,7 +123,15 @@ class _ProfilePageState extends State<ProfilePage> {
                             children: [
                               GestureDetector(
                                 onTap: () {
-                                  Navigator.of(context).pushReplacementNamed('home-revendeur');
+                                  // Navigator.of(context).pushReplacementNamed('home-revendeur');
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) =>
+                                      authProvider.currentUsr.idrole == 3
+                                          ?HomePage_Revendeur(index: 2)
+                                          :authProvider.currentUsr.idrole == 2
+                                          ?HomePage_Commercial(index: 2)
+                                          :HomePage_admin(index: 2)
+                                  ));
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.all(20.0),

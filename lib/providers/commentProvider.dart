@@ -4,7 +4,6 @@ import 'package:bc_app/providers/topicProvider.dart';
 import 'package:bc_app/services/commentService.dart';
 import 'package:bc_app/services/topicService.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 class CommentProvider extends ChangeNotifier{
 

@@ -16,7 +16,7 @@ class AuthProvider extends BaseProvider{
   List<User> _users = List();
   User _currentUsr;
   int iduser;
-  String solde;
+  String solde, from, to;
   double banquette, divers, matelas, mousse, max;
   List<double> famillesSold;
 
@@ -148,7 +148,8 @@ class AuthProvider extends BaseProvider{
         city, address, telephone, _tempUser.clientNumber, _tempUser.agentIduser,
         _tempUser.agentName, _tempUser.idrole, profileImage, _tempUser.solde,
         _tempUser.ristourne, _tempUser.agentPhone, _tempUser.firstConnection,
-      _tempUser.banquette, _tempUser.divers, _tempUser.mousse, _tempUser.matelas
+      _tempUser.banquette, _tempUser.divers, _tempUser.mousse, _tempUser.matelas,
+      _tempUser.from_date_ca, _tempUser.to_date_ca
     );
   }
 
@@ -162,6 +163,8 @@ class AuthProvider extends BaseProvider{
       ///fill user model banquette, divers, matelas, mousse;
       var data = jsonDecode(response.body);
       solde = data['data'][0]['solde'];
+      from = data['data'][0]['from_date_ca'];
+      to = data['data'][0]['to_date_ca'];
       banquette = double.parse(data['data'][0]['banquette']);
       divers = double.parse(data['data'][0]['divers']);
       matelas = double.parse(data['data'][0]['matelas']);

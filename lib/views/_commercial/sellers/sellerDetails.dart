@@ -1,6 +1,10 @@
 import 'package:bc_app/providers/authProvider.dart';
 import 'package:bc_app/providers/contactProvider.dart';
 import 'package:bc_app/providers/userProvider.dart';
+import 'package:bc_app/views/_admin/home/homePage_admin.dart';
+import 'package:bc_app/views/_commercial/home/homePage_commercial.dart';
+import 'package:bc_app/views/_revendeur/home/homePage_revendeur.dart';
+import 'package:bc_app/views/home/homePage.dart';
 import 'package:bc_app/views/widgets/appbar.dart';
 import 'package:bc_app/views/widgets/profilInfoBtn.dart';
 import 'package:bc_app/views/widgets/sellerProductStatistics.dart';
@@ -9,9 +13,9 @@ import 'package:provider/provider.dart';
 
 class SellerDetails extends StatefulWidget {
   final int id;
-  final String profileImg, phoneNumber, mail, username, password, solde, ristourne;
+  final String profileImg, phoneNumber, mail, username, password, solde, ristourne, matelas, banquette, mousse, divers;
 
-  SellerDetails({this.id, this.profileImg, this.phoneNumber, this.mail, this.username, this.password, this.solde, this.ristourne});
+  SellerDetails({this.id, this.profileImg, this.phoneNumber, this.mail, this.username, this.password, this.solde, this.ristourne, this.matelas, this.banquette, this.mousse, this.divers});
 
   @override
   _SellerDetailsState createState() => _SellerDetailsState();
@@ -50,7 +54,14 @@ class _SellerDetailsState extends State<SellerDetails> {
                           children: [
                             GestureDetector(
                               onTap: () {
-                                Navigator.of(context).pop();
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) =>
+                                    authProvider.currentUsr.idrole == 3
+                                        ?HomePage_Revendeur(index: 2)
+                                        :authProvider.currentUsr.idrole == 2
+                                        ?HomePage_Commercial(index: 2)
+                                        :HomePage_admin(index: 2)
+                                ));
                               },
                               child: Padding(
                                 padding: const EdgeInsets.all(20.0),
@@ -97,8 +108,19 @@ class _SellerDetailsState extends State<SellerDetails> {
                           ),
                         ),
                         SizedBox(height: 15),
-                        Text('${userProvider.userById.firstName ??""} ${userProvider.userById.lastName ??""}',
-                            style: TextStyle(color: Colors.white, fontSize: 25)),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              child: Text('${userProvider.userById.firstName ??""} ${userProvider.userById.lastName ??""}',
+                                  style: TextStyle(color: Colors.white, fontSize: 25),
+                                  overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.center,
+                              ),
+                              width: MediaQuery.of(context).size.width * 0.75,
+                            ),
+                          ],
+                        ),
                         Text('${widget.solde} Dhs',
                             style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
                         Text('Ristourne ${widget.ristourne}',
@@ -111,26 +133,26 @@ class _SellerDetailsState extends State<SellerDetails> {
                   SizedBox(height: 30),
                   sellerProductStatistics(
                     productImage: 'assets/images/matelas.png',
-                    productName: 'Matelas',
-                    productPrice: '3700',
+                    familleName: 'Matelas',
+                    famillePrice: '${widget.matelas}',
                     textColor: 0xFF2C7DBF,
                   ),
                   sellerProductStatistics(
                     productImage: 'assets/images/banquette.png',
-                    productName: 'Banquette',
-                    productPrice: '8500',
+                    familleName: 'Banquette',
+                    famillePrice: '${widget.banquette}',
                     textColor: 0xFF84489B,
                   ),
                   sellerProductStatistics(
                     productImage: 'assets/images/mousse.png',
-                    productName: 'Mousse',
-                    productPrice: '9500',
+                    familleName: 'Mousse',
+                    famillePrice: '${widget.mousse}',
                     textColor: 0xFF81BA48,
                   ),
                   sellerProductStatistics(
                     productImage: 'assets/images/salon.png',
-                    productName: 'Salon',
-                    productPrice: '2100',
+                    familleName: 'Salon',
+                    famillePrice: '${widget.divers}',
                     textColor: 0xFFE32A33,
                   ),
 

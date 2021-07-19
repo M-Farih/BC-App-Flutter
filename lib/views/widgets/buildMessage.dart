@@ -68,58 +68,114 @@ class _BuildMessageState extends State<BuildMessage> {
   Widget build(BuildContext context) {
     var authProvider = Provider.of<AuthProvider>(context, listen: true);
     String userImage = authProvider.currentUsr.profileImage != "" ?authProvider.currentUsr.profileImage.replaceAll('"', '').trim() :"https://ui-avatars.com/api/?background=FFFFF&color=2C7DBF&name=${authProvider.currentUsr.lastName}+${authProvider.currentUsr.firstName}";
-    return authProvider.spbusy
-        ? Center(child: CircularProgressIndicator())
-        : Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 6.0),
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              decoration: widget.senderId == authProvider.currentUsr.iduser
-                  ? sellerBoxDecoration
-                  : adminBoxDecoration,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
+
+    if(authProvider.currentUsr.idrole != 3){
+      return authProvider.spbusy
+          ? Center(child: CircularProgressIndicator())
+          : Padding(
+        padding:
+        const EdgeInsets.symmetric(horizontal: 20.0, vertical: 6.0),
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          decoration: widget.senderId == authProvider.currentUsr.iduser
+              ? sellerBoxDecoration
+              : adminBoxDecoration,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        widget.senderRoleId == 1
-                            ?CircleAvatar(backgroundImage: AssetImage('assets/images/adminbc.png'))
-                            :CircleAvatar(backgroundImage: NetworkImage(widget.img),),
-                       Padding(
-                         padding: const EdgeInsets.all(6.0),
-                         child: Column(
-                           crossAxisAlignment: CrossAxisAlignment.start,
-                           children: [
-                             authProvider.currentUsr.idrole == 3
-                                 ?Text(widget.senderRoleId == 1 ?'العمبل' :'${widget.senderName}')
-                                 :Text('${widget.senderName}'),
-                             Text('${widget.date}',
-                                 style: TextStyle(fontSize: 10.0, color: Colors.black54)),
-                           ],
-                         ),
-                       )
-                      ],
-                    ),
-                    SizedBox(height: 10.0),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            '${widget.message}',
-                            style: TextStyle(),
-                            textDirection: TextDirection.rtl,
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(height: 10.0)
+                    widget.senderRoleId == 1
+                        ?CircleAvatar(backgroundImage: AssetImage('assets/images/adminbc.png'))
+                        :CircleAvatar(backgroundImage: NetworkImage(widget.img),),
+                    Padding(
+                      padding: const EdgeInsets.all(6.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('${widget.senderName}'),
+                          Text('${widget.date}',
+                              style: TextStyle(fontSize: 10.0, color: Colors.black54)),
+                        ],
+                      ),
+                    )
                   ],
                 ),
-              ),
+                SizedBox(height: 10.0),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        '${widget.message}',
+                        style: TextStyle(),
+                        textDirection: TextDirection.rtl,
+                      ),
+                    )
+                  ],
+                ),
+                SizedBox(height: 10.0)
+              ],
             ),
-          );
+          ),
+        ),
+      );
+    }
+    else{
+      return authProvider.spbusy
+          ? Center(child: CircularProgressIndicator())
+          : Padding(
+        padding:
+        const EdgeInsets.symmetric(horizontal: 20.0, vertical: 6.0),
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          decoration: widget.senderId == authProvider.currentUsr.iduser
+              ? sellerBoxDecoration
+              : adminBoxDecoration,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    widget.senderRoleId == 1
+                        ?CircleAvatar(backgroundImage: AssetImage('assets/images/adminbc.png'))
+                        :CircleAvatar(backgroundImage: NetworkImage(widget.img),),
+                    Padding(
+                      padding: const EdgeInsets.all(6.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          authProvider.currentUsr.iduser == widget.senderId
+                              ?Text('${widget.senderName}')
+                              :Text(widget.senderRoleId != 3 ?'العمبل' :'${widget.senderName}'),
+                          Text('${widget.date}',
+                              style: TextStyle(fontSize: 10.0, color: Colors.black54)),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+                SizedBox(height: 10.0),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        '${widget.message}',
+                        style: TextStyle(),
+                        textDirection: TextDirection.rtl,
+                      ),
+                    )
+                  ],
+                ),
+                SizedBox(height: 10.0)
+              ],
+            ),
+          ),
+        ),
+      );
+    }
   }
 }

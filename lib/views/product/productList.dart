@@ -1,5 +1,8 @@
 import 'package:bc_app/providers/authProvider.dart';
 import 'package:bc_app/providers/productProvider.dart';
+import 'package:bc_app/views/_admin/home/homePage_admin.dart';
+import 'package:bc_app/views/_commercial/home/homePage_commercial.dart';
+import 'package:bc_app/views/_revendeur/home/homePage_revendeur.dart';
 import 'package:bc_app/views/home/homePage.dart';
 import 'package:bc_app/views/product/productCategories.dart';
 import 'package:bc_app/views/widgets/appbar.dart';
@@ -44,7 +47,13 @@ class _ProductListState extends State<ProductList> {
             GestureDetector(
               onTap: (){
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => HomePage()));
+                    builder: (context) =>
+                    authProvider.currentUsr.idrole == 3
+                        ?HomePage_Revendeur(index: 1)
+                        :authProvider.currentUsr.idrole == 2
+                        ?HomePage_Commercial(index: 1)
+                        :HomePage_admin(index: 1)
+                ));
               },
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
@@ -83,7 +92,7 @@ class _ProductListState extends State<ProductList> {
                            );
               })
             )
-                :Center(child: Text(authProvider.currentUsr.idrole == 3 ?'لا يوجد منتجات للعرض' :'Aucun produit a afficher'),)
+                :Center(child: Text(authProvider.currentUsr.idrole == 3 ?'لا يوجد منتجات للعرض' :'Aucun produit à afficher'),)
           ],
         ),
       )

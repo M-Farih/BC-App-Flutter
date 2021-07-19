@@ -9,7 +9,6 @@ import 'package:bc_app/views/widgets/reclamationCard.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 
 class ReclamationMenu extends StatefulWidget {
@@ -119,14 +118,15 @@ class _ReclamationMenuState extends State<ReclamationMenu> {
                       ReclamationCard(
                         image: topicProvider.suggestions.first.userImg,
                         phone:topicProvider.suggestions.first.telephone,
-                        reason: topicProvider.suggestions.first.reason,
+                        reason: topicProvider.suggestions.first.idtype_reason.toString(),
                         rec_id: topicProvider.suggestions.first.idtopic,
                         status: topicProvider.suggestions.first.indicator,
                         date: topicProvider.suggestions.first.created_at,
-                        dateToShow: timeago.format(DateTime.parse(topicProvider.suggestions.first.created_at), locale: 'ar'),
+                        dateToShow: topicProvider.suggestions.first.created_at,
                         topic: topicProvider.suggestions.first.reason,
                         message: topicProvider.suggestions.first.description,
                         username: topicProvider.suggestions.first.usersName,
+                        record: topicProvider.suggestions.first.record,
                       ),
                       SizedBox(height: 5),
                       GestureDetector(
@@ -163,14 +163,15 @@ class _ReclamationMenuState extends State<ReclamationMenu> {
                   ReclamationCard(
                     image: topicProvider.reclamations.first.userImg,
                     phone: topicProvider.reclamations.first.telephone,
-                    reason: topicProvider.reclamations.first.reason,
+                    reason: topicProvider.reclamations.first.idtype_reason.toString(),
                     rec_id: topicProvider.reclamations.first.idtopic,
                     status: topicProvider.reclamations.first.indicator,
                     date: topicProvider.reclamations.first.created_at,
-                    dateToShow: timeago.format(DateTime.parse(topicProvider.reclamations.first.created_at), locale: 'ar'),
+                    dateToShow: topicProvider.reclamations.first.created_at,
                     topic: topicProvider.reclamations.first.reason,
                     message: topicProvider.reclamations.first.description,
                     username: topicProvider.reclamations.first.usersName,
+                    record: topicProvider.reclamations.first.record,
                   ),
                   SizedBox(height: 5),
                   GestureDetector(

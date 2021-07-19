@@ -111,6 +111,7 @@ class _ReclamationCardState extends State<ReclamationCard> {
               builder: (context) => ReclamationDetails(
                     img: widget.image,
                     phone: widget.phone,
+                    topic: widget.topic,
                     reason: widget.reason,
                     rec_id: widget.rec_id,
                     Message: widget.message,
@@ -118,6 +119,7 @@ class _ReclamationCardState extends State<ReclamationCard> {
                     date: widget.date,
                     record: widget.record,
                     sellerName: widget.username,
+                    isReclamation: widget.reason == 2 ?true :false,
                   )));
         });
   }

@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 class NombreTotalRevendeurService extends BaseApi{
   
   Future<http.Response> getSellersCount() async{
-    return await api.httpGet('users', '?id=count');
+    return await api.httpGet('users', '?id=count&idrole=3');
   }
 
   Future<http.Response> getStatisticsByCity() async{

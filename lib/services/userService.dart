@@ -32,7 +32,7 @@ class UserService extends BaseApi {
 
     String fileLink;
     var response;
-    var request = http.MultipartRequest('POST', Uri.parse('https://bc.meks.ma/BC/v1/common/'));
+    var request = http.MultipartRequest('POST', Uri.parse('${api.baseUrl}/common/'));
     request.headers.addAll({'Accept': 'Application/json', 'authorization': basicAuth});
 
     String filePath = profileImage.toString();
@@ -106,6 +106,7 @@ class UserService extends BaseApi {
   }
 
   Future<http.Response> getSellersByAgent(int id) async{
+    print('servie ---');
     return await api.httpGet('users', '?agentIduser=$id');
   }
 
@@ -139,7 +140,7 @@ class UserService extends BaseApi {
     String fileLink;
     var response;
 
-    var request = http.MultipartRequest('POST', Uri.parse('https://bc.meks.ma/BC/v1/common/'));
+    var request = http.MultipartRequest('POST', Uri.parse('${api.baseUrl}/common/'));
     request.headers.addAll({'Accept': 'Application/json', 'authorization': basicAuth});
 
 

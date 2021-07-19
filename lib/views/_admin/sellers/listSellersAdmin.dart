@@ -248,7 +248,12 @@ class _ListSellersAdminState extends State<ListSellersAdmin> {
                                         password: userProvider.sellers[index].password,
                                         solde: userProvider.sellers[index].solde,
                                         ristourne: userProvider.sellers[index].ristourne,
+                                        matelas: userProvider.sellers[index].matelas,
+                                        banquette: userProvider.sellers[index].banquette,
+                                        mousse: userProvider.sellers[index].mousse,
+                                        divers: userProvider.sellers[index].divers,
                                         profileImg: '${userProvider.sellers[index].profileImage != "" ? userProvider.sellers[index].profileImage.replaceAll('"', '') : "https://ui-avatars.com/api/?background=FFFFF&color=2C7DBF&name=${userProvider.sellers[index].firstName}+${userProvider.sellers[index].lastName}"}'))
+
                                 );
                               })
 
@@ -468,3 +473,4 @@ class _ListSellersAdminState extends State<ListSellersAdmin> {
   }
 
 }
+

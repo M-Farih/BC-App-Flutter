@@ -154,8 +154,6 @@ class _StartAppState extends State<StartApp> {
       }
     });
     FirebaseMessaging.instance.getToken().then((value) => print('token key  $value'));
-    // FirebaseMessaging.instance.subscribeToTopic("all");
-    // FirebaseMessaging.instance.subscribeToTopic("admin");
 
     WidgetsBinding.instance.addPostFrameCallback((_) async{
       Provider.of<AuthProvider>(context, listen: false).getUserFromSP();

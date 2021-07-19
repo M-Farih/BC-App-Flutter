@@ -1,4 +1,5 @@
 import 'package:bc_app/providers/authProvider.dart';
+import 'package:bc_app/providers/userProvider.dart';
 import 'package:bc_app/views/authentification/loginPage.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -79,6 +80,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
 
 Future<void> _disconnect(context, int roleId) async {
   var authProvider = Provider.of<AuthProvider>(context, listen: false);
+  var userProvider = Provider.of<UserProvider>(context, listen: false);
   print('disc clicked');
   return showDialog<void>(
     context: context,
@@ -92,7 +94,7 @@ Future<void> _disconnect(context, int roleId) async {
         content: SingleChildScrollView(
           child: ListBody(
             children: <Widget>[
-              Text(roleId == 3?'هل أنت متأكد' : 'Êtes-vous sûr', textDirection: TextDirection.rtl),
+              Text(roleId == 3?'هل أنت متأكد؟' : '?Êtes-vous sûr', textDirection: TextDirection.rtl),
             ],
           ),
         ),
@@ -106,8 +108,12 @@ Future<void> _disconnect(context, int roleId) async {
               FirebaseMessaging.instance.unsubscribeFromTopic("users").then((value) {
                 print('users unsubscribed!!');
               });
-
-              authProvider.logout();
+              FirebaseMessaging.instance.unsubscribeFromTopic("revendeurs").then((value) {
+                print('revendeur unsubscribed!!');
+              });
+              authProvider.logout().whenComplete(() {
+                userProvider.sellers.clear();
+              });
               if(roleId == 3){
                 ScaffoldMessenger.of(context)
                     .showSnackBar(const SnackBar(content: Text('تسجيل الخروج')));

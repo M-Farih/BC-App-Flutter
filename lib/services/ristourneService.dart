@@ -71,7 +71,7 @@ class RistourneService extends BaseApi{
     String fileLink;
     var response;
 
-    var request = http.MultipartRequest('POST', Uri.parse('https://bc.meks.ma/BC/v1/common/'));
+    var request = http.MultipartRequest('POST', Uri.parse('${api.baseUrl}/common/'));
     request.headers.addAll({'Accept': 'Application/json', 'authorization': basicAuth});
 
 
