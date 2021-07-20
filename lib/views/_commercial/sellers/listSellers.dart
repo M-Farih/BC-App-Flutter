@@ -129,6 +129,8 @@ class _ListSellersState extends State<ListSellers> {
                                             banquette: userProvider.sellers[index].banquette,
                                             mousse: userProvider.sellers[index].mousse,
                                             divers: userProvider.sellers[index].divers,
+                                            from: userProvider.sellers[index].from_date_ca,
+                                            to: userProvider.sellers[index].to_date_ca,
                                             profileImg: '${userProvider.sellers[index].profileImage != "" ? userProvider.sellers[index].profileImage.replaceAll('"', '') : "https://ui-avatars.com/api/?background=FFFFF&color=2C7DBF&name=${userProvider.sellers[index].firstName}+${userProvider.sellers[index].lastName}"}'))
                                     );
                                   })

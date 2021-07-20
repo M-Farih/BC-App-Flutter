@@ -29,7 +29,7 @@ class reclamationStatistiques extends StatelessWidget {
                 Text('$wCount',
                     style: TextStyle(
                         color: Colors.white,
-                        fontSize: 30,
+                        fontSize: 28,
                         fontWeight: FontWeight.bold)),
                 Text('$wStatus',
                     style: TextStyle(color: Colors.white, fontSize: 17)),

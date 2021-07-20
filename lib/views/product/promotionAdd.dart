@@ -150,7 +150,9 @@ class _PromotionAddState extends State<PromotionAdd> {
                     ),
                     SizedBox(height: 20),
                     Text(
-                      'Ajouter une nouvelle promotion',
+                      authProvider.currentUsr.idrole == 0
+                          ?'Ajouter une nouvelle promotion / annonce'
+                          :'Ajouter une nouvelle promotion',
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),

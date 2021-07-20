@@ -13,9 +13,9 @@ import 'package:provider/provider.dart';
 
 class SellerDetails extends StatefulWidget {
   final int id;
-  final String profileImg, phoneNumber, mail, username, password, solde, ristourne, matelas, banquette, mousse, divers;
+  final String profileImg, phoneNumber, mail, username, password, solde, ristourne, matelas, banquette, mousse, divers, from, to;
 
-  SellerDetails({this.id, this.profileImg, this.phoneNumber, this.mail, this.username, this.password, this.solde, this.ristourne, this.matelas, this.banquette, this.mousse, this.divers});
+  SellerDetails({this.id, this.profileImg, this.phoneNumber, this.mail, this.username, this.password, this.solde, this.ristourne, this.matelas, this.banquette, this.mousse, this.divers, this.from, this.to});
 
   @override
   _SellerDetailsState createState() => _SellerDetailsState();
@@ -125,6 +125,8 @@ class _SellerDetailsState extends State<SellerDetails> {
                             style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
                         Text('Ristourne ${widget.ristourne}',
                             style: TextStyle(color: Colors.white, fontSize: 18)),
+                        Text('Depuis le ${widget.from} au ${widget.to}',
+                            style: TextStyle(color: Colors.white, fontSize: 12.5)),
                       ],
                     ),
                   ),

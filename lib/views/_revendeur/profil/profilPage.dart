@@ -82,8 +82,8 @@ class _ProfilePageState extends State<ProfilePage> {
       city = authProvider.currentUsr.city;
       address = authProvider.currentUsr.address;
       phone = authProvider.currentUsr.telephone;
-      image = authProvider.currentUsr.profileImage.isNotEmpty
-          ? authProvider.currentUsr.profileImage.replaceAll('"', '')
+      image = authProvider.currentUsr.profileImage != null
+          ? authProvider.currentUsr.profileImage
           : "https://ui-avatars.com/api/?background=FFFFF&color=2C7DBF&name=$lname+$fname";
       agentIduser = authProvider.currentUsr.agentIduser;
       role_id = authProvider.currentUsr.idrole;
@@ -127,7 +127,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   Navigator.of(context).push(MaterialPageRoute(
                                       builder: (context) =>
                                       authProvider.currentUsr.idrole == 3
-                                          ?HomePage_Revendeur(index: 2)
+                                          ?HomePage_Revendeur(index: 0)
                                           :authProvider.currentUsr.idrole == 2
                                           ?HomePage_Commercial(index: 2)
                                           :HomePage_admin(index: 2)

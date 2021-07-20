@@ -79,7 +79,7 @@ class _SliderVerticalWidgetState extends State<SliderVerticalWidget> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Image.asset('${widget.imgUrl}', fit: BoxFit.fill, height: 50,),
-                    Text('${widget.title}')
+                    Text('${widget.title}', style: TextStyle(fontSize: 12),)
                   ],
                 ),
               )

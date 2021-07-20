@@ -150,7 +150,7 @@ class _BuildMessageState extends State<BuildMessage> {
                         children: [
                           authProvider.currentUsr.iduser == widget.senderId
                               ?Text('${widget.senderName}')
-                              :Text(widget.senderRoleId != 3 ?'العمبل' :'${widget.senderName}'),
+                              :Text(widget.senderRoleId != 3 ?'العميل' :'${widget.senderName}'),
                           Text('${widget.date}',
                               style: TextStyle(fontSize: 10.0, color: Colors.black54)),
                         ],

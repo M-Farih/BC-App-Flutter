@@ -1,5 +1,6 @@
 import 'package:bc_app/providers/authProvider.dart';
 import 'package:bc_app/providers/userProvider.dart';
+import 'package:bc_app/views/_revendeur/profil/profilPage.dart';
 import 'package:bc_app/views/authentification/loginPage.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +36,11 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
               /// profile
               isSeller
                   ?GestureDetector(
-                onTap: () => Navigator.of(context).pushReplacementNamed('profile'),
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => ProfilePage()
+                  ));
+                },
                 child: Padding(
                   padding: const EdgeInsets.only(left: 10.0),
                   child: Icon(

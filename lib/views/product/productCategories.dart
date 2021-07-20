@@ -295,9 +295,10 @@ class _ProductCategoriesState extends State<ProductCategories> {
                                         children: [
                                           SizedBox(width: 10),
                                           GestureDetector(
-                                            child: Icon(Icons.add,
-                                                color: Color(0xff2C7DBF),
-                                                size: 22),
+                                            child:
+                                                authProvider.currentUsr.idrole == 0
+                                                    ?Icon(Icons.add, color: Color(0xff2C7DBF), size: 22)
+                                                    :SizedBox(),
                                             onTap: () {
                                               Navigator.of(context).push(
                                                   MaterialPageRoute(

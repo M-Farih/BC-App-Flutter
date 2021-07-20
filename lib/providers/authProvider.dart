@@ -129,6 +129,7 @@ class AuthProvider extends BaseProvider{
     final prefs = await SharedPreferences.getInstance();
     var user = jsonDecode(prefs.getString('user'));
     print('user from Sp ==> ${user[0]['iduser']}');
+    print('user from Sp image ==> ${user[0]['profileImage']}');
     print('user from Sp ==> ${user[0]}');
     _currentUsr = null;
     _currentUsr = User.fromJson(user[0]);

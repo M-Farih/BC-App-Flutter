@@ -1,6 +1,8 @@
+import 'package:another_flushbar/flushbar.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:bc_app/providers/authProvider.dart';
 import 'package:bc_app/providers/userProvider.dart';
+import 'package:bc_app/views/_admin/home/homePage_admin.dart';
 import 'package:bc_app/views/_commercial/sellers/sellerDetails.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -176,7 +178,7 @@ class _ListSellersAdminState extends State<ListSellersAdmin> {
                                 ),
                               ),
                               onLongPress: (){
-                                print('long press');
+                                print('long presssssss');
                                 AwesomeDialog(
                                   context: context,
                                   borderSide: BorderSide(color: Color(0xFF2C7DBF), width: 2),
@@ -234,7 +236,15 @@ class _ListSellersAdminState extends State<ListSellersAdmin> {
                                   showCloseIcon: true,
                                   btnOkText: 'Modifier',
                                   btnOkColor: Color(0xFF2C7DBF),
-                                  btnOkOnPress: () {},
+                                  btnOkOnPress: () {
+                                    print('btn ok pressed');
+                                    userProvider.updateUsernameAndPassword(
+                                        userProvider.sellers[index].iduser,
+                                        nameController.text,
+                                        passwordController.text
+                                    );
+                                    _confirmation(context);
+                                  },
                                 )..show();
                               },
                               onTap: () {
@@ -252,8 +262,9 @@ class _ListSellersAdminState extends State<ListSellersAdmin> {
                                         banquette: userProvider.sellers[index].banquette,
                                         mousse: userProvider.sellers[index].mousse,
                                         divers: userProvider.sellers[index].divers,
-                                        profileImg: '${userProvider.sellers[index].profileImage != "" ? userProvider.sellers[index].profileImage.replaceAll('"', '') : "https://ui-avatars.com/api/?background=FFFFF&color=2C7DBF&name=${userProvider.sellers[index].firstName}+${userProvider.sellers[index].lastName}"}'))
-
+                                        from: userProvider.sellers[index].from_date_ca,
+                                        to: userProvider.sellers[index].to_date_ca,
+                                        profileImg: '${userProvider.sellers[index].profileImage != "" ? userProvider.sellers[index].profileImage.replaceAll('"', '') : "https://ui-avatars.com/api/?background=FFFFF&color=2C7DBF&name=${userProvider.sellers[index].firstName}+${userProvider.sellers[index].lastName}"}')),
                                 );
                               })
 
@@ -305,7 +316,7 @@ class _ListSellersAdminState extends State<ListSellersAdmin> {
                                 ),
                               ),
                               onLongPress: (){
-                                print('long press');
+                                print('long pressff');
                                 AwesomeDialog(
                                   context: context,
                                   borderSide: BorderSide(color: Color(0xFF2C7DBF), width: 2),
@@ -361,9 +372,17 @@ class _ListSellersAdminState extends State<ListSellersAdmin> {
                                     ],
                                   ),
                                   showCloseIcon: true,
-                                  btnOkText: 'Modifier',
+                                  btnOkText: 'Modifierr',
                                   btnOkColor: Color(0xFF2C7DBF),
-                                  btnOkOnPress: () {},
+                                  btnOkOnPress: () {
+                                    print('btn ok pressed');
+                                    userProvider.updateUsernameAndPassword(
+                                        userProvider.sellers[index].iduser,
+                                        nameController.text,
+                                        passwordController.text
+                                    );
+                                    _confirmation(context);
+                                  },
                                 )..show();
                               },
                               onTap: () {
@@ -474,3 +493,36 @@ class _ListSellersAdminState extends State<ListSellersAdmin> {
 
 }
 
+Future<void> _confirmation(context) async {
+  var authProvider = Provider.of<AuthProvider>(context, listen: false);
+  print('disc clicked');
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(
+          'Confirmation',
+          textDirection: TextDirection.rtl,
+        ),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text('Opération terminée avec succès', textDirection: TextDirection.ltr),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('Ok', style: TextStyle(color: Colors.red),),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => HomePage_admin(index: 2)
+              ));
+            },
+          ),
+        ],
+      );
+    },
+  );
+}

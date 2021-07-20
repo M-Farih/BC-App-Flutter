@@ -65,7 +65,6 @@ class _RistourneWidgetState extends State<RistourneWidget> {
                           ),
                           Container(
                               width: MediaQuery.of(context).size.width - 50,
-                              height: 166,
                               child: !widget.isLocal
                                   ? Image.network(
                                 '${widget.imageLink}',
