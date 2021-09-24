@@ -16,7 +16,7 @@ class AuthProvider extends BaseProvider{
   List<User> _users = List();
   User _currentUsr;
   int iduser;
-  String solde, from, to;
+  String solde, ristourne, from, to;
   double banquette, divers, matelas, mousse, max;
   List<double> famillesSold;
 
@@ -170,6 +170,7 @@ class AuthProvider extends BaseProvider{
       divers = double.parse(data['data'][0]['divers']);
       matelas = double.parse(data['data'][0]['matelas']);
       mousse = double.parse(data['data'][0]['mousse']);
+      ristourne = data['data'][0]['ristourne'];
 
       famillesSold = [banquette, divers, matelas, mousse];
       max = famillesSold[0];

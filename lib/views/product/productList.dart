@@ -44,34 +44,43 @@ class _ProductListState extends State<ProductList> {
           :SingleChildScrollView(
         child: Column(
           children: [
-            GestureDetector(
-              onTap: (){
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) =>
-                    authProvider.currentUsr.idrole == 3
-                        ?HomePage_Revendeur(index: 1)
-                        :authProvider.currentUsr.idrole == 2
-                        ?HomePage_Commercial(index: 1)
-                        :HomePage_admin(index: 1)
-                ));
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Icon(Icons.arrow_back, size: 17),
-                    Text(
-                      authProvider.currentUsr.idrole == 3
-                          ?'المنتوجات'
-                          :'Produits',
-                      style: TextStyle(
-                          fontSize: 17
+            Row(
+              children: [
+                GestureDetector(
+                  onTap: (){
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) =>
+                        authProvider.currentUsr.idrole == 3
+                            ?HomePage_Revendeur(index: 1)
+                            :authProvider.currentUsr.idrole == 2
+                            ?HomePage_Commercial(index: 1)
+                            :HomePage_admin(index: 1)
+                    ));
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Container(
+                      width: 100,
+                      height: 40,
+                      color: Colors.transparent,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Icon(Icons.arrow_back, size: 17),
+                          Text(
+                            authProvider.currentUsr.idrole == 3
+                                ?'المنتوجات'
+                                :'Produits',
+                            style: TextStyle(
+                                fontSize: 17
+                            ),
+                          )
+                        ],
                       ),
-                    )
-                  ],
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
             productProvider.product.length != 0
                 ?GridView.count(

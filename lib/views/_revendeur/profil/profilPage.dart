@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:bc_app/providers/authProvider.dart';
 import 'package:bc_app/providers/userProvider.dart';
+import 'package:bc_app/services/userService.dart';
 import 'package:bc_app/views/_admin/home/homePage_admin.dart';
 import 'package:bc_app/views/_commercial/home/homePage_commercial.dart';
 import 'package:bc_app/views/_revendeur/home/homePage_revendeur.dart';
@@ -21,10 +22,9 @@ class _ProfilePageState extends State<ProfilePage> {
   bool canEdit;
   bool imageChosen = false;
   int id, role_id, agentIduser, btnColor, btntextColor;
-  String btntext, fname, lname, company, ice, city, address, phone;
+  String btntext, fname, lname, company, ice, city, address, phone, email;
 
-  String image =
-      "https://toppng.com/uploads/preview/donna-picarro-dummy-avatar-115633298255iautrofxa.png";
+  String image = "https://toppng.com/uploads/preview/donna-picarro-dummy-avatar-115633298255iautrofxa.png";
 
   File _image;
   final picker = ImagePicker();
@@ -59,6 +59,8 @@ class _ProfilePageState extends State<ProfilePage> {
     super.initState();
     canEdit = false;
 
+
+
     if (!canEdit) {
       btntext = 'تعديل';
       btntextColor = 0xFF2C7DBF;
@@ -66,36 +68,36 @@ class _ProfilePageState extends State<ProfilePage> {
     }
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<AuthProvider>(context, listen: false).getUserFromSP();
-    });
-    final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    if (!authProvider.spbusy) {
-      print('image --- ${authProvider.currentUsr.profileImage}');
-      print('id --- ${authProvider.iduser}');
-      print('id2 --- ${authProvider.currentUsr.iduser}');
-      print('idrole --- ${authProvider.currentUsr.idrole}');
-      id = authProvider.iduser;
-      fname = authProvider.currentUsr.firstName;
-      lname = authProvider.currentUsr.lastName;
-      company = authProvider.currentUsr.entrepriseName;
-      ice = authProvider.currentUsr.ice;
-      city = authProvider.currentUsr.city;
-      address = authProvider.currentUsr.address;
-      phone = authProvider.currentUsr.telephone;
-      image = authProvider.currentUsr.profileImage != null
-          ? authProvider.currentUsr.profileImage
-          : "https://ui-avatars.com/api/?background=FFFFF&color=2C7DBF&name=$lname+$fname";
-      agentIduser = authProvider.currentUsr.agentIduser;
-      role_id = authProvider.currentUsr.idrole;
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+      Provider.of<AuthProvider>(context, listen: false).getUserFromSP().then((value){
+        Provider.of<UserProvider>(context, listen: false).getSellerByIdForSp(Provider.of<AuthProvider>(context, listen: false).iduser).then((value) {
 
-      fnameController.text = fname;
-      lnameController.text = lname;
-      companyController.text = company;
-      iceController.text = ice;
-      cityController.text = city;
-      addressController.text = address;
-      phoneController.text = phone;
-    }
+          print('hhhhhhhhhh');
+          id = authProvider.iduser;
+          fname = userProvider.currentUser.firstName;
+          lname = userProvider.currentUser.lastName;
+          company = userProvider.currentUser.entrepriseName;
+          ice = userProvider.currentUser.ice;
+          city = userProvider.currentUser.city;
+          address = userProvider.currentUser.address;
+          phone = userProvider.currentUser.telephone;
+          agentIduser = userProvider.currentUser.agentIduser;
+          role_id = userProvider.currentUser.idrole;
+          email = userProvider.currentUser.email;
+
+          fnameController.text = fname;
+          lnameController.text = lname;
+          companyController.text = company;
+          iceController.text = ice;
+          cityController.text = city;
+          addressController.text = address;
+          phoneController.text = phone;
+        });
+
+
+      });
+    });
   }
 
   @override
@@ -112,6 +114,8 @@ class _ProfilePageState extends State<ProfilePage> {
         child: SingleChildScrollView(
           child: authProvider.spbusy
               ? Center(child: CircularProgressIndicator())
+              :userProvider.busy
+              ?Center(child: CircularProgressIndicator())
               : Column(
                   children: [
                     ///back btn & icon-title
@@ -135,17 +139,22 @@ class _ProfilePageState extends State<ProfilePage> {
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.all(20.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Icon(Icons.arrow_back, size: 17),
-                                      Text(
-                                        'رجوع',
-                                        style: TextStyle(
-                                            fontSize: 17.0,
-                                            fontWeight: FontWeight.w300),
-                                      )
-                                    ],
+                                  child: Container(
+                                    width: 80,
+                                    height: 40,
+                                    color: Colors.transparent,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        Icon(Icons.arrow_back, size: 17),
+                                        Text(
+                                          'رجوع',
+                                          style: TextStyle(
+                                              fontSize: 17.0,
+                                              fontWeight: FontWeight.w300),
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
@@ -181,9 +190,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                       SizedBox(height: 10.0),
                                       Container(
                                         child: CircleAvatar(
-                                            radius: 50.0,
+                                            radius: 40.0,
                                             backgroundImage: _image == null
-                                                ? NetworkImage(image)
+                                                ? NetworkImage(userProvider.currentUserImage != "" ?userProvider.currentUserImage :"https://ui-avatars.com/api/?background=FFFFF&color=2C7DBF&name=$lname+$fname")
                                                 : FileImage(_image)),
                                         decoration: new BoxDecoration(
                                           borderRadius: new BorderRadius.all(
@@ -196,8 +205,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                       ),
                                     ],
                                   ),
-                                  canEdit
-                                      ? Positioned(
+
+                                  Positioned(
                                           child: SizedBox(
                                             height: 30,
                                             width: 30,
@@ -210,16 +219,20 @@ class _ProfilePageState extends State<ProfilePage> {
                                                       color: Colors.white)),
                                               color: Color(0xFFF5F6F9),
                                               onPressed: () {
+                                                if(imageChosen){
+                                                  userProvider.updateImage(id, _image.path).then((value) {
+                                                    _confirmation(context, 'لقد تم تحديث الصورة الشخصية');
+                                                  });
+                                                }else
                                                 getImage();
                                               },
-                                              child: Icon(Icons.camera_alt,
+                                              child: Icon(imageChosen ?Icons.upload_rounded :Icons.camera_alt,
                                                   size: 21.0),
                                             ),
                                           ),
                                           bottom: 1,
                                           right: 1,
                                         )
-                                      : SizedBox(),
                                 ],
                               ),
                               SizedBox(height: 05.0),
@@ -228,31 +241,52 @@ class _ProfilePageState extends State<ProfilePage> {
                                   : Container(
                                       width: MediaQuery.of(context).size.width *
                                           0.60,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                      child:
+                                      Column(
                                         children: [
-                                          Text(
-                                            '${authProvider.currentUsr.firstName + ' ' + authProvider.currentUsr.lastName}',
-                                            textDirection: TextDirection.rtl,
-                                            overflow: TextOverflow.ellipsis,
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                '${authProvider.currentUsr.firstName + ' ' + authProvider.currentUsr.lastName}',
+                                                textDirection: TextDirection.rtl,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 20.0),
+                                              ),
+                                            ],
+                                          ),
+                                          authProvider.currentUsr == null
+                                              ? Text('')
+                                              : Text(
+                                            '${authProvider.currentUsr.clientNumber}',
                                             style: TextStyle(
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.bold,
-                                                fontSize: 20.0),
+                                                fontSize: 15),
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                '${authProvider.ristourne}',
+                                                textDirection: TextDirection.rtl,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 20.0),
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),
                                     ),
-                              authProvider.currentUsr == null
-                                  ? Text('')
-                                  : Text(
-                                      '${authProvider.currentUsr.clientNumber}',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15),
-                                    ),
+
                             ],
                           ),
                         )
@@ -327,7 +361,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           GestureDetector(
                             child: ProfilInfoBtn(
                                 btnHeight: 35,
-                                btnWidth: 80,
+                                btnWidth: canEdit ?180 :80,
                                 text: '$btntext',
                                 color: btnColor,
                                 textColor: btntextColor),
@@ -336,7 +370,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               setState(() {
                                 canEdit = !canEdit;
                                 if (canEdit) {
-                                  btntext = 'حفظ';
+                                  btntext = 'إرسال طلب التعديل';
                                   btntextColor = 0xFFFFFFFF;
                                   btnColor = 0xFF2C7DBF;
                                 } else {
@@ -344,36 +378,22 @@ class _ProfilePageState extends State<ProfilePage> {
                                   btntextColor = 0xFF2C7DBF;
                                   btnColor = 0xFFFFFFFF;
                                   setState(() {
-                                    if (imageChosen) {
-                                      print('id to update --> ${id}');
-                                      userProvider.update(
-                                          id,
-                                          authProvider.currentUsr.clientNumber,
-                                          fnameController.text,
-                                          lnameController.text,
-                                          companyController.text,
-                                          iceController.text,
-                                          cityController.text,
-                                          addressController.text,
-                                          phoneController.text,
-                                          role_id,
-                                          _image.path);
-                                    }
-                                    else {
-                                      print('a = ${agentIduser}');
-                                      userProvider.update(
-                                          id,
-                                          authProvider.currentUsr.clientNumber,
-                                          fnameController.text,
-                                          lnameController.text,
-                                          companyController.text,
-                                          iceController.text,
-                                          cityController.text,
-                                          addressController.text,
-                                          phoneController.text,
-                                          role_id,
-                                          "");
-                                    }
+                                    print('a = ${agentIduser}');
+                                    userProvider.update(
+                                        id,
+                                        authProvider.currentUsr.clientNumber,
+                                        fnameController.text,
+                                        lnameController.text,
+                                        companyController.text,
+                                        iceController.text,
+                                        cityController.text,
+                                        addressController.text,
+                                        phoneController.text,
+                                        role_id,
+                                        email
+                                        ).then((value) {
+                                       _confirmation(context, 'لقد تم ارسال طلب التعديل');
+                                    });
                                   });
                                 }
                               });
@@ -388,4 +408,37 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
   }
+}
+
+
+Future<void> _confirmation(context, String text) async {
+  print('disc clicked');
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(
+          'Confirmation',
+          textDirection: TextDirection.rtl,
+        ),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text('$text', textDirection: TextDirection.ltr),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('Ok', style: TextStyle(color: Colors.red),),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => ProfilePage()));
+            },
+          ),
+        ],
+      );
+    },
+  );
 }

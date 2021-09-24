@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:bc_app/providers/authProvider.dart';
 import 'package:bc_app/services/baseApi.dart';
@@ -23,87 +24,63 @@ class UserService extends BaseApi {
     return await api.httpPost('users', '', jsonEncode(body));
   }
 
-  Future<http.Response> update
-      (int id, clientNumber, firstName, lastName, entrepriseName, ice,
-      city, address, telephone, int role_id, profileImage, firstConnection) async {
+  Future<http.Response> update (int id, clientNumber, firstName, lastName, entrepriseName, ice,
+      city, address, telephone, int role_id, email) async {
+
+    Map<String, dynamic> body ={
+          "firstName": firstName,
+          "lastName": lastName,
+          "entrepriseName": entrepriseName,
+          "city": city,
+          "address": address,
+          "telephone": telephone,
+          "email": email,
+          "code": clientNumber,
+          "flagMail": 1
+    };
+
+    return await api.httpPut('/users', '$id', jsonEncode(body));
+
+  }
 
 
+
+
+///----------------------------------------------------------------------------
+  Future<http.Response> updateImage(id, profileImage) async{
+    print('updating image... ${id} ${profileImage}');
     String basicAuth = 'Basic ' + base64Encode(utf8.encode('${api.username}:${api.password}'));
-
-    String fileLink;
     var response;
     var request = http.MultipartRequest('POST', Uri.parse('${api.baseUrl}/common/'));
     request.headers.addAll({'Accept': 'Application/json', 'authorization': basicAuth});
-
     String filePath = profileImage.toString();
 
-    if(filePath != ""){
-      print('0');
-      request.files.add(
-          http.MultipartFile(
-              'file',
-              File(filePath).readAsBytes().asStream(),
-              File(filePath).lengthSync(),
-              filename: filePath.split("/").last
-          )
-      );
-      print('1');
-
-      response = await request.send().then((result) async{
-        http.Response.fromStream(result).then((response){
-          if (true)
-          {
-            fileLink = response.body;
-            fileLink = fileLink.replaceAll("\\", "");
-            return http.put(
-              Uri.parse('${api.baseUrl}/users/$id'),
-              headers: { 'Accept': 'Application/json', 'authorization': basicAuth},
-              body: json.encode({
-                "firstName": firstName,
-                "lastName": lastName,
-                "entrepriseName": entrepriseName,
-                "ice": ice,
-                "city": city,
-                "code": clientNumber,
-                "address": address,
-                "telephone": telephone,
-                "idrole": role_id,
-                "iduser": id,
-                "profileImage": fileLink
-              }),
-            ).then((response) async {
-              print('user modified:: ${response.body}');
-              authProvider.saveUserInSP(jsonDecode(response.body));
-            });
-          }
-        });
-      });
-    }
-    else{
-      print('without imahe ++');
-      response = await request.send().then((result) async{
+    request.files.add(
+        http.MultipartFile(
+            'file',
+            File(filePath).readAsBytes().asStream(),
+            File(filePath).lengthSync(),
+            filename: filePath.split("/").last
+        )
+    );
+    response = await request.send().then((result) async{
+      http.Response.fromStream(result).then((response){
+        String fileLink = response.body;
+        fileLink = fileLink.replaceAll("\\", "");
         return http.put(
           Uri.parse('${api.baseUrl}/users/$id'),
           headers: { 'Accept': 'Application/json', 'authorization': basicAuth},
           body: json.encode({
-            "firstName": firstName,
-            "lastName": lastName,
-            "entrepriseName": entrepriseName,
-            "ice": ice,
-            "city": city,
-            "code": clientNumber,
-            "address": address,
-            "telephone": telephone,
-            "idrole": role_id,
-            "iduser": id
+            "profileImage": fileLink
           }),
-        ).then((response) async {
-          print('user modified:: ${response.body}');
-          authProvider.saveUserInSP(jsonDecode(response.body));
-        });
+        );
       });
-    }
+    });
   }
+///-----------------------------------------------------------------------
+
+
+
 
   Future<http.Response> getSellersByAgent(int id) async{
     print('servie ---');

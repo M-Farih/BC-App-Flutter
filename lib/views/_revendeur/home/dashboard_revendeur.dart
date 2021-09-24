@@ -64,7 +64,24 @@ class _Dashboard_revendeurState extends State<Dashboard_revendeur> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 30.0),
+                  padding: const EdgeInsets.fromLTRB(15.0, 5.0, 15.0, 5.0),
+                  child: Text(
+                    '${authProvider.ristourne}',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 25.0,
+                        fontWeight: FontWeight.bold
+                    ),
+                    textDirection: TextDirection.ltr,
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(15.0, 5.0, 15.0, 5.0),
                   child: Text(
                     '${authProvider.solde} Dhs',
                     style: TextStyle(

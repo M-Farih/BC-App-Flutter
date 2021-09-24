@@ -140,15 +140,20 @@ class _ProductAddState extends State<ProductAdd> {
                           },
                           child: Padding(
                             padding: const EdgeInsets.all(20.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Icon(Icons.arrow_back),
-                                Text(
-                                  'Retour',
-                                  style: TextStyle(fontSize: 20.0),
-                                )
-                              ],
+                            child: Container(
+                              width: 100,
+                              height: 40,
+                              color: Colors.transparent,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Icon(Icons.arrow_back),
+                                  Text(
+                                    'Retour',
+                                    style: TextStyle(fontSize: 20.0),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),

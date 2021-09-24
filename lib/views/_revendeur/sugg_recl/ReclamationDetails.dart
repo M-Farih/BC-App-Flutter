@@ -99,18 +99,24 @@ class _ReclamationDetailsState extends State<ReclamationDetails> {
                                       },
                                     child: Padding(
                                       padding: const EdgeInsets.all(20.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Icon(Icons.arrow_back, size: 16,),
-                                          Text(
-                                            authProvider.currentUsr.idrole == 3
-                                                ?'رجوع'
-                                                :'Retour',
-                                            style: TextStyle(fontSize: 16),
-                                          )
-                                        ],
+                                      child: Container(
+                                        width: 80,
+                                        height: 40,
+                                        color: Colors.transparent,
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Icon(Icons.arrow_back, size: 16,),
+                                            Text(
+                                              authProvider.currentUsr.idrole == 3
+                                                  ?'رجوع'
+                                                  :'Retour',
+                                              style: TextStyle(fontSize: 16),
+                                            )
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -161,18 +167,23 @@ class _ReclamationDetailsState extends State<ReclamationDetails> {
                                     },
                                     child: Padding(
                                       padding: const EdgeInsets.all(20.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.start,
-                                        children: [
-                                          Icon(Icons.arrow_back, size: 16,),
-                                          Text(
-                                            authProvider.currentUsr.idrole == 3
-                                                ?'رجوع'
-                                                :'Retour',
-                                            style: TextStyle(fontSize: 16),
-                                          )
-                                        ],
+                                      child: Container(
+                                        width: 80,
+                                        height: 40,
+                                        color: Colors.transparent,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                          children: [
+                                            Icon(Icons.arrow_back, size: 16,),
+                                            Text(
+                                              authProvider.currentUsr.idrole == 3
+                                                  ?'رجوع'
+                                                  :'Retour',
+                                              style: TextStyle(fontSize: 16),
+                                            )
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),

@@ -41,8 +41,10 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
                       builder: (context) => ProfilePage()
                   ));
                 },
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 10.0),
+                child: Container(
+                  width: 45,
+                  height: 45,
+                  color: Colors.transparent,
                   child: Icon(
                     Icons.person_outline,
                     color: Colors.black54,
@@ -62,11 +64,13 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
               GestureDetector(
                 onTap: () => _disconnect(context, roleId),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 10.0),
-                  child: Icon(
-                    Icons.settings_power,
-                    color: Colors.black54,
+                child: Container(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10.0),
+                    child: Icon(
+                      Icons.settings_power,
+                      color: Colors.black54,
+                    ),
                   ),
                 ),
               )

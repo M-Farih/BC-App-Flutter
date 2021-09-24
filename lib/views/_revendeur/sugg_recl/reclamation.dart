@@ -94,18 +94,23 @@ class _ReclamationState extends State<ReclamationPage> {
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.all(20.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.start,
-                                    children: [
-                                      Icon(Icons.arrow_back, size: 17),
-                                      Text(
-                                        'رجوع',
-                                        style: TextStyle(
-                                            fontSize: 17.0,
-                                            fontWeight: FontWeight.w300),
-                                      )
-                                    ],
+                                  child: Container(
+                                    width: 80,
+                                    height: 40,
+                                    color: Colors.transparent,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.start,
+                                      children: [
+                                        Icon(Icons.arrow_back, size: 17),
+                                        Text(
+                                          'رجوع',
+                                          style: TextStyle(
+                                              fontSize: 17.0,
+                                              fontWeight: FontWeight.w300),
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
@@ -132,7 +137,7 @@ class _ReclamationState extends State<ReclamationPage> {
                                     borderRadius:
                                     BorderRadius.circular(50.0),
                                   ),
-                                  child: Icon(widget.idtype_reason == 2 ?Icons.feedback : Icons.thumb_up, color: Colors.white),
+                                  child: Icon(widget.idtype_reason == 2 ?Icons.feedback: Icons.thumb_up, color: Colors.white),
                                 )
                               ],
                             ),
@@ -404,106 +409,22 @@ class _ReclamationState extends State<ReclamationPage> {
                       ),
                     ),
 
-                    ///send btn
-                    Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          GestureDetector(
-                            child: ProfilInfoBtn(
-                                btnWidth: 80,
-                                btnHeight: 35,
-                                text: 'إرسال',
-                                color: 0xFF2C7DBF,
-                                textColor: 0xFFFFFFFF),
-                            onTap: () {
-                              print(
-                                  'user id ${authProvider.currentUsr.iduser}');
-                              if (_key.currentState.validate()) {
-                                _key.currentState.save();
 
-                                ///call provider
-
-                                if (audio.length > 0) {
-                                  print(
-                                      'send with audio ${audio.length}');
-                                  contactProvider
-                                      .rec_sugg(
-                                      authProvider.currentUsr.iduser,
-                                      valueChoosen,
-                                      messageController.text,
-                                      audio)
-                                      .whenComplete(() {
-                                    setState(() {
-                                      messageController.text = "";
-                                      _init();
-                                      audioController('stop');
-                                      recordState = 0;
-                                      Flushbar(
-                                        flushbarPosition:
-                                        FlushbarPosition.TOP,
-                                        message: "لقد تم الارسال",
-                                        duration: Duration(seconds: 3),
-                                      )..show(context);
-                                    });
-                                  });
-                                } else {
-                                  print('send without audio');
-                                  contactProvider
-                                      .rec_sugg(
-                                      authProvider.currentUsr.iduser,
-                                      valueChoosen,
-                                      messageController.text,
-                                      "")
-                                      .whenComplete(() {
-                                    setState(() {
-                                      messageController.text = "";
-                                      _init();
-                                      audioController('stop');
-                                      recordState = 0;
-                                      Flushbar(
-                                        flushbarPosition:
-                                        FlushbarPosition.TOP,
-                                        message: "لقد تم الارسال",
-                                        duration: Duration(seconds: 3),
-                                      )..show(context);
-                                    });
-                                  });
-                                }
-                              } else
-                                print('is not validate');
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
 
                     ///show history
                     Center(
                       child: Column(
                         children: [
+                          SizedBox(height: 20,),
                           Container(
                             height: 40,
-                            width: 40,
+                            width: 120,
                             decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(60),
+                                borderRadius: BorderRadius.circular(40),
                                 color: widget.idtype_reason == 2 ?Color(0xFFF67B97) :Color(0xFFFC8F6E)),
-                            child: IconButton(
-                              icon: const Icon(
-                                Icons.arrow_drop_down_outlined,
-                                color: Color(0xFFFFFFFF),
-                              ),
-                              tooltip: 'Increase volume by 10',
-                              onPressed: () {
-                                Navigator.of(context).push(
-                                    MaterialPageRoute(builder: (context) => ListReclamation(idreason: widget.idtype_reason,))
-                                );
-                              },
-                            ),
+                            child: Center(child: Text('إرسال', style: TextStyle(color: Color(0xFFFFFFFF), fontSize: 18, fontWeight: FontWeight.bold)))
                           ),
-                          Text(widget.idtype_reason == 2 ?'عرض كل شكاياتي' :'عرض كل اقتراحاتي',
-                              style: TextStyle(color: widget.idtype_reason == 2 ?Color(0xFFF67B97) :Color(0xFFFC8F6E)))
+
                         ],
                       ),
                     )

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class UserProvider extends ChangeNotifier{
+  String _currentUserImage;
   bool busy = true;
   User _currentUser;
   User _userById;
@@ -15,6 +16,7 @@ class UserProvider extends ChangeNotifier{
 
   User get currentUser => _currentUser;
   User get userById => _userById;
+  String get currentUserImage => _currentUserImage;
   List<User> get sellers => _sellers;
   List<User> get tempSellersList => _tempSellersList;
   int myIndex = 0;
@@ -33,11 +35,22 @@ class UserProvider extends ChangeNotifier{
     }
   }
 
-  Future<void> update(int id, clientNumber, firstName, lastName, entrepriseName, ice, city, address, telephone, int role_id, profileImage) async{
+  Future<void> update(int id, clientNumber, firstName, lastName, entrepriseName, ice, city, address, telephone, int role_id, email) async{
     busy = true;
     notifyListeners();
     var response = await _userService.update(id, clientNumber,firstName, lastName, entrepriseName, ice,
-        city, address, telephone, role_id, profileImage, "");
+        city, address, telephone, role_id, email);
+    if(response.statusCode == 201 || response.statusCode == 200) {
+      print('user updated *** ${response.body}');
+      busy = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> updateImage(int id, profileImage) async{
+    busy = true;
+    notifyListeners();
+    var response = await _userService.updateImage(id, profileImage);
     busy = false;
     notifyListeners();
   }
@@ -129,6 +142,26 @@ class UserProvider extends ChangeNotifier{
     if(response.statusCode == 200){
       data = jsonDecode(response.body);
       data['data'].forEach((u) => _userById = User.fromJson(u));
+      busy = false;
+      notifyListeners();
+      print('name === ${_userById.firstName}');
+    }
+  }
+
+  Future<void> getSellerByIdForSp(int id) async{
+    busy = true;
+    notifyListeners();
+    var data;
+    var response = await _userService.getSellerById(id);
+    if(response.statusCode == 200){
+      data = jsonDecode(response.body);
+      _currentUserImage = data['data'][0]['profileImage'].toString().replaceAll('"', '').trim();
+      data['data'].forEach((u) => _userById = User.fromJson(u));
+      _currentUser = _userById;
+      print('test*-*--*-* ${_currentUser.firstName} ---');
+      authProvider.saveUserInSP(data).then((value) {
+        print('ok-----ok');
+      });
       busy = false;
       notifyListeners();
       print('name === ${_userById.firstName}');

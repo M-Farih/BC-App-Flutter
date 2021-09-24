@@ -65,15 +65,20 @@ class _SellerDetailsState extends State<SellerDetails> {
                               },
                               child: Padding(
                                 padding: const EdgeInsets.all(20.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Icon(Icons.arrow_back, size: 17),
-                                    Text(
-                                      'رجوع',
-                                      style: TextStyle(fontSize: 17),
-                                    )
-                                  ],
+                                child: Container(
+                                  width: 80,
+                                  height: 40,
+                                  color: Colors.transparent,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Icon(Icons.arrow_back, size: 17),
+                                      Text(
+                                        'رجوع',
+                                        style: TextStyle(fontSize: 17),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
