@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "87715310556",
-    "project_id": "bc-test-2-150d4",
-    "storage_bucket": "bc-test-2-150d4.appspot.com"
+    "project_number": "204006651296",
+    "project_id": "bonbino-confort",
+    "storage_bucket": "bonbino-confort.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:87715310556:android:786345ea5c0b8b1b8a3d19",
+        "mobilesdk_app_id": "1:204006651296:android:15d0dfe9ba865bb17520c5",
         "android_client_info": {
           "package_name": "com.bc.bc_app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "87715310556-ih525ltgpdtlirmq2jiiqnhhh1sq86mf.apps.googleusercontent.com",
+          "client_id": "204006651296-0jfj2fbuelc0i1ue65euesgkv2lsrpc5.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAGM-2tY-_y3w9ORaMpKjj3Zqyy8aFwgoc"
+          "current_key": "AIzaSyACQh0rGYgoQOudrx0dC-jiY1sNmymx1-A"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "87715310556-ih525ltgpdtlirmq2jiiqnhhh1sq86mf.apps.googleusercontent.com",
+              "client_id": "204006651296-0jfj2fbuelc0i1ue65euesgkv2lsrpc5.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

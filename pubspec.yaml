@@ -106,6 +106,7 @@ flutter:
     - assets/images/bclogo.jpg
     - assets/images/promo.png
     - assets/images/adminbc.png
+    - assets/images/dummyproduct.jpg
     - assets/send.mp3
 
 

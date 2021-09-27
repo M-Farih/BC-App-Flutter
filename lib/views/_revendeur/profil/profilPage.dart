@@ -73,7 +73,6 @@ class _ProfilePageState extends State<ProfilePage> {
       Provider.of<AuthProvider>(context, listen: false).getUserFromSP().then((value){
         Provider.of<UserProvider>(context, listen: false).getSellerByIdForSp(Provider.of<AuthProvider>(context, listen: false).iduser).then((value) {
 
-          print('hhhhhhhhhh');
           id = authProvider.iduser;
           fname = userProvider.currentUser.firstName;
           lname = userProvider.currentUser.lastName;
@@ -94,8 +93,6 @@ class _ProfilePageState extends State<ProfilePage> {
           addressController.text = address;
           phoneController.text = phone;
         });
-
-
       });
     });
   }

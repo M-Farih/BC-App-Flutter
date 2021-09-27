@@ -37,7 +37,6 @@ class _UploadCsvState extends State<UploadCsv> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     var progressDialog = ProgressDialog(context);
@@ -134,6 +133,10 @@ class _UploadCsvState extends State<UploadCsv> {
               ),
             ),
 
+            Text('Ajouter un fichier csv',
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black38),
+              textAlign: TextAlign.center,
+            ),
           ],
         ),
       ),

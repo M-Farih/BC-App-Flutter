@@ -48,7 +48,9 @@ class _ProductCardState extends State<ProductCard> {
                     SizedBox(height: 20.0),
                     SizedBox(
                         height: 120,
-                        child: Image.network('${widget.imgPath}', fit: BoxFit.contain,)
+                        child: widget.imgPath != ""
+                            ?Image.network('${widget.imgPath}', fit: BoxFit.contain)
+                            :Image.asset('assets/images/dummyproduct.jpg')
                     ),
                     SizedBox(height: 20.0),
                     Row(
