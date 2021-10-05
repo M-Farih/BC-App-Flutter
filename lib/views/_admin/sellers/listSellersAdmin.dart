@@ -37,6 +37,9 @@ class _ListSellersAdminState extends State<ListSellersAdmin> {
   @override
   void dispose() {
     _scrollController.dispose();
+    var userProvider = Provider.of<UserProvider>(context, listen: false);
+    userProvider.sellers.clear();
+    userProvider.tempSellersList.clear();
     super.dispose();
   }
 
@@ -132,6 +135,7 @@ class _ListSellersAdminState extends State<ListSellersAdmin> {
                   itemCount: userProvider.myIndex,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
+                    ///super admin
                     if(authProvider.currentUsr.idrole == 0){
                       return Container(
                           decoration: BoxDecoration(
@@ -248,6 +252,7 @@ class _ListSellersAdminState extends State<ListSellersAdmin> {
                                 )..show();
                               },
                               onTap: () {
+                                print('clicked user data 1 ==> ${userProvider.sellers[index].mousse}');
                                 userProvider.busy = true;
                                 Navigator.of(context).push(
                                     MaterialPageRoute(builder: (context) => SellerDetails(
@@ -270,6 +275,7 @@ class _ListSellersAdminState extends State<ListSellersAdmin> {
 
                       );
                     }
+                    ///admin
                     else if(authProvider.currentUsr.idrole == 1){
                       return Container(
                           decoration: BoxDecoration(
@@ -386,6 +392,8 @@ class _ListSellersAdminState extends State<ListSellersAdmin> {
                                 )..show();
                               },
                               onTap: () {
+                                print('clicked user data 2 ==> ${userProvider.sellers[index].mousse}');
+
                                 userProvider.busy = true;
                                 Navigator.of(context).push(
                                     MaterialPageRoute(builder: (context) => SellerDetails(
@@ -396,11 +404,18 @@ class _ListSellersAdminState extends State<ListSellersAdmin> {
                                         password: userProvider.sellers[index].password,
                                         solde: userProvider.sellers[index].solde,
                                         ristourne: userProvider.sellers[index].ristourne,
-                                        profileImg: '${userProvider.sellers[index].profileImage != "" ? userProvider.sellers[index].profileImage.replaceAll('"', '') : "https://ui-avatars.com/api/?background=FFFFF&color=2C7DBF&name=${userProvider.sellers[index].firstName}+${userProvider.sellers[index].lastName}"}'))
+                                        matelas: userProvider.sellers[index].matelas,
+                                        banquette: userProvider.sellers[index].banquette,
+                                        mousse: userProvider.sellers[index].mousse,
+                                        divers: userProvider.sellers[index].divers,
+                                        from: userProvider.sellers[index].from_date_ca,
+                                        to: userProvider.sellers[index].to_date_ca,
+                                        profileImg: '${userProvider.sellers[index].profileImage != "" ? userProvider.sellers[index].profileImage.replaceAll('"', '') : "https://ui-avatars.com/api/?background=FFFFF&color=2C7DBF&name=${userProvider.sellers[index].firstName}+${userProvider.sellers[index].lastName}"}')),
                                 );
                               })
                       );
                     }
+                    ///commercial
                     else{
                       return ListTile(
                           leading: CircleAvatar(
@@ -425,7 +440,13 @@ class _ListSellersAdminState extends State<ListSellersAdmin> {
                                     password: userProvider.sellers[index].password,
                                     solde: userProvider.sellers[index].solde,
                                     ristourne: userProvider.sellers[index].ristourne,
-                                    profileImg: '${userProvider.sellers[index].profileImage != "" ? userProvider.sellers[index].profileImage.replaceAll('"', '') : "https://ui-avatars.com/api/?background=FFFFF&color=2C7DBF&name=${userProvider.sellers[index].firstName}+${userProvider.sellers[index].lastName}"}'))
+                                    matelas: userProvider.sellers[index].matelas,
+                                    banquette: userProvider.sellers[index].banquette,
+                                    mousse: userProvider.sellers[index].mousse,
+                                    divers: userProvider.sellers[index].divers,
+                                    from: userProvider.sellers[index].from_date_ca,
+                                    to: userProvider.sellers[index].to_date_ca,
+                                    profileImg: '${userProvider.sellers[index].profileImage != "" ? userProvider.sellers[index].profileImage.replaceAll('"', '') : "https://ui-avatars.com/api/?background=FFFFF&color=2C7DBF&name=${userProvider.sellers[index].firstName}+${userProvider.sellers[index].lastName}"}')),
                             );
                           });
                     }

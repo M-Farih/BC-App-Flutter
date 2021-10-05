@@ -121,8 +121,11 @@ Future<void> _disconnect(context, int roleId) async {
                 print('revendeur unsubscribed!!');
               });
               authProvider.logout().whenComplete(() {
+                ///clear all lists
                 userProvider.sellers.clear();
+                userProvider.tempSellersList.clear();
               });
+
               if(roleId == 3){
                 ScaffoldMessenger.of(context)
                     .showSnackBar(const SnackBar(content: Text('تسجيل الخروج')));
@@ -130,7 +133,7 @@ Future<void> _disconnect(context, int roleId) async {
                 ScaffoldMessenger.of(context)
                     .showSnackBar(const SnackBar(content: Text('Déconnexion')));
               }
-              Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
+              Navigator.of(context).pushNamedAndRemoveUntil(LoginPage.routeName, (Route<dynamic> route) => false);
             },
           ),
           FlatButton(

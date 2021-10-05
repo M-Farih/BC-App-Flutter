@@ -91,6 +91,7 @@ class UserProvider extends ChangeNotifier{
     else if(idRole == 1){
       List<User> _sellersList = List();
       List<User> _commercialsList = List();
+      tempSellersList.clear();
       var response = await _userService.getSellersByidRole("3");
       if(response.statusCode == 200){
         var data = jsonDecode(response.body);
@@ -106,7 +107,7 @@ class UserProvider extends ChangeNotifier{
         _commercialsList = tempSellersList;
       }
       _sellers = new List.from(_commercialsList)..addAll(_sellersList);
-      _sellers.removeWhere((element) => element.iduser == authProvider.iduser);
+      _sellers.removeWhere((element) => element.idrole == 1);
       print('////// ${_sellers[0].userName}');
       if(_sellers.length > 150){
         myIndex = 80;

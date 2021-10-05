@@ -32,7 +32,6 @@ class _BeASellerState extends State<BeASeller> {
     var progressDialog = ProgressDialog(context);
 
     return WillPopScope(
-      onWillPop: () async => false,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: Center(

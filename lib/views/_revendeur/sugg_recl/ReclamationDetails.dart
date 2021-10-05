@@ -59,7 +59,7 @@ class _ReclamationDetailsState extends State<ReclamationDetails> {
         statusColor = 0xFF1DC1C3;
         break;
     }
-    print('-------- /  ${widget.reason}  /------------');
+    print('-------- /  ${widget.img}  /------------');
   }
 
   @override

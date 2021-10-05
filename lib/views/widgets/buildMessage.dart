@@ -30,8 +30,6 @@ class _BuildMessageState extends State<BuildMessage> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<AuthProvider>(context, listen: false).getUserFromSP();
     });
-
-    print('snder role id --> ${widget.senderRoleId}');
   }
 
   ///admin box decoration
@@ -68,7 +66,7 @@ class _BuildMessageState extends State<BuildMessage> {
   Widget build(BuildContext context) {
     var authProvider = Provider.of<AuthProvider>(context, listen: true);
     String userImage = authProvider.currentUsr.profileImage != "" ?authProvider.currentUsr.profileImage.replaceAll('"', '').trim() :"https://ui-avatars.com/api/?background=FFFFF&color=2C7DBF&name=${authProvider.currentUsr.lastName}+${authProvider.currentUsr.firstName}";
-
+    print('-----> ${widget.senderRoleId}');
     if(authProvider.currentUsr.idrole != 3){
       return authProvider.spbusy
           ? Center(child: CircularProgressIndicator())
@@ -87,7 +85,7 @@ class _BuildMessageState extends State<BuildMessage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    widget.senderRoleId == 1
+                    widget.senderRoleId != 3
                         ?CircleAvatar(backgroundImage: AssetImage('assets/images/adminbc.png'))
                         :CircleAvatar(backgroundImage: NetworkImage(widget.img),),
                     Padding(
@@ -140,9 +138,10 @@ class _BuildMessageState extends State<BuildMessage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    widget.senderRoleId == 1
-                        ?CircleAvatar(backgroundImage: AssetImage('assets/images/adminbc.png'))
-                        :CircleAvatar(backgroundImage: NetworkImage(widget.img),),
+                    widget.senderRoleId != 3
+                    ?CircleAvatar(backgroundImage: AssetImage('assets/images/adminbc.png'))
+                    :CircleAvatar(backgroundImage: NetworkImage(widget.img),),
+
                     Padding(
                       padding: const EdgeInsets.all(6.0),
                       child: Column(

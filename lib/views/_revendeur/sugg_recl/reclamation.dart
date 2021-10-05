@@ -5,9 +5,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:bc_app/providers/authProvider.dart';
 import 'package:bc_app/providers/contactProvider.dart';
 import 'package:bc_app/providers/reasonProvider.dart';
-import 'package:bc_app/views/_revendeur/sugg_recl/listReclamation.dart';
 import 'package:bc_app/views/widgets/appbar.dart';
-import 'package:bc_app/views/widgets/profilInfoBtn.dart';
 import 'package:file/file.dart';
 import 'package:file/local.dart';
 import 'package:file_picker/file_picker.dart';
@@ -16,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_audio_recorder/flutter_audio_recorder.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
 
 class ReclamationPage extends StatefulWidget {
@@ -50,6 +49,8 @@ class _ReclamationState extends State<ReclamationPage> {
 
   final _key = GlobalKey<FormState>();
 
+
+
   @override
   void initState() {
     // TODO: implement initState
@@ -67,6 +68,8 @@ class _ReclamationState extends State<ReclamationPage> {
     var reasonProvider = Provider.of<ReasonProvider>(context, listen: true);
     var contactProvider = Provider.of<ContactProvider>(context, listen: true);
     var authProvider = Provider.of<AuthProvider>(context, listen: true);
+
+    var progressDialog = ProgressDialog(context);
     return Scaffold(
       appBar: MyAppBar(
         isSeller: authProvider.currentUsr.idrole == 3 ? true: false, roleId: authProvider.currentUsr.idrole,),
@@ -411,18 +414,78 @@ class _ReclamationState extends State<ReclamationPage> {
 
 
 
-                    ///show history
+                    ///send btn
                     Center(
                       child: Column(
                         children: [
                           SizedBox(height: 20,),
-                          Container(
-                            height: 40,
-                            width: 120,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(40),
-                                color: widget.idtype_reason == 2 ?Color(0xFFF67B97) :Color(0xFFFC8F6E)),
-                            child: Center(child: Text('إرسال', style: TextStyle(color: Color(0xFFFFFFFF), fontSize: 18, fontWeight: FontWeight.bold)))
+                          GestureDetector(
+                            child: Container(
+                              height: 40,
+                              width: 120,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(40),
+                                  color: widget.idtype_reason == 2 ?Color(0xFFF67B97) :Color(0xFFFC8F6E)),
+                              child: Center(child: Text('إرسال', style: TextStyle(color: Color(0xFFFFFFFF), fontSize: 18, fontWeight: FontWeight.bold)))
+                            ),
+                            onTap: () {
+                              print(
+                                  'user id ${authProvider.currentUsr.iduser}');
+                              if (_key.currentState.validate()) {
+                                _key.currentState.save();
+                                progressDialog.show();
+                                ///call provider
+                                if (audio.length > 0) {
+                                  print(
+                                      'send with audio ${audio.length}');
+                                  contactProvider
+                                      .rec_sugg(
+                                      authProvider.currentUsr.iduser,
+                                      valueChoosen,
+                                      messageController.text,
+                                      audio)
+                                      .whenComplete(() {
+                                    progressDialog.hide();
+                                    setState(() {
+                                      messageController.text = "";
+                                      _init();
+                                      audioController('stop');
+                                      recordState = 0;
+                                      Flushbar(
+                                        flushbarPosition:
+                                        FlushbarPosition.TOP,
+                                        message: "لقد تم الارسال",
+                                        duration: Duration(seconds: 3),
+                                      )..show(context);
+                                    });
+                                  });
+                                } else {
+                                  print('send without audio');
+                                  contactProvider
+                                      .rec_sugg(
+                                      authProvider.currentUsr.iduser,
+                                      valueChoosen,
+                                      messageController.text,
+                                      "")
+                                      .then((f) {
+
+                                    setState(() {
+                                      messageController.text = "";
+                                      _init();
+                                      audioController('stop');
+                                      recordState = 0;
+                                      Flushbar(
+                                        flushbarPosition:
+                                        FlushbarPosition.TOP,
+                                        message: "لقد تم الارسال",
+                                        duration: Duration(seconds: 3),
+                                      )..show(context).then((value) => progressDialog.hide());
+                                    });
+                                  });
+                                }
+                              } else
+                                print('is not validate');
+                            },
                           ),
 
                         ],

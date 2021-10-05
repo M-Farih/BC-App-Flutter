@@ -3,6 +3,9 @@ import 'dart:io';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:bc_app/providers/authProvider.dart';
 import 'package:bc_app/providers/promotionProvider.dart';
+import 'package:bc_app/views/_admin/home/homePage_admin.dart';
+import 'package:bc_app/views/_commercial/home/homePage_commercial.dart';
+import 'package:bc_app/views/_revendeur/home/homePage_revendeur.dart';
 import 'package:bc_app/views/authentification/loginPage.dart';
 import 'package:bc_app/views/widgets/appbar.dart';
 import 'package:file_picker/file_picker.dart';
@@ -109,145 +112,334 @@ class _PromotionAddState extends State<PromotionAdd> {
     var authProvider = Provider.of<AuthProvider>(context);
     var promoProvider = Provider.of<PromotionProvider>(context);
     var progressDialog = ProgressDialog(context);
-    return Scaffold(
-      appBar: MyAppBar(
-          isSeller: authProvider.currentUsr.idrole == 3 ? true : false),
-      body: promoProvider.isBusy
-          ? Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-              child: Center(
-                child: Column(
-                  children: [
-                    /// back btn & icon-title
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Center(
-                          child: Row(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context).pushReplacementNamed('home-admin');
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.all(20.0),
-                                  child: Container(
-                                    width: 100,
-                                    height: 40,
-                                    color: Colors.transparent,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        Icon(Icons.arrow_back),
-                                        Text(
-                                          'Retour',
-                                          style: TextStyle(fontSize: 20.0),
-                                        )
-                                      ],
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) =>
+            authProvider.currentUsr.idrole == 3
+                ?HomePage_Revendeur(index: 0)
+                :authProvider.currentUsr.idrole == 2
+                ?HomePage_Commercial(index: 0)
+                :HomePage_admin(index: 0)
+        ));
+      },
+      child: Scaffold(
+        appBar: MyAppBar(
+            isSeller: authProvider.currentUsr.idrole == 3 ? true : false),
+        body: promoProvider.isBusy
+            ? Center(child: CircularProgressIndicator())
+            : SingleChildScrollView(
+                child: Center(
+                  child: Column(
+                    children: [
+                      /// back btn & icon-title
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Center(
+                            child: Row(
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context).pushReplacementNamed('home-admin');
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(20.0),
+                                    child: Container(
+                                      width: 100,
+                                      height: 40,
+                                      color: Colors.transparent,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          Icon(Icons.arrow_back),
+                                          Text(
+                                            'Retour',
+                                            style: TextStyle(fontSize: 20.0),
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 20),
-                    Text(
-                      authProvider.currentUsr.idrole == 0
-                          ?'Ajouter une nouvelle promotion / annonce'
-                          :'Ajouter une nouvelle promotion',
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
+                        ],
+                      ),
+                      SizedBox(height: 20),
+                      Text(
+                        authProvider.currentUsr.idrole == 0
+                            ?'Ajouter une nouvelle promotion / annonce'
+                            :'Ajouter une nouvelle promotion',
+                        style:
+                            TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
 
-                    /// add
-                    Column(
-                      children: [
-                        SizedBox(height: 20),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              ///promo
-                              Column(
-                                children: [
-                                  Card(
-                                    child: Container(
-                                      height: 180,
-                                      width: MediaQuery.of(context).size.width * 0.6,
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            width: 140,
-                                            height: 140,
-                                            child: _image == null
-                                                ? Center(
-                                                    child:
-                                                    !imageChosen
-                                                        ? GestureDetector(
-                                                      child: Icon(
-                                                          Icons.photo_camera,
-                                                          color: Colors.black54,
-                                                          size: 50,
+                      /// add
+                      Column(
+                        children: [
+                          SizedBox(height: 20),
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 20),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                ///promo
+                                Column(
+                                  children: [
+                                    Card(
+                                      child: Container(
+                                        height: 180,
+                                        width: MediaQuery.of(context).size.width * 0.6,
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              width: 140,
+                                              height: 140,
+                                              child: _image == null
+                                                  ? Center(
+                                                      child:
+                                                      !imageChosen
+                                                          ? GestureDetector(
+                                                        child: Icon(
+                                                            Icons.photo_camera,
+                                                            color: Colors.black54,
+                                                            size: 50,
+                                                        ),
+                                                        onTap: () => getImage(),
+                                                      )
+                                                          : GestureDetector(
+                                                        child: Icon(
+                                                            Icons.file_upload,
+                                                            size: 30,
+                                                            color: Color(0xFF2C7DBF)),
+                                                        onTap: () async {
+                                                          if (_image != null) {
+                                                            progressDialog.show();
+                                                            promoProvider
+                                                                .addPromo(
+                                                                _image.path, "2")
+                                                                .whenComplete(() {
+                                                              progressDialog.hide();
+                                                              _confirmation(context);
+                                                            });
+                                                          } else {
+                                                            Flushbar(
+                                                              flushbarPosition:
+                                                              FlushbarPosition
+                                                                  .TOP,
+                                                              message:
+                                                              "Aucune photo selectionée",
+                                                              backgroundColor:
+                                                              Colors.red,
+                                                              duration: Duration(
+                                                                  seconds: 3),
+                                                            )..show(context);
+                                                          }
+                                                        },
+                                                      )
+                                                    )
+                                                  : Stack(
+                                                    fit: StackFit.expand,
+                                                    children:[
+                                                      Image.file(
+                                                        _image,
+                                                        fit: BoxFit.cover,
                                                       ),
-                                                      onTap: () => getImage(),
-                                                    )
-                                                        : GestureDetector(
-                                                      child: Icon(
-                                                          Icons.file_upload,
-                                                          size: 30,
-                                                          color: Color(0xFF2C7DBF)),
-                                                      onTap: () async {
-                                                        if (_image != null) {
-                                                          progressDialog.show();
-                                                          promoProvider
-                                                              .addPromo(
-                                                              _image.path, "2")
-                                                              .whenComplete(() {
-                                                            progressDialog.hide();
-                                                            _confirmation(context);
-                                                          });
-                                                        } else {
-                                                          Flushbar(
-                                                            flushbarPosition:
-                                                            FlushbarPosition
-                                                                .TOP,
-                                                            message:
-                                                            "Aucune photo selectionée",
-                                                            backgroundColor:
-                                                            Colors.red,
-                                                            duration: Duration(
-                                                                seconds: 3),
-                                                          )..show(context);
-                                                        }
-                                                      },
-                                                    )
+                                                      Padding(
+                                                          padding: EdgeInsets.all(8.0),
+                                                          child: RaisedButton(
+                                                            color: Colors.white.withOpacity(0.6),
+                                                              onPressed: (){
+                                                                if (_image != null) {
+                                                                  progressDialog.show();
+                                                                  promoProvider
+                                                                      .addPromo(
+                                                                      _image.path, "2")
+                                                                      .whenComplete(() {
+                                                                    progressDialog.hide();
+                                                                    _confirmation(context);
+                                                                   });
+                                                                } else {
+                                                                  Flushbar(
+                                                                    flushbarPosition:
+                                                                    FlushbarPosition
+                                                                        .TOP,
+                                                                    message:
+                                                                    "Aucune photo selectionnée",
+                                                                    backgroundColor:
+                                                                    Colors.red,
+                                                                    duration: Duration(
+                                                                        seconds: 3),
+                                                                  )..show(context);
+                                                                }
+                                                              },
+                                                              child: Icon(
+                                                                  Icons.upload_rounded,
+                                                                color: Colors.white,
+                                                                size: 40,
+                                                              )
+                                                          )
+                                                      ),
+                                                    ]
+                                                  ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Text(
+                                      'Promotion',
+                                      style: TextStyle(color: Colors.black54),
+                                    )
+                                  ],
+                                ),
+                                ///pdf
+                                Column(
+                                  children: [
+                                    Card(
+                                      child: Container(
+                                        height: 180,
+                                        width: MediaQuery.of(context).size.width *
+                                            0.3,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            !pdfChosen
+                                                ? GestureDetector(
+                                                    child: Icon(
+                                                      Icons.picture_as_pdf,
+                                                      color: Color(pdfIconColor),
+                                                      size: 50,
+                                                    ),
+                                                    onTap: () => getPdf(),
                                                   )
-                                                : Stack(
+                                                : GestureDetector(
+                                                    child: Icon(
+                                                      Icons.file_upload,
+                                                      color: Color(pdfIconColor),
+                                                      size: 50,
+                                                    ),
+                                                    onTap: () async {
+                                                      if (_pdf != null) {
+                                                        progressDialog.show();
+                                                        promoProvider
+                                                            .addPdf(_pdf.path)
+                                                            .whenComplete(() {
+                                                          progressDialog.hide();
+                                                          _confirmation(context);
+                                                        });
+                                                      } else {
+                                                        Flushbar(
+                                                          flushbarPosition:
+                                                              FlushbarPosition
+                                                                  .TOP,
+                                                          message:
+                                                              "Aucun catalogue selectionné",
+                                                          backgroundColor:
+                                                              Colors.red,
+                                                          duration: Duration(
+                                                              seconds: 3),
+                                                        )..show(context);
+                                                      }
+                                                    },
+                                                  ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Text('Catalogue',
+                                        style: TextStyle(color: Colors.black54))
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                          authProvider.currentUsr.idrole == 0
+                              ?Padding(
+                            padding: const EdgeInsets.only(bottom: 20),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Column(
+                                  children: [
+                                    Card(
+                                      child: Container(
+                                        height: 180,
+                                        width: MediaQuery.of(context).size.width * 0.6,
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              width: 140,
+                                              height: 140,
+                                              child: _annonce == null
+                                                  ? Center(
+                                                  child:
+                                                  !annonceChosen
+                                                      ? GestureDetector(
+                                                    child: Icon(
+                                                      Icons.photo_camera,
+                                                      color: Colors.black54,
+                                                      size: 50,
+                                                    ),
+                                                    onTap: () => getAnnonce(),
+                                                  )
+                                                      : GestureDetector(
+                                                    child: Icon(
+                                                        Icons.file_upload,
+                                                        size: 30,
+                                                        color: Color(0xFF2C7DBF)),
+                                                    onTap: () async {
+                                                      if (_annonce != null) {
+                                                        progressDialog.show();
+                                                        promoProvider
+                                                            .addAnnonce(
+                                                            _annonce.path)
+                                                            .whenComplete(() {
+                                                          progressDialog.hide();
+                                                          _confirmation(context);
+                                                        });
+                                                      } else {
+                                                        Flushbar(
+                                                          flushbarPosition:
+                                                          FlushbarPosition
+                                                              .TOP,
+                                                          message:
+                                                          "Aucune photo selectionée",
+                                                          backgroundColor:
+                                                          Colors.red,
+                                                          duration: Duration(
+                                                              seconds: 3),
+                                                        )..show(context);
+                                                      }
+                                                    },
+                                                  )
+                                              )
+                                                  : Stack(
                                                   fit: StackFit.expand,
                                                   children:[
                                                     Image.file(
-                                                      _image,
+                                                      _annonce,
                                                       fit: BoxFit.cover,
                                                     ),
                                                     Padding(
                                                         padding: EdgeInsets.all(8.0),
                                                         child: RaisedButton(
-                                                          color: Colors.white.withOpacity(0.6),
+                                                            color: Colors.white.withOpacity(0.6),
                                                             onPressed: (){
-                                                              if (_image != null) {
+                                                              if (_annonce != null) {
                                                                 progressDialog.show();
                                                                 promoProvider
-                                                                    .addPromo(
-                                                                    _image.path, "2")
+                                                                    .addAnnonce(
+                                                                    _annonce.path)
                                                                     .whenComplete(() {
                                                                   progressDialog.hide();
                                                                   _confirmation(context);
-                                                                 });
+                                                                });
                                                               } else {
                                                                 Flushbar(
                                                                   flushbarPosition:
@@ -263,269 +455,92 @@ class _PromotionAddState extends State<PromotionAdd> {
                                                               }
                                                             },
                                                             child: Icon(
-                                                                Icons.upload_rounded,
+                                                              Icons.upload_rounded,
                                                               color: Colors.white,
                                                               size: 40,
                                                             )
                                                         )
                                                     ),
                                                   ]
-                                                ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  Text(
-                                    'Promotion',
-                                    style: TextStyle(color: Colors.black54),
-                                  )
-                                ],
-                              ),
-                              ///pdf
-                              Column(
-                                children: [
-                                  Card(
-                                    child: Container(
-                                      height: 180,
-                                      width: MediaQuery.of(context).size.width *
-                                          0.3,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          !pdfChosen
-                                              ? GestureDetector(
-                                                  child: Icon(
-                                                    Icons.picture_as_pdf,
-                                                    color: Color(pdfIconColor),
-                                                    size: 50,
-                                                  ),
-                                                  onTap: () => getPdf(),
-                                                )
-                                              : GestureDetector(
-                                                  child: Icon(
-                                                    Icons.file_upload,
-                                                    color: Color(pdfIconColor),
-                                                    size: 50,
-                                                  ),
-                                                  onTap: () async {
-                                                    if (_pdf != null) {
-                                                      progressDialog.show();
-                                                      promoProvider
-                                                          .addPdf(_pdf.path)
-                                                          .whenComplete(() {
-                                                        progressDialog.hide();
-                                                        _confirmation(context);
-                                                      });
-                                                    } else {
-                                                      Flushbar(
-                                                        flushbarPosition:
-                                                            FlushbarPosition
-                                                                .TOP,
-                                                        message:
-                                                            "Aucun catalogue selectionné",
-                                                        backgroundColor:
-                                                            Colors.red,
-                                                        duration: Duration(
-                                                            seconds: 3),
-                                                      )..show(context);
-                                                    }
-                                                  },
-                                                ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  Text('Catalogue',
-                                      style: TextStyle(color: Colors.black54))
-                                ],
-                              )
-                            ],
-                          ),
-                        ),
-                        authProvider.currentUsr.idrole == 0
-                            ?Padding(
-                          padding: const EdgeInsets.only(bottom: 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Column(
-                                children: [
-                                  Card(
-                                    child: Container(
-                                      height: 180,
-                                      width: MediaQuery.of(context).size.width * 0.6,
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            width: 140,
-                                            height: 140,
-                                            child: _annonce == null
-                                                ? Center(
-                                                child:
-                                                !annonceChosen
-                                                    ? GestureDetector(
-                                                  child: Icon(
-                                                    Icons.photo_camera,
-                                                    color: Colors.black54,
-                                                    size: 50,
-                                                  ),
-                                                  onTap: () => getAnnonce(),
-                                                )
-                                                    : GestureDetector(
-                                                  child: Icon(
-                                                      Icons.file_upload,
-                                                      size: 30,
-                                                      color: Color(0xFF2C7DBF)),
-                                                  onTap: () async {
-                                                    if (_annonce != null) {
-                                                      progressDialog.show();
-                                                      promoProvider
-                                                          .addAnnonce(
-                                                          _annonce.path)
-                                                          .whenComplete(() {
-                                                        progressDialog.hide();
-                                                        _confirmation(context);
-                                                      });
-                                                    } else {
-                                                      Flushbar(
-                                                        flushbarPosition:
-                                                        FlushbarPosition
-                                                            .TOP,
-                                                        message:
-                                                        "Aucune photo selectionée",
-                                                        backgroundColor:
-                                                        Colors.red,
-                                                        duration: Duration(
-                                                            seconds: 3),
-                                                      )..show(context);
-                                                    }
-                                                  },
-                                                )
-                                            )
-                                                : Stack(
-                                                fit: StackFit.expand,
-                                                children:[
-                                                  Image.file(
-                                                    _annonce,
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                                  Padding(
-                                                      padding: EdgeInsets.all(8.0),
-                                                      child: RaisedButton(
-                                                          color: Colors.white.withOpacity(0.6),
-                                                          onPressed: (){
-                                                            if (_annonce != null) {
-                                                              progressDialog.show();
-                                                              promoProvider
-                                                                  .addAnnonce(
-                                                                  _annonce.path)
-                                                                  .whenComplete(() {
-                                                                progressDialog.hide();
-                                                                _confirmation(context);
-                                                              });
-                                                            } else {
-                                                              Flushbar(
-                                                                flushbarPosition:
-                                                                FlushbarPosition
-                                                                    .TOP,
-                                                                message:
-                                                                "Aucune photo selectionnée",
-                                                                backgroundColor:
-                                                                Colors.red,
-                                                                duration: Duration(
-                                                                    seconds: 3),
-                                                              )..show(context);
-                                                            }
-                                                          },
-                                                          child: Icon(
-                                                            Icons.upload_rounded,
-                                                            color: Colors.white,
-                                                            size: 40,
-                                                          )
-                                                      )
-                                                  ),
-                                                ]
+                                              ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  Text(
-                                    'Annonce',
-                                    style: TextStyle(color: Colors.black54),
-                                  )
-                                ],
-                              ),
-                            ],
-                          ),
-                        )
-                            :SizedBox()
-                      ],
-                    ),
+                                    Text(
+                                      'Annonce',
+                                      style: TextStyle(color: Colors.black54),
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
+                          )
+                              :SizedBox()
+                        ],
+                      ),
 
-                    Divider(height: 60),
+                      Divider(height: 60),
 
-                    Text(
-                      'Supprimer une promotion',
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    Column(
-                      children: [
-                        SizedBox(height: 20),
-                        GridView.count(
-                            childAspectRatio: 1,
-                            primary: false,
-                            shrinkWrap: true,
-                            padding: const EdgeInsets.all(20),
-                            crossAxisSpacing: 10,
-                            mainAxisSpacing: 10,
-                            crossAxisCount: 2,
-                            children: List.generate(
-                                promoProvider.promotions.length, (index) {
-                              return Column(
-                                children: [
-                                  Container(
-                                    height: 130,
-                                    width: 130,
-                                    child: Card(
-                                      child: Image.network(
-                                        promoProvider.promotions[index].promo
-                                            .replaceAll('"', '')
-                                            .trim(),
-                                        fit: BoxFit.cover,
+                      Text(
+                        'Supprimer une promotion',
+                        style:
+                            TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      Column(
+                        children: [
+                          SizedBox(height: 20),
+                          GridView.count(
+                              childAspectRatio: 1,
+                              primary: false,
+                              shrinkWrap: true,
+                              padding: const EdgeInsets.all(20),
+                              crossAxisSpacing: 10,
+                              mainAxisSpacing: 10,
+                              crossAxisCount: 2,
+                              children: List.generate(
+                                  promoProvider.promotions.length, (index) {
+                                return Column(
+                                  children: [
+                                    Container(
+                                      height: 130,
+                                      width: 130,
+                                      child: Card(
+                                        child: Image.network(
+                                          promoProvider.promotions[index].promo
+                                              .replaceAll('"', '')
+                                              .trim(),
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      GestureDetector(
-                                        child: Icon(Icons.delete,
-                                            color: Colors.red),
-                                        onTap: () {
-                                          print('delete');
-                                          promoProvider.deletePromo(
-                                              promoProvider
-                                                  .promotions[index].idpromo
-                                                  .toString()).whenComplete(() => _confirmation(context));
-                                        },
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              );
-                            })),
-                      ],
-                    )
-                  ],
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        GestureDetector(
+                                          child: Icon(Icons.delete,
+                                              color: Colors.red),
+                                          onTap: () {
+                                            print('delete');
+                                            promoProvider.deletePromo(
+                                                promoProvider
+                                                    .promotions[index].idpromo
+                                                    .toString()).whenComplete(() => _confirmation(context));
+                                          },
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                );
+                              })),
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
+      ),
     );
   }
 }
@@ -553,7 +568,9 @@ Future<void> _confirmation(context) async {
           FlatButton(
             child: Text('Ok', style: TextStyle(color: Colors.red),),
             onPressed: () {
-              Navigator.of(context).pushReplacementNamed('add-promotion');
+              // Navigator.of(context).pushReplacementNamed('add-promotion');
+              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                  PromotionAdd()), (Route<dynamic> route) => false);
             },
           ),
         ],

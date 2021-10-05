@@ -152,7 +152,7 @@ class _LoginState extends State<LoginPage> {
                           child: RaisedButton(
                             shape: CircleBorder(),
                             onPressed: () {
-                              Navigator.of(context).pushReplacementNamed('be_a_seller');
+                              Navigator.of(context).pushNamed('be_a_seller');
                             },
                             color: Color(0xFF2C7DBF),
                             textColor: Colors.white,

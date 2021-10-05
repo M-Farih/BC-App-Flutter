@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bc_app/const/routes.dart';
 import 'package:bc_app/providers/authProvider.dart';
 import 'package:bc_app/providers/commentProvider.dart';
@@ -15,9 +17,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 
@@ -36,8 +35,19 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print('A bg message just showed up :  ${message.messageId}');
 }
 
+///certif
+class MyHttpOverrides extends HttpOverrides{
+  @override
+  HttpClient createHttpClient(SecurityContext context){
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
+  }
+}
 
 Future<void> main() async {
+  ///certif
+  HttpOverrides.global = new MyHttpOverrides();
+
   setupLocator();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -180,7 +190,9 @@ class _StartAppState extends State<StartApp> {
 
     return MaterialApp(
       title: 'BC APP',
-      theme: ThemeData.light(),
+      theme: ThemeData(
+        primaryColor: Color(0xFF57a9ed)
+      ),
       debugShowCheckedModeBanner: false,
       initialRoute: initialRoute,
       onGenerateRoute: Routes.generateRoute,

@@ -7,9 +7,10 @@ import 'package:provider/provider.dart';
 
 class ProductCard extends StatefulWidget {
   final String name, desc, imgPath, id, type;
+  final bool isRevendeur;
 
 
-  ProductCard({this.name, this.imgPath, this.desc, this.id, this.type});
+  ProductCard({this.name, this.imgPath, this.desc, this.id, this.type, this.isRevendeur});
 
   @override
   _ProductCardState createState() => _ProductCardState();
@@ -33,7 +34,7 @@ class _ProductCardState extends State<ProductCard> {
         child: GestureDetector(
           onLongPress: (){
             setState(() {
-              actionBtn = true;
+              if(!widget.isRevendeur) actionBtn = true;
             });
           },
           child: GestureDetector(

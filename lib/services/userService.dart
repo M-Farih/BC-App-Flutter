@@ -34,7 +34,7 @@ class UserService extends BaseApi {
           "city": city,
           "address": address,
           "telephone": telephone,
-          "email": email,
+          "email": email == "" ? "test" : email,
           "code": clientNumber,
           "flagMail": 1
     };

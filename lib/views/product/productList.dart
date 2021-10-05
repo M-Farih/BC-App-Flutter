@@ -98,6 +98,7 @@ class _ProductListState extends State<ProductList> {
                              imgPath: productProvider.product[index].image.replaceAll('"', '').trim(),
                               id: productProvider.product[index].idproduct.toString(),
                               type: widget.type,
+                              isRevendeur: authProvider.currentUsr.idrole == 3 ?true :false,
                            );
               })
             )
