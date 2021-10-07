@@ -446,7 +446,8 @@ class _ReclamationDetailsState extends State<ReclamationDetails> {
                                             widget.rec_id,
                                             messageController.text,
                                             '${authProvider.currentUsr.firstName} ${authProvider.currentUsr.lastName}',
-                                            authProvider.currentUsr.profileImage
+                                            authProvider.currentUsr.profileImage,
+                                          context
                                         );
                                         topicProvider.updateTopic(widget.rec_id, 1);
                                         playSound();
@@ -585,7 +586,8 @@ class _ReclamationDetailsState extends State<ReclamationDetails> {
                                             widget.rec_id,
                                             messageController.text,
                                             '${authProvider.currentUsr.firstName} ${authProvider.currentUsr.lastName}',
-                                          authProvider.currentUsr.profileImage
+                                          authProvider.currentUsr.profileImage,
+                                          context
                                         );
                                         topicProvider.updateTopic(widget.rec_id, 1);
                                         playSound();

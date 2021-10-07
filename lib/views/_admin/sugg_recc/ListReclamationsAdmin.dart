@@ -103,7 +103,7 @@ class _ListReclamationAdminState extends State<ListReclamationAdmin> {
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: Text(widget.idtype_reason == 2 ?'Réclamations' : 'Suggestion',
                         style: TextStyle(
-                            color: Color(0xFFF67B97), fontSize: 20)),
+                            color: Color(widget.idtype_reason == 2 ? 0xFFF67B97 :0xFFFC8F6E), fontSize: 20)),
                   )
                 ],
               )
