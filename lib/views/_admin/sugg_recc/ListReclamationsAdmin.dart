@@ -141,15 +141,28 @@ class _ListReclamationAdminState extends State<ListReclamationAdmin> {
                           ),
                         ),
                         child: ListTile(
-                            title: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            title: Column(
                               children: [
-                                Container(
-                                  child: Text('${topicProvider.topics[index].usersName}', overflow: TextOverflow.ellipsis,),
-                                  width: MediaQuery.of(context).size.width * 0.3,
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      child: Text('${topicProvider.topics[index].usersName}', overflow: TextOverflow.ellipsis,),
+                                      width: MediaQuery.of(context).size.width * 0.3,
+                                    ),
+                                    Text('$statusName',
+                                        style: TextStyle(color: Color(statusColor))),
+                                  ],
                                 ),
-                                Text('$statusName',
-                                    style: TextStyle(color: Color(statusColor))),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      child: Text(topicProvider.topics[index].code, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 11, color: Colors.blue.withOpacity(0.8)),),
+                                      width: MediaQuery.of(context).size.width * 0.3,
+                                    ),
+                                  ],
+                                ),
                               ],
                             ),
                             subtitle: Row(
@@ -164,7 +177,7 @@ class _ListReclamationAdminState extends State<ListReclamationAdmin> {
                                   ),
                                 ),
                                 Text(
-                                    '${topicProvider.topics[index].created_at}'),
+                                    '${topicProvider.topics[index].created_at.substring(0, 16)}'),
                               ],
                             ),
                             leading: CircleAvatar(
@@ -175,7 +188,6 @@ class _ListReclamationAdminState extends State<ListReclamationAdmin> {
                                     :NetworkImage("https://ui-avatars.com/api/?background=FFFFF&color=2C7DBF&name=${topicProvider.topics[index].usersName}")
                             ),
                             onTap: () {
-                              print('///// audio ---> ${topicProvider.topics[index].record}');
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -190,6 +202,8 @@ class _ListReclamationAdminState extends State<ListReclamationAdmin> {
                                         sellerName: topicProvider.topics[index].usersName,
                                         record: topicProvider.topics[index].record,
                                         topic: topicProvider.topics[index].reason,
+                                        code: topicProvider.topics[index].code,
+                                        agentName: topicProvider.topics[index].agentName
                                       ))
                               );
                             }

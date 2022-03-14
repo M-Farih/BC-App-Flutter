@@ -66,7 +66,6 @@ class _BuildMessageState extends State<BuildMessage> {
   Widget build(BuildContext context) {
     var authProvider = Provider.of<AuthProvider>(context, listen: true);
     String userImage = authProvider.currentUsr.profileImage != "" ?authProvider.currentUsr.profileImage.replaceAll('"', '').trim() :"https://ui-avatars.com/api/?background=FFFFF&color=2C7DBF&name=${authProvider.currentUsr.lastName}+${authProvider.currentUsr.firstName}";
-    print('-----> ${widget.senderRoleId}');
     if(authProvider.currentUsr.idrole != 3){
       return authProvider.spbusy
           ? Center(child: CircularProgressIndicator())
@@ -94,7 +93,7 @@ class _BuildMessageState extends State<BuildMessage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('${widget.senderName}'),
-                          Text('${widget.date}',
+                          Text('${widget.date.substring(0,16)}',
                               style: TextStyle(fontSize: 10.0, color: Colors.black54)),
                         ],
                       ),
@@ -150,7 +149,7 @@ class _BuildMessageState extends State<BuildMessage> {
                           authProvider.currentUsr.iduser == widget.senderId
                               ?Text('${widget.senderName}')
                               :Text(widget.senderRoleId != 3 ?'العميل' :'${widget.senderName}'),
-                          Text('${widget.date}',
+                          Text('${widget.date.substring(0,16)}',
                               style: TextStyle(fontSize: 10.0, color: Colors.black54)),
                         ],
                       ),

@@ -74,7 +74,7 @@ class _SellerDetailsState extends State<SellerDetails> {
                                     children: [
                                       Icon(Icons.arrow_back, size: 17),
                                       Text(
-                                        'رجوع',
+                                        'Retour',
                                         style: TextStyle(fontSize: 17),
                                       )
                                     ],
@@ -179,8 +179,7 @@ class _SellerDetailsState extends State<SellerDetails> {
                             child: Icon(Icons.call, color: Colors.white,)
                         ),
                         onTap:(){
-                          print('appeler ${widget.phoneNumber}');
-                          widget.phoneNumber != "" ?contactProvider.call('${widget.phoneNumber}') :print('walo');
+                          contactProvider.call('${widget.phoneNumber}');
                         },
                       ),
                       SizedBox(width: 10),
@@ -195,7 +194,7 @@ class _SellerDetailsState extends State<SellerDetails> {
                             child: Icon(Icons.mail, color: Colors.white,)
                         ),
                         onTap:(){
-                          widget.mail != "" ?contactProvider.mailSeller('${widget.mail}') :print('walo');
+                          contactProvider.mailSeller('${widget.mail}');
                         },
                       ),
                     ],

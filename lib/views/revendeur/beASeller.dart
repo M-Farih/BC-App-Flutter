@@ -145,8 +145,6 @@ class _BeASellerState extends State<BeASeller> {
                           })
                         });
                       }
-                      else
-                        print('is not validate');
                     },
                     color: Color(0xFF2C7DBF),
                     textColor: Colors.white,

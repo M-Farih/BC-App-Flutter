@@ -15,7 +15,6 @@ class ContactService extends BaseApi{
   }
 
   Future<http.Response> rec_sugg(int iduser, int idreason, String description, String record) async{
-    print('service $iduser $idreason $description $record');
 
     Map<String, dynamic> content = {
       "description": description,

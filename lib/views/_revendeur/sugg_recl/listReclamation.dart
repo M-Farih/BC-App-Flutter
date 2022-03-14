@@ -33,9 +33,7 @@ class _ListReclamationState extends State<ListReclamation> {
   Widget build(BuildContext context) {
     var authProvider = Provider.of<AuthProvider>(context, listen: true);
     var topicProvider = Provider.of<TopicProvider>(context, listen: true);
-    for(int i = 0; i< topicProvider.topics.length; i++){
-      print('search $i-> ${topicProvider.topics[i].idtopic} | ${topicProvider.topics[i].usersName}');
-    }
+
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
@@ -133,6 +131,8 @@ class _ListReclamationState extends State<ListReclamation> {
                     message: topicProvider.topics[index].description,
                     username: topicProvider.topics[index].usersName,
                     record: topicProvider.topics[index].record,
+                    code: topicProvider.topics[index].code,
+                    agentName: topicProvider.topics[index].agentName
                   );
                 },
               ),

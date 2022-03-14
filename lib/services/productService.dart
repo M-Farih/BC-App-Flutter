@@ -30,12 +30,8 @@ class ProductService extends BaseApi{
 
     var _list = body.values.toList();
     String filePath = _list[2].toString();
-    print('verif ---> ${_list[0].toString()}');
-    print('verif ---> ${_list[1].toString()}');
-    print('verif ---> ${_list[2].toString()}');
 
     if(filePath != ""){
-      print('0');
       request.files.add(
           http.MultipartFile(
               'file',
@@ -44,7 +40,6 @@ class ProductService extends BaseApi{
               filename: filePath.split("/").last
           )
       );
-      print('1');
 
       response = await request.send().then((result) async{
         http.Response.fromStream(result).then((response){
@@ -61,9 +56,7 @@ class ProductService extends BaseApi{
                 "image": '$fileLink',
                 "famille": '$famille'
               }),
-            ).then((response){
-              print('product added:: ${response.body}');
-            });
+            );
           }
         });
       });
@@ -87,12 +80,8 @@ class ProductService extends BaseApi{
 
     var _list = body.values.toList();
     String filePath = _list[2].toString();
-    print('verif ---> ${_list[0].toString()}');
-    print('verif ---> ${_list[1].toString()}');
-    print('verif ---> ${_list[2].toString()}');
 
     if(filePath != ""){
-      print('0');
       request.files.add(
           http.MultipartFile(
               'file',
@@ -101,7 +90,6 @@ class ProductService extends BaseApi{
               filename: filePath.split("/").last
           )
       );
-      print('1');
 
       response = await request.send().then((result) async{
         http.Response.fromStream(result).then((response){
@@ -117,15 +105,12 @@ class ProductService extends BaseApi{
                 "description":  _list[1].toString(),
                 "image": '$fileLink',
               }),
-            ).then((response){
-              print('product updated:: ${response.body}');
-            });
+            );
           }
         });
       });
     }
     else{
-      print('without image');
       return http.put(
         Uri.parse('${api.baseUrl}/products/$id'),
         headers: { 'Accept': 'Application/json', 'authorization': basicAuth},
@@ -133,9 +118,7 @@ class ProductService extends BaseApi{
           "name":  _list[0].toString(),
           "description":  _list[1].toString(),
         }),
-      ).then((response){
-        print('product updated:: ${response.body}');
-      });
+      );
     }
   }
 

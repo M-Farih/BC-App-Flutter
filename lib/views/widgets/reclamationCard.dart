@@ -2,11 +2,33 @@ import 'package:bc_app/views/_revendeur/sugg_recl/ReclamationDetails.dart';
 import 'package:flutter/material.dart';
 
 class ReclamationCard extends StatefulWidget {
-  final String message, topic, date, reason, image, record, username, dateToShow, phone;
+  final String message,
+      topic,
+      date,
+      reason,
+      image,
+      record,
+      username,
+      dateToShow,
+      phone,
+      code,
+      agentName;
   final int status, rec_id;
 
   ReclamationCard(
-      {this.topic, this.message, this.date, this.status, this.rec_id, this.reason, this.image, this.record, this.username, this.dateToShow, this.phone});
+      {this.topic,
+      this.message,
+      this.date,
+      this.status,
+      this.rec_id,
+      this.reason,
+      this.image,
+      this.record,
+      this.username,
+      this.dateToShow,
+      this.phone,
+      this.code,
+      this.agentName});
 
   @override
   _ReclamationCardState createState() => _ReclamationCardState();
@@ -56,8 +78,7 @@ class _ReclamationCardState extends State<ReclamationCard> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                          '$statusName',
+                      Text('$statusName',
                           style: widget.status == 0
                               ? TextStyle(color: Colors.blue)
                               : widget.status == 1
@@ -67,8 +88,10 @@ class _ReclamationCardState extends State<ReclamationCard> {
                         child: Text(
                           '${widget.topic}',
                           textDirection: TextDirection.rtl,
-                          style: TextStyle(fontWeight: FontWeight.bold,),
-                            overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                          overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                         ),
                       ),
@@ -79,11 +102,16 @@ class _ReclamationCardState extends State<ReclamationCard> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(right: 14),
-                        child: Text('${widget.dateToShow}', style: TextStyle(color: Colors.black54),),
+                        child: Text(
+                          '${widget.dateToShow.substring(0,16)}',
+                          style: TextStyle(color: Colors.black54),
+                        ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -94,6 +122,7 @@ class _ReclamationCardState extends State<ReclamationCard> {
                               '${widget.message}',
                               textDirection: TextDirection.rtl,
                               overflow: TextOverflow.ellipsis,
+                              style: TextStyle(color: Colors.black45),
                             ),
                           ],
                           mainAxisAlignment: MainAxisAlignment.end,
@@ -119,7 +148,9 @@ class _ReclamationCardState extends State<ReclamationCard> {
                     date: widget.date,
                     record: widget.record,
                     sellerName: widget.username,
-                    isReclamation: widget.reason == 2 ?true :false,
+                    isReclamation: widget.reason == 2 ? true : false,
+                    code: widget.code,
+                    agentName: widget.agentName,
                   )));
         });
   }

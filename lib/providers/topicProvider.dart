@@ -18,14 +18,11 @@ class TopicProvider extends ChangeNotifier{
   List<Topic> get reclamations  => _reclamations;
 
   Future<List<Topic>> getTopics(int iduser, int idtype_reason) async{
-    print( '$iduser ||| $idtype_reason');
     isBusy = true;
     notifyListeners();
     var response = await _topicService.getTopics(iduser, idtype_reason);
     if(response.statusCode == 200){
       var data = jsonDecode(response.body);
-      print('data count -> ${data['data'].length}');
-      print('data body -> ${data['data']}');
       _topics.clear();
       data['data'].forEach((t)=>_topics.add(Topic.fromJson(t)));
       isBusy = false;
@@ -35,19 +32,13 @@ class TopicProvider extends ChangeNotifier{
   }
 
   Future<List<Topic>> getSuggestions(int iduser, int idtype_reason) async{
-    print( '$iduser ||| $idtype_reason');
     isBusy = true;
     notifyListeners();
     var response = await _topicService.getTopics(iduser, idtype_reason);
     if(response.statusCode == 200){
-      print('getting suggestions');
       var data = jsonDecode(response.body);
-      print('data count -> ${data['data'].length}');
-      print('data body -> ${data['data']}');
-      print('data body -> ${data['data']}');
       _suggestions.clear();
       data['data'].forEach((t)=>_suggestions.add(Topic.fromJson(t)));
-      print('_suggestions -> ${_suggestions.length}');
       isBusy = false;
       notifyListeners();
     }
@@ -55,18 +46,13 @@ class TopicProvider extends ChangeNotifier{
   }
 
   Future<List<Topic>> getReclamations(int iduser, int idtype_reason) async{
-    print( '$iduser ||| $idtype_reason');
     isBusy = true;
     notifyListeners();
     var response = await _topicService.getTopics(iduser, idtype_reason);
     if(response.statusCode == 200){
-      print('getting reclamation');
       var data = jsonDecode(response.body);
-      print('data count -> ${data['data'].length}');
-      print('data body -> ${data['data']}');
       _reclamations.clear();
       data['data'].forEach((t)=>_reclamations.add(Topic.fromJson(t)));
-      print('_reclamations -> ${_reclamations.length}');
       isBusy = false;
       notifyListeners();
     }
@@ -94,7 +80,6 @@ class TopicProvider extends ChangeNotifier{
     notifyListeners();
     if(response.statusCode == 200){
       var data = response.body;
-      print('topic updated -> ${data}');
     }
   }
 
@@ -107,7 +92,6 @@ class TopicProvider extends ChangeNotifier{
     notifyListeners();
     if(response.statusCode == 200){
       var data = response.body;
-      print('count -> ${data}');
     }
   }
 
@@ -120,10 +104,8 @@ class TopicProvider extends ChangeNotifier{
     var response = await _topicService.getTopicCount(2, 0);
     isBusy = false;
     notifyListeners();
-    print('statut code => ${response.statusCode}');
     if(response.statusCode == 200){
       var data = jsonDecode(response.body);
-      print('count Recues ===> ${data['count']}');
       reclamationRecue = data['count'];
     }
   }
@@ -134,10 +116,8 @@ class TopicProvider extends ChangeNotifier{
     var response = await _topicService.getTopicCount(2, 1);
     isBusy = false;
     notifyListeners();
-    print('statut code => ${response.statusCode}');
     if(response.statusCode == 200){
       var data = jsonDecode(response.body);
-      print('count EnCours ===> ${data['count']}');
       reclamationEnCours = data['count'];
     }
   }
@@ -148,10 +128,8 @@ class TopicProvider extends ChangeNotifier{
     var response = await _topicService.getTopicCount(2, 2);
     isBusy = false;
     notifyListeners();
-    print('statut code => ${response.statusCode}');
     if(response.statusCode == 200){
       var data = jsonDecode(response.body);
-      print('count Traitees ===> ${data['count']}');
       reclamationTraitee = data['count'];
     }
   }
@@ -163,10 +141,8 @@ class TopicProvider extends ChangeNotifier{
     var response = await _topicService.getTopicCount(1, 0);
     isBusy = false;
     notifyListeners();
-    print('statut code => ${response.statusCode}');
     if(response.statusCode == 200){
       var data = jsonDecode(response.body);
-      print('count Recues ===> ${data['count']}');
       suggestionRecue = data['count'];
     }
   }
@@ -177,10 +153,8 @@ class TopicProvider extends ChangeNotifier{
     var response = await _topicService.getTopicCount(1, 1);
     isBusy = false;
     notifyListeners();
-    print('statut code => ${response.statusCode}');
     if(response.statusCode == 200){
       var data = jsonDecode(response.body);
-      print('count EnCours ===> ${data['count']}');
       suggestionEnCours = data['count'];
     }
   }
@@ -191,10 +165,8 @@ class TopicProvider extends ChangeNotifier{
     var response = await _topicService.getTopicCount(1, 2);
     isBusy = false;
     notifyListeners();
-    print('statut code => ${response.statusCode}');
     if(response.statusCode == 200){
       var data = jsonDecode(response.body);
-      print('count Traitees ===> ${data['count']}');
       suggestionTraitee = data['count'];
     }
   }

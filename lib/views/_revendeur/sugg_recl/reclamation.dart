@@ -429,15 +429,11 @@ class _ReclamationState extends State<ReclamationPage> {
                               child: Center(child: Text('إرسال', style: TextStyle(color: Color(0xFFFFFFFF), fontSize: 18, fontWeight: FontWeight.bold)))
                             ),
                             onTap: () {
-                              print(
-                                  'user id ${authProvider.currentUsr.iduser}');
                               if (_key.currentState.validate()) {
                                 _key.currentState.save();
                                 progressDialog.show();
                                 ///call provider
                                 if (audio.length > 0) {
-                                  print(
-                                      'send with audio ${audio.length}');
                                   contactProvider
                                       .rec_sugg(
                                       authProvider.currentUsr.iduser,
@@ -460,7 +456,6 @@ class _ReclamationState extends State<ReclamationPage> {
                                     });
                                   });
                                 } else {
-                                  print('send without audio');
                                   contactProvider
                                       .rec_sugg(
                                       authProvider.currentUsr.iduser,
@@ -483,8 +478,7 @@ class _ReclamationState extends State<ReclamationPage> {
                                     });
                                   });
                                 }
-                              } else
-                                print('is not validate');
+                              }
                             },
                           ),
 

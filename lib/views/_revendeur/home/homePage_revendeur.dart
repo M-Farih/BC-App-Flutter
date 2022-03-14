@@ -42,24 +42,10 @@ class _HomePage_RevendeurState extends State<HomePage_Revendeur> {
     /// subscribe to firebase
     FirebaseMessaging.instance.subscribeToTopic('users');
     FirebaseMessaging.instance.subscribeToTopic('revendeurs');
-    print('revendeur subscribed!');
 
     WidgetsBinding.instance.addPostFrameCallback((_) async{
       int role_id = await Provider.of<AuthProvider>(context, listen: false).checkLoginAndRole();
       Provider.of<AuthProvider>(context, listen: false).getUserFromSP();
-      switch(role_id){
-        case 1:
-          print('admin');
-          break;
-        case 2:
-          print('commercial');
-          break;
-        case 3:
-          print('revendeur');
-          break;
-        default:
-          Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
-      }
       Provider.of<ContactProvider>(context, listen: false);
     });
   }

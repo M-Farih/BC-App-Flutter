@@ -30,22 +30,6 @@ class _PromotionAddState extends State<PromotionAdd> {
       int role_id = await Provider.of<AuthProvider>(context, listen: false)
           .checkLoginAndRole();
 
-      switch (role_id) {
-        case 0:
-          print('super admin');
-          break;
-        case 1:
-          print('admin');
-          break;
-        case 2:
-          print('commercial');
-          break;
-        case 3:
-          print('revendeur');
-          break;
-        default:
-          Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
-      }
     });
   }
 
@@ -73,8 +57,6 @@ class _PromotionAddState extends State<PromotionAdd> {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
         imageChosen = true;
-      } else {
-        print('No image selected.');
       }
     });
   }
@@ -88,8 +70,6 @@ class _PromotionAddState extends State<PromotionAdd> {
       setState(() {
         pdfIconColor = 0xFF2C7DBF;
       });
-    } else {
-      print('no pdf selected');
     }
   }
 
@@ -102,8 +82,6 @@ class _PromotionAddState extends State<PromotionAdd> {
       setState(() {
         pdfIconColor = 0xFF2C7DBF;
       });
-    } else {
-      print('no annonce selected');
     }
   }
 
@@ -522,7 +500,6 @@ class _PromotionAddState extends State<PromotionAdd> {
                                           child: Icon(Icons.delete,
                                               color: Colors.red),
                                           onTap: () {
-                                            print('delete');
                                             promoProvider.deletePromo(
                                                 promoProvider
                                                     .promotions[index].idpromo
@@ -547,7 +524,6 @@ class _PromotionAddState extends State<PromotionAdd> {
 
 Future<void> _confirmation(context) async {
   var authProvider = Provider.of<AuthProvider>(context, listen: false);
-  print('disc clicked');
   return showDialog<void>(
     context: context,
     barrierDismissible: false, // user must tap button!

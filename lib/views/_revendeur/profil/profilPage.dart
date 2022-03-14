@@ -36,8 +36,6 @@ class _ProfilePageState extends State<ProfilePage> {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
         imageChosen = true;
-      } else {
-        print('No image selected.');
       }
     });
   }
@@ -363,7 +361,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                 color: btnColor,
                                 textColor: btntextColor),
                             onTap: () {
-                              print('image /----> $image');
                               setState(() {
                                 canEdit = !canEdit;
                                 if (canEdit) {
@@ -375,7 +372,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                   btntextColor = 0xFF2C7DBF;
                                   btnColor = 0xFFFFFFFF;
                                   setState(() {
-                                    print('a = ${agentIduser}');
                                     userProvider.update(
                                         id,
                                         authProvider.currentUsr.clientNumber,
@@ -409,7 +405,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
 
 Future<void> _confirmation(context, String text) async {
-  print('disc clicked');
   return showDialog<void>(
     context: context,
     barrierDismissible: false, // user must tap button!

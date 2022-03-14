@@ -92,13 +92,11 @@ class RistourneService extends BaseApi{
           {
             fileLink = response.body;
             fileLink = fileLink.replaceAll("\\", "");
-            print('file link ---> $fileLink}');
 
             var ristourneChecker = await api.httpGet('promo', '?type=3');
             var data = jsonDecode(ristourneChecker.body);
             if(data['data'].toString().length == 2){
               //no pdf found
-              print('no ristourne found');
               fileLink = response.body;
               fileLink = fileLink.replaceAll("\\", "");
               return http.post(
@@ -108,22 +106,17 @@ class RistourneService extends BaseApi{
                   "promo": "$fileLink",
                   "type": 3
                 }),
-              ).then((response){
-                print('ristourne added:: ${response.body}');
-              });
+              );
             }
             else{
               //pdf found
-              print('ristourne found :)');
               fileLink = response.body;
               fileLink = fileLink.replaceAll("\\", "");
               Map<String, dynamic> body = {
                 "promo": "$fileLink",
                 "type" : "3"
               };
-              return api.httpPut('/promo', '/${data['data'][0]['idpromo']}', jsonEncode(body)).then((value){
-                print('ristourne modified:: ${value.body}');
-              });
+              return api.httpPut('/promo', '/${data['data'][0]['idpromo']}', jsonEncode(body));
             }
           }
         });

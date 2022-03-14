@@ -45,16 +45,14 @@ class _SliderVerticalWidgetState extends State<SliderVerticalWidget> {
                       max: max,
                       divisions: 20,
                       label: widget.turnover.round().toString(),
-                      onChanged:(v){
-                        print('s');
-                      },
+                      onChanged: (double newValue) {},
                     ),
                   ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Text('Dhs', style: TextStyle(color: Colors.white, fontSize: 12.5),),
+                      Text('Dhs', style: TextStyle(color: Colors.white, fontSize: 12.5)),
                       Text(
                         '${widget.turnover.round()}',
                         style: TextStyle(

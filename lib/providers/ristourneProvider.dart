@@ -34,7 +34,6 @@ class RistourneProvider extends ChangeNotifier{
     notifyListeners();
     var response =  await _ristourneService.addRistourne(min, max, percent);
     if(response.statusCode == 200 || response.statusCode == 201){
-      print('ristourne added :::>  ${response.body}');
       isBusy = false;
       notifyListeners();
     }
@@ -45,7 +44,6 @@ class RistourneProvider extends ChangeNotifier{
     notifyListeners();
     var response =  await _ristourneService.updateRistourne(id, min, max, percent);
     if(response.statusCode == 200 || response.statusCode == 201){
-      print('ristourne updated :::>  ${response.body}');
       isBusy = false;
       notifyListeners();
     }
@@ -56,7 +54,6 @@ class RistourneProvider extends ChangeNotifier{
     notifyListeners();
     var response =  await _ristourneService.deleteRistourne(id);
     if(response.statusCode == 200 || response.statusCode == 201){
-      print('ristourne deleted :::>  ${response.body}');
       isBusy = false;
       notifyListeners();
     }
@@ -66,9 +63,7 @@ class RistourneProvider extends ChangeNotifier{
     isBusy = true;
     notifyListeners();
     var response =  await _ristourneService.getRistourneImage();
-    print('ristourne image 1 :::>  ${response.body}');
     if(response.statusCode == 200 || response.statusCode == 201){
-      print('ristourne image :::>  ${response.body}');
       isBusy = false;
       notifyListeners();
       var data = jsonDecode(response.body);

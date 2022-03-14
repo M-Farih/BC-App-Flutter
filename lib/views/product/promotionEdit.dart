@@ -38,8 +38,6 @@ class _PromotionEditState extends State<PromotionEdit> {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
         imageChosen = true;
-      } else {
-        print('No image selected.');
       }
     });
   }
@@ -52,23 +50,6 @@ class _PromotionEditState extends State<PromotionEdit> {
 
       int role_id = await Provider.of<AuthProvider>(context, listen: false)
           .checkLoginAndRole();
-
-      switch(role_id){
-        case 0:
-          print('super admin');
-          break;
-        case 1:
-          print('admin');
-          break;
-        case 2:
-          print('commercial');
-          break;
-        case 3:
-          print('revendeur');
-          break;
-        default:
-          Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
-      }
     });
   }
 

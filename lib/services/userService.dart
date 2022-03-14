@@ -48,7 +48,6 @@ class UserService extends BaseApi {
 
 ///----------------------------------------------------------------------------
   Future<http.Response> updateImage(id, profileImage) async{
-    print('updating image... ${id} ${profileImage}');
     String basicAuth = 'Basic ' + base64Encode(utf8.encode('${api.username}:${api.password}'));
     var response;
     var request = http.MultipartRequest('POST', Uri.parse('${api.baseUrl}/common/'));
@@ -83,7 +82,6 @@ class UserService extends BaseApi {
 
 
   Future<http.Response> getSellersByAgent(int id) async{
-    print('servie ---');
     return await api.httpGet('users', '?agentIduser=$id');
   }
 
@@ -138,14 +136,11 @@ class UserService extends BaseApi {
           {
             fileLink = response.body;
             fileLink = fileLink.replaceAll("\\", "");
-            print('file link ---> $fileLink}');
 
             fileLink = response.body;
             fileLink = fileLink.replaceAll("\\", "");
 
-            return api.httpGet('/import_ca', '/?csv_file_path=$fileLink').then((value){
-              print('Csv Uploaded:: ${value.body}');
-            });
+            return api.httpGet('/import_ca', '/?csv_file_path=$fileLink');
 
           }
         });

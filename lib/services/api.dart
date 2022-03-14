@@ -1,11 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:bc_app/models/user.dart';
 import 'package:bc_app/providers/authProvider.dart';
-import 'package:bc_app/providers/userProvider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
 
 class Api {
   static final _api = Api._internal();
@@ -29,7 +25,6 @@ class Api {
         Uri.parse('$baseUrl/$path/$endPoint'),
         headers: {'Accept': 'Application/json', 'authorization': basicAuth},
     );
-    //print('get data => ${response.statusCode}');
     return response;
   }
 
@@ -40,7 +35,6 @@ class Api {
       headers: {'Accept': 'Application/json', 'authorization': basicAuth},
       body: body
     );
-    print('post data => ${response.statusCode}');
     return response;
   }
 
@@ -84,9 +78,7 @@ class Api {
                 "idreason": object['idreason'],
                 "iduser": object['iduser']
               }),
-            ).then((response){
-              print('reclamation added:: ${response.body}');
-            });
+            );
           }
         });
       });
@@ -101,9 +93,7 @@ class Api {
           "iduser": object['iduser'],
           "record": null
         }),
-      ).then((response){
-        print('updated user:: ${response.body}');
-      });
+      );
     }
     return response;
   }
@@ -116,7 +106,6 @@ class Api {
         headers: {'Accept': 'Application/json', 'authorization': basicAuth},
         body: body
     );
-    print('api / put data => ${response.statusCode}');
 
     return response;
   }
@@ -131,7 +120,6 @@ class Api {
 
     var object = jsonDecode(body);
     String imagePath = object['profileImage'];
-    print('------ $imagePath');
 
     if(imagePath != ""){
       request.files.add(
@@ -147,13 +135,8 @@ class Api {
         http.Response.fromStream(result).then((response){
           if (true)
           {
-            print("Uploaded! ");
-            print('response.body '+response.body);
-
             String fileLink = response.body;
             fileLink = fileLink.replaceAll("\\", "");
-
-            print('final link -> $fileLink');
 
             http.put(
               Uri.parse('$baseUrl/$path/$endPoint'),
@@ -180,13 +163,10 @@ class Api {
 
               if(response.statusCode == 200){
                 var data = jsonDecode(response.body);
-                print('updated user:: ${response.body}');
-                print("1");
                 AuthProvider ap = new AuthProvider();
                 await ap.saveUserInSP(data).then((value) async {
                   await ap.getUserFromSP();
                 });
-                print("2");
               }
             });
           }
@@ -194,7 +174,6 @@ class Api {
       });
     }
     else{
-      print('update without image...');
       http.put(
         Uri.parse('$baseUrl/$path/$endPoint'),
         headers: { 'Accept': 'Application/json', 'authorization': basicAuth},
@@ -217,18 +196,12 @@ class Api {
           "profileImage": ""
         }),
       ).then((response) async {
-        print('update without image... 222');
-        print('status code---> ${response.statusCode}');
-        print('status body---> ${response.body}');
         if(response.statusCode == 200){
           var data = jsonDecode(response.body);
-          print('updated user:: ${response.body}');
-          print("1");
           AuthProvider ap = new AuthProvider();
           await ap.saveUserInSP(data).then((value) async{
             await ap.getUserFromSP();
           });
-          print("2");
         }
       });
     }
@@ -241,7 +214,6 @@ class Api {
         Uri.parse('$baseUrl/$path/$endPoint'),
         headers: {'Accept': 'Application/json', 'authorization': basicAuth},
     );
-    print('delete data => ${response.statusCode}');
     return response;
   }
 

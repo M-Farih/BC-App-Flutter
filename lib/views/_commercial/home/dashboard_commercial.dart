@@ -68,7 +68,7 @@ class _Dashboard_commercialState extends State<Dashboard_commercial> {
                     child: Column(
                       children: [
                         SizedBox(height: 40.0),
-                        NombreRevendeurWidget(nbrRevendeur: nbrRevendeur),
+                        NombreRevendeurWidget(nbrRevendeur: nbrRevendeur, citySelected: nbrRevendeur.selectedCity,),
 
                         SizedBox(height: 30),
                         RistourneWidget(isLocal: false, imageLink: ristourneProvider.image)

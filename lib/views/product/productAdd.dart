@@ -47,7 +47,6 @@ class _ProductAddState extends State<ProductAdd> {
   Future getImage() async {
     var status = await Permission.storage.status;
     if (status.isDenied) {
-      print('isDenied');
       await Permission.storage.request().isGranted.whenComplete(() async {
         final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
@@ -55,21 +54,16 @@ class _ProductAddState extends State<ProductAdd> {
           if (pickedFile != null) {
             _image = File(pickedFile.path);
             imageChosen = true;
-          } else {
-            print('No image selected.');
           }
         });
       });
     } else {
-      print('isOk');
       final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
       setState(() {
         if (pickedFile != null) {
           _image = File(pickedFile.path);
           imageChosen = true;
-        } else {
-          print('No image selected.');
         }
       });
     }
@@ -86,23 +80,6 @@ class _ProductAddState extends State<ProductAdd> {
         Provider.of<ProductProvider>(context, listen: false)
             .getProductById('20');
       }
-
-      switch (role_id) {
-        case 0:
-          print('super admin');
-          break;
-        case 1:
-          print('admin');
-          break;
-        case 2:
-          print('commercial');
-          break;
-        case 3:
-          print('revendeur');
-          break;
-        default:
-          Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
-      }
     });
 
     if (!widget.isAdd) {
@@ -116,7 +93,6 @@ class _ProductAddState extends State<ProductAdd> {
     var authProvider = Provider.of<AuthProvider>(context, listen: true);
     var productProvider = Provider.of<ProductProvider>(context, listen: true);
     var progressDialog = ProgressDialog(context);
-    // !productProvider.isBusy ?nomController.text = productProvider.product[0].image.replaceAll('"', '').trim() :print('_');
     return Scaffold(
       appBar: MyAppBar(
           isSeller: authProvider.currentUsr.idrole == 3 ? true : false,
@@ -318,8 +294,8 @@ class _ProductAddState extends State<ProductAdd> {
                                 }).whenComplete(() {
                                   _confirmation(context);
                                 });
-                              } else {
-                                print('id --? ${widget.id}');
+                              }
+                              else {
                                 if (imageChosen) {
                                   productProvider
                                       .updateProduct(
@@ -354,8 +330,7 @@ class _ProductAddState extends State<ProductAdd> {
                                   });
                                 }
                               }
-                            } else
-                              print('is not validate');
+                            }
                           },
                           color: Color(0xFF2C7DBF),
                           textColor: Colors.white,
@@ -402,7 +377,6 @@ class _ProductAddState extends State<ProductAdd> {
 }
 
 Future<void> _confirmation(context) async {
-  print('disc clicked');
   return showDialog<void>(
     context: context,
     barrierDismissible: false, // user must tap button!

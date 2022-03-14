@@ -23,30 +23,12 @@ class _ProductCategoriesState extends State<ProductCategories> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    print('product page');
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<PromotionProvider>(context, listen: false).getPromotions();
       Provider.of<PromotionProvider>(context, listen: false).getAnnonces();
       Provider.of<PromotionProvider>(context, listen: false).getPdfLink();
       int role_id = await Provider.of<AuthProvider>(context, listen: false)
           .checkLoginAndRole();
-
-      switch(role_id){
-        case 0:
-          print('super admin');
-          break;
-        case 1:
-          print('admin');
-          break;
-        case 2:
-          print('commercial');
-          break;
-        case 3:
-          print('revendeur');
-          break;
-        default:
-          Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
-      }
     });
   }
 
@@ -81,7 +63,6 @@ class _ProductCategoriesState extends State<ProductCategories> {
                                     primary: Color(0xff2C7DBF),
                                   ),
                                   onPressed: () async {
-                                    print('download pdf...');
                                     String url = promoProvider.pdfLink;
                                     if (await canLaunch(url)) {
                                       await launch(url);
@@ -180,9 +161,7 @@ class _ProductCategoriesState extends State<ProductCategories> {
                                     primary: Color(0xff2C7DBF),
                                   ),
                                   onPressed: () async {
-                                    print('download pdf...');
                                     String url = promoProvider.pdfLink;
-                                    print('url --> $url');
                                     if (await canLaunch(url)) {
                                       await launch(url);
                                     } else {
@@ -548,7 +527,6 @@ class _ProductCategoriesState extends State<ProductCategories> {
 }
 
 Future<void> _confirmation(context) async {
-  print('disc clicked');
   return showDialog<void>(
     context: context,
     barrierDismissible: false, // user must tap button!

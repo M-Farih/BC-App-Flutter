@@ -127,6 +127,8 @@ class _ReclamationMenuState extends State<ReclamationMenu> {
                         message: topicProvider.suggestions.first.description,
                         username: topicProvider.suggestions.first.usersName,
                         record: topicProvider.suggestions.first.record,
+                        code: topicProvider.suggestions.first.code,
+                        agentName: topicProvider.suggestions.first.agentName,
                       ),
                       SizedBox(height: 5),
                       GestureDetector(
@@ -172,6 +174,8 @@ class _ReclamationMenuState extends State<ReclamationMenu> {
                     message: topicProvider.reclamations.first.description,
                     username: topicProvider.reclamations.first.usersName,
                     record: topicProvider.reclamations.first.record,
+                    code: topicProvider.reclamations.first.code,
+                    agentName: topicProvider.reclamations.first.agentName,
                   ),
                   SizedBox(height: 5),
                   GestureDetector(

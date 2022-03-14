@@ -37,7 +37,6 @@ class _HomePage_adminState extends State<HomePage_admin> {
     /// subscribe to firebase
     FirebaseMessaging.instance.subscribeToTopic('admin');
     FirebaseMessaging.instance.subscribeToTopic('users');
-    print('admin subscribed!');
 
     WidgetsBinding.instance.addPostFrameCallback((_) async{
       Provider.of<ContactProvider>(context, listen: false);
@@ -114,7 +113,7 @@ class _HomePage_adminState extends State<HomePage_admin> {
                     color: Color(0xff2C7DBF),
                   ),
                   title: Text(
-                      "Revendeurs",
+                      "Utilisateurs",
                       textDirection: TextDirection.rtl
                   )),
             ],

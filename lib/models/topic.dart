@@ -1,8 +1,8 @@
 class Topic{
   final int idtopic, idtype_reason, idreason, indicator, iduser;
-  final String description, record, type, reason, created_at, usersName, userImg, telephone;
+  final String description, record, type, reason, created_at, usersName, userImg, telephone, code, agentName;
 
-  Topic(this.idtopic, this.idtype_reason, this.idreason, this.indicator, this.iduser, this.description, this.record, this.type, this.reason, this.created_at, this.usersName, this.userImg, this.telephone);
+  Topic(this.idtopic, this.idtype_reason, this.idreason, this.indicator, this.iduser, this.description, this.record, this.type, this.reason, this.created_at, this.usersName, this.userImg, this.telephone, this.code, this.agentName);
 
   dynamic toJson() => {
     'idtopic': idtopic, 'idtype_reason': idtype_reason,
@@ -12,7 +12,9 @@ class Topic{
     'reason': reason, 'created_at': created_at,
     'usersName': usersName,
     'userImg' : userImg,
-    'telephone': telephone
+    'telephone': telephone,
+    'code': code,
+    'agentName': agentName
   };
 
   Topic.fromJson(Map<String, dynamic> json)
@@ -28,5 +30,7 @@ class Topic{
         created_at = json['created_at'],
         usersName = json['usersName'],
         userImg = json['profileImage'],
-        telephone = json['telephone'];
+        telephone = json['telephone'],
+        code = json['code'],
+        agentName = json['agentName'];
 }

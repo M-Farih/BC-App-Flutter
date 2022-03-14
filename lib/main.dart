@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:bc_app/const/routes.dart';
 import 'package:bc_app/providers/authProvider.dart';
 import 'package:bc_app/providers/commentProvider.dart';
@@ -18,6 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter/services.dart';
 
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
@@ -32,7 +32,6 @@ FlutterLocalNotificationsPlugin();
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
-  print('A bg message just showed up :  ${message.messageId}');
 }
 
 ///certif
@@ -45,6 +44,20 @@ class MyHttpOverrides extends HttpOverrides{
 }
 
 Future<void> main() async {
+
+  /// --- disable orientation
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+
+  /// --- change status bar color
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle(
+      statusBarBrightness: Brightness.light,
+      statusBarIconBrightness: Brightness.dark,
+      statusBarColor: Color(0xff2C7DBF)
+    )
+  );
+
   ///certif
   HttpOverrides.global = new MyHttpOverrides();
 
@@ -144,7 +157,6 @@ class _StartAppState extends State<StartApp> {
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print('A new onMessageOpenedApp event was published!');
       RemoteNotification notification = message.notification;
       AndroidNotification android = message.notification?.android;
       if (notification != null && android != null) {
@@ -163,7 +175,7 @@ class _StartAppState extends State<StartApp> {
             });
       }
     });
-    FirebaseMessaging.instance.getToken().then((value) => print('token key  $value'));
+    FirebaseMessaging.instance.getToken();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async{
       Provider.of<AuthProvider>(context, listen: false).getUserFromSP();

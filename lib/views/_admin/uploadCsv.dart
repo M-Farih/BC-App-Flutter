@@ -32,8 +32,6 @@ class _UploadCsvState extends State<UploadCsv> {
       setState(() {
         pdfIconColor = 0xFF2C7DBF;
       });
-    } else {
-      print('no pdf selected');
     }
   }
 
@@ -145,7 +143,6 @@ class _UploadCsvState extends State<UploadCsv> {
 }
 
 Future<void> _confirmation(context) async {
-  print('disc clicked');
   return showDialog<void>(
     context: context,
     barrierDismissible: false, // user must tap button!

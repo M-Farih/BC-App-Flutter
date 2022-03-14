@@ -13,11 +13,11 @@ import 'package:provider/provider.dart';
 
 class ReclamationDetails extends StatefulWidget {
   final int rec_id, status;
-  final String Message, date, reason, img, phone, sellerName, record, topic;
+  final String Message, date, reason, img, phone, sellerName, record, topic, code, agentName;
   final bool isReclamation;
 
   ReclamationDetails(
-      {this.rec_id, this.Message, this.status, this.date, this.reason, this.img, this.phone, this.sellerName, this.record, this.isReclamation, this.topic});
+      {this.rec_id, this.Message, this.status, this.date, this.reason, this.img, this.phone, this.sellerName, this.record, this.isReclamation, this.topic, this.code, this.agentName});
 
   @override
   _ReclamationDetailsState createState() => _ReclamationDetailsState();
@@ -59,7 +59,6 @@ class _ReclamationDetailsState extends State<ReclamationDetails> {
         statusColor = 0xFF1DC1C3;
         break;
     }
-    print('-------- /  ${widget.img}  /------------');
   }
 
   @override
@@ -262,16 +261,23 @@ class _ReclamationDetailsState extends State<ReclamationDetails> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            Text('${widget.sellerName}'),
+                                            Row(
+                                              children: [
+                                                Text('${widget.sellerName}'),
+                                               // Text(' (R15453)', overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 11, color: Colors.redAccent.withOpacity(0.5)),),
+                                              ],
+                                            ),
                                             authProvider.currentUsr.idrole == 3
-                                                ?Text('${widget.date}',
+                                                ?Text('${widget.date.substring(0,16)}',
                                                 style: TextStyle(
                                                     fontSize: 10.0,
                                                     color: Colors.black54))
-                                                :Text('${widget.date}',
+                                                :Text('${widget.date.substring(0,16)}',
                                                 style: TextStyle(
                                                     fontSize: 10.0,
                                                     color: Colors.black)),
+                                            Text(widget.code, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 13, color: Colors.blue.withOpacity(0.8)),),
+                                            Text(widget.agentName, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 13, color: Colors.blue.withOpacity(0.8)),),
 
                                           ],
                                         )
@@ -325,7 +331,7 @@ class _ReclamationDetailsState extends State<ReclamationDetails> {
                                       Expanded(
                                         child: Text(
                                           '${widget.Message}',
-                                          style: TextStyle(color: Colors.black),
+                                          style: TextStyle(color: Colors.black45),
                                           textDirection: TextDirection.rtl,
                                         ),
                                       )
@@ -644,17 +650,11 @@ class _ReclamationDetailsState extends State<ReclamationDetails> {
   void playSound() async {
     int result = await audioPlayer.play(
         'https://audio-previews.elements.envatousercontent.com/files/81335720/preview.mp3');
-    if (result == 1) {
-      print('sound played');
-    } else {
-      print('error');
-    }
   }
 
   void audioController(String state) async {
     switch (state) {
       case 'play':
-        print('****  ${widget.record.toString().replaceAll('"', '').trim()}');
         await audioPlayer.play('${widget.record.toString().replaceAll('"', '').trim()}');
         audioPlayer.onAudioPositionChanged.listen((Duration p) {
           setState(() => position = p.inSeconds);
@@ -662,7 +662,6 @@ class _ReclamationDetailsState extends State<ReclamationDetails> {
 
         audioPlayer.onDurationChanged.listen((Duration d) {
           setState(() => audioDuration = d.inSeconds);
-          print('Max duration: $d');
         });
 
         break;

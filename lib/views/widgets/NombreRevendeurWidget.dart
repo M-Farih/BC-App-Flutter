@@ -1,16 +1,24 @@
 import 'package:bc_app/providers/nombre_total_revendeur_provider.dart';
 import 'package:flutter/material.dart';
 
-class NombreRevendeurWidget extends StatelessWidget {
+class NombreRevendeurWidget extends StatefulWidget {
   const NombreRevendeurWidget({
     Key key,
-    @required this.nbrRevendeur,
+    @required this.nbrRevendeur, this.citySelected,
   }) : super(key: key);
 
   final NombreTotalRevendeurProvider nbrRevendeur;
+  final int citySelected ;
 
   @override
+  State<NombreRevendeurWidget> createState() => _NombreRevendeurWidgetState();
+}
+
+class _NombreRevendeurWidgetState extends State<NombreRevendeurWidget> {
+  @override
   Widget build(BuildContext context) {
+    int selectedIndex = 0;
+    int cityColor = 0xFFe5e5e7;
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -40,14 +48,14 @@ class NombreRevendeurWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('Nombre total des revendeurs'),
-                      Container(width: MediaQuery.of(context).size.width * 0.25,child: Divider(color: Colors.black54)),
-                      Text('${nbrRevendeur.sellersTotalCount.toString()}', style: TextStyle(color: Colors.black54)),
+                      Container(width: MediaQuery.of(context).size.width * 0.15,child: Divider(color: Colors.black54)),
+                      Text('${widget.nbrRevendeur.sellersTotalCount.toString()}', style: TextStyle(color: Colors.black54)),
                     ],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('${nbrRevendeur.count}', style: TextStyle(color: Colors.blue, fontSize: 50.0, fontWeight: FontWeight.bold),),
+                      Text('${widget.nbrRevendeur.count}', style: TextStyle(color: Colors.blue, fontSize: 50.0, fontWeight: FontWeight.bold),),
                     ],
                   ),
                   Stack(
@@ -56,19 +64,20 @@ class NombreRevendeurWidget extends StatelessWidget {
                       Container(
                         height: 50,
                         color: Colors.transparent,
-                        width: MediaQuery.of(context).size.width-50,
+                        width: MediaQuery.of(context).size.width - 50,
                         child: Center(
                           child: ListView.separated(
                             itemBuilder: (context, index){
                               return GestureDetector(
-                                child: Text('${nbrRevendeur.sellersCount[index].city}'),
+                                child: Text('${widget.nbrRevendeur.sellersCount[index].city}',
+                                    style: index!=widget.citySelected ?TextStyle(color: Colors.grey) :TextStyle(color: Colors.blue)),
                                 onTap: (){
-                                  nbrRevendeur.getCitycount(index);
+                                  widget.nbrRevendeur.getCitycount(index);
                                 },
                               );
                             },
                             shrinkWrap: true,
-                            itemCount: nbrRevendeur.sellersCount.length,
+                            itemCount: widget.nbrRevendeur.sellersCount.length,
                             scrollDirection: Axis.horizontal,
                             separatorBuilder: (_ , __) => Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 4.0),

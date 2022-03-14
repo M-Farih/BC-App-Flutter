@@ -28,7 +28,6 @@ class PromotionService extends BaseApi{
     String filePath = image.toString();
 
     if(filePath != ""){
-      print('0');
       request.files.add(
           http.MultipartFile(
               'file',
@@ -37,7 +36,6 @@ class PromotionService extends BaseApi{
               filename: filePath.split("/").last
           )
       );
-      print('1');
 
       response = await request.send().then((result) async{
         http.Response.fromStream(result).then((response){
@@ -52,9 +50,7 @@ class PromotionService extends BaseApi{
                 "promo": "$fileLink",
                 "type": 2
               }),
-            ).then((response){
-              print('product added:: ${response.body}');
-            });
+            );
           }
         });
       });
@@ -73,7 +69,6 @@ class PromotionService extends BaseApi{
     String filePath = pdf.toString();
 
     if(filePath != ""){
-      print('00');
       request.files.add(
           http.MultipartFile(
               'file',
@@ -82,22 +77,17 @@ class PromotionService extends BaseApi{
               filename: filePath.split("/").last
           )
       );
-      print('01');
 
       response = await request.send().then((result) async{
-        print("111111  ${result}");
 
         http.Response.fromStream(result).then((response) async {
-          print("222222  ${response.body}");
           fileLinkToModifiy = response.body;
           if (true)
           {
             var pdfChecker = await api.httpGet('promo', '?type=1');
             var data = jsonDecode(pdfChecker.body);
-            print('fff --> ${data['data'][0]['promo']}');
             if(data['data'].toString().length == 2){
               //no pdf found
-              print('no pdf found');
               fileLink = response.body;
               fileLink = fileLink.replaceAll("\\", "");
               return http.post(
@@ -107,24 +97,18 @@ class PromotionService extends BaseApi{
                   "promo": "$fileLink",
                   "type": 1
                 }),
-              ).then((response){
-                print('pdf added:: ${response.body}');
-              });
+              );
             }
             else{
               //pdf found
-              print('pdf found :)');
               fileLink = response.body;
               fileLink = fileLink.replaceAll("\\", "");
-              print(' *****> ${data['data'][0]['promo']}');
               Map<String, dynamic> body = {
                 //"promo": "${data['data'][0]['promo']}",
                 "promo": fileLinkToModifiy.replaceAll('\\', '').trim(),
                 "type" : "1"
               };
-              return api.httpPut('/promo', '/${data['data'][0]['idpromo']}', jsonEncode(body)).then((value){
-                print('pdf modified:: ${value.body}');
-              });
+              return api.httpPut('/promo', '/${data['data'][0]['idpromo']}', jsonEncode(body));
             }
           }
         });
@@ -143,7 +127,6 @@ class PromotionService extends BaseApi{
     String filePath = image.toString();
 
     if(filePath != ""){
-      print('0');
       request.files.add(
           http.MultipartFile(
               'file',
@@ -152,7 +135,6 @@ class PromotionService extends BaseApi{
               filename: filePath.split("/").last
           )
       );
-      print('1');
 
       response = await request.send().then((result) async{
         http.Response.fromStream(result).then((response){
@@ -167,9 +149,7 @@ class PromotionService extends BaseApi{
                 "promo": "$fileLink",
                 "type": 4
               }),
-            ).then((response){
-              print('annonce added:: ${response.body}');
-            });
+            );
           }
         });
       });
@@ -208,9 +188,7 @@ class PromotionService extends BaseApi{
               body: json.encode({
                 "promo": "$fileLink"
               }),
-            ).then((response){
-              print('promo updated:: ${response.body}');
-            });
+            );
           }
         });
       });

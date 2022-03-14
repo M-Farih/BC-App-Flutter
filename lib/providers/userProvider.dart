@@ -29,7 +29,6 @@ class UserProvider extends ChangeNotifier{
     notifyListeners();
     var response = await _userService.add(fname, lname, username, password, email, telephone);
     if(response.statusCode == 200 || response.statusCode == 201){
-      print('user added ::::> ${response.body}');
       busy = false;
       notifyListeners();
     }
@@ -41,7 +40,6 @@ class UserProvider extends ChangeNotifier{
     var response = await _userService.update(id, clientNumber,firstName, lastName, entrepriseName, ice,
         city, address, telephone, role_id, email);
     if(response.statusCode == 201 || response.statusCode == 200) {
-      print('user updated *** ${response.body}');
       busy = false;
       notifyListeners();
     }
@@ -108,7 +106,6 @@ class UserProvider extends ChangeNotifier{
       }
       _sellers = new List.from(_commercialsList)..addAll(_sellersList);
       _sellers.removeWhere((element) => element.idrole == 1);
-      print('////// ${_sellers[0].userName}');
       if(_sellers.length > 150){
         myIndex = 80;
       }
@@ -125,7 +122,6 @@ class UserProvider extends ChangeNotifier{
     notifyListeners();
     var response = await _userService.getSellersByAgent(id);
     if(response.statusCode == 200){
-      print(' */*/*/* ${response.body}');
       var data = jsonDecode(response.body);
       tempSellersList.clear();
       data['data'].forEach((u) => tempSellersList.add(User.fromJson(u)));
@@ -145,7 +141,6 @@ class UserProvider extends ChangeNotifier{
       data['data'].forEach((u) => _userById = User.fromJson(u));
       busy = false;
       notifyListeners();
-      print('name === ${_userById.firstName}');
     }
   }
 
@@ -159,13 +154,9 @@ class UserProvider extends ChangeNotifier{
       _currentUserImage = data['data'][0]['profileImage'].toString().replaceAll('"', '').trim();
       data['data'].forEach((u) => _userById = User.fromJson(u));
       _currentUser = _userById;
-      print('test*-*--*-* ${_currentUser.firstName} ---');
-      authProvider.saveUserInSP(data).then((value) {
-        print('ok-----ok');
-      });
+      authProvider.saveUserInSP(data);
       busy = false;
       notifyListeners();
-      print('name === ${_userById.firstName}');
     }
   }
 
@@ -177,8 +168,10 @@ class UserProvider extends ChangeNotifier{
     else{
       final List<User> filteredUsers = List();
       _tempSellersList.forEach((element) {
+        String fullName = element.firstName.toLowerCase() + ' ' + element.lastName.toLowerCase();
         if(element.firstName.toLowerCase().contains(text.toLowerCase()) ||
             element.lastName.toLowerCase().contains(text.toLowerCase()) ||
+            fullName.contains(text.toLowerCase()) ||
             element.clientNumber.toLowerCase().contains(text.toLowerCase())
         ){
           filteredUsers.add(element);

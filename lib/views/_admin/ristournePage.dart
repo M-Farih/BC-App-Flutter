@@ -41,8 +41,6 @@ class _RistournePageState extends State<RistournePage> {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
         imageChosen = true;
-      } else {
-        print('No image selected.');
       }
     });
   }
@@ -60,7 +58,6 @@ class _RistournePageState extends State<RistournePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    print('list users page');
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<RistourneProvider>(context, listen: false).getRistournes();
       Provider.of<RistourneProvider>(context, listen: false).getRistourneImage();
@@ -153,7 +150,6 @@ class _RistournePageState extends State<RistournePage> {
                               getImage();
                             }
                             else{
-                              print('uploading image');
                               setState(() {
                                 isLocal = true;
                                 _image = _image;
@@ -350,7 +346,6 @@ class _RistournePageState extends State<RistournePage> {
                                             btnOkText: 'Modifier',
                                             btnOkOnPress: (){
                                               progressDialog.show();
-                                              print('ok');
                                               ristourneProvider.updateRistourne(ristourneProvider.ristournes[index].idristourne.toString(), minController.text, maxController.text, percentageController.text).whenComplete((){
                                               });
                                               _confirmation(context);
@@ -358,9 +353,7 @@ class _RistournePageState extends State<RistournePage> {
                                           btnCancelText: 'Supprimer',
                                           btnCancelOnPress: (){
                                             progressDialog.show();
-                                            ristourneProvider.deleteRistourne(ristourneProvider.ristournes[index].idristourne.toString()).whenComplete((){
-                                              print('Supprimer');
-                                            });
+                                            ristourneProvider.deleteRistourne(ristourneProvider.ristournes[index].idristourne.toString());
                                             _confirmation(context);
                                           }
                                         )..show();
@@ -473,7 +466,6 @@ class _RistournePageState extends State<RistournePage> {
                                 btnOkText: 'Ajouter',
                                 btnOkOnPress: (){
                                   progressDialog.show();
-                                  print('ok');
                                   ristourneProvider.addRistourne(minController.text, maxController.text, percentageController.text).whenComplete((){
                                     progressDialog.hide();
                                     _confirmation(context);
@@ -494,7 +486,6 @@ class _RistournePageState extends State<RistournePage> {
   }
 }
 Future<void> _confirmation(context) async {
-  print('disc clicked');
   return showDialog<void>(
     context: context,
     barrierDismissible: false, // user must tap button!

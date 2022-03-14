@@ -272,8 +272,6 @@ class _AddUserState extends State<AddUser> {
                             telephoneController.text = "";
                           });
                         }
-                        else
-                          print('is not validate');
                       },
                     )
                   ],

@@ -23,7 +23,6 @@ class _Dashboard_adminState extends State<Dashboard_admin> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    print('dashboard admin');
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<NombreTotalRevendeurProvider>(context, listen: false)
           .getStatisticsByCity();
@@ -84,7 +83,7 @@ class _Dashboard_adminState extends State<Dashboard_admin> {
                         ),
                       ],
                     ),
-                    NombreRevendeurWidget(nbrRevendeur: nbrRevendeur),
+                    NombreRevendeurWidget(nbrRevendeur: nbrRevendeur, citySelected: nbrRevendeur.selectedCity,),
                     SizedBox(height: 40,),
 
                     /// acces rapide
@@ -105,7 +104,7 @@ class _Dashboard_adminState extends State<Dashboard_admin> {
                                   children: [
                                     //Text('Modifier une promotion', style: TextStyle(color: Colors.white, fontSize: 12),)
                                     authProvider.currentUsr.idrole == 0
-                                        ?Text('Promotion  et Annonce', style: TextStyle(color: Colors.white, fontSize: 12),)
+                                        ?Text('Promotion et Annonce', style: TextStyle(color: Colors.white, fontSize: 12),)
                                         :Text('Modifier une promotion', style: TextStyle(color: Colors.white, fontSize: 12),)
 
                                   ],
@@ -158,7 +157,6 @@ class _Dashboard_adminState extends State<Dashboard_admin> {
                             ),
                             onTap: (){
                               Navigator.of(context).pushNamed('ristourne-page');
-                              print('modifier restourne');
                             },
                           ),
                           authProvider.currentUsr.idrole == 0
@@ -178,7 +176,6 @@ class _Dashboard_adminState extends State<Dashboard_admin> {
                             ),
                             onTap: (){
                               Navigator.of(context).pushNamed('add-user');
-                              print('add user');
                             },
                           )
                               :SizedBox()
@@ -202,19 +199,19 @@ class _Dashboard_adminState extends State<Dashboard_admin> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               reclamationStatistiques(
-                                  onClick: ()=> test(2, 0),
+                                  onClick: ()=> showListReclamation(2, 0),
                                   wIcon: Icons.move_to_inbox,
                                   wColor: colorRecus,
                                   wCount: '${topicProvider.reclamationRecue}',
                                   wStatus: 'reçues'),
                               reclamationStatistiques(
-                                  onClick: ()=> test(2, 1),
+                                  onClick: ()=> showListReclamation(2, 1),
                                   wIcon: Icons.cached_sharp,
                                   wColor: colorEnCours,
                                   wCount: '${topicProvider.reclamationEnCours}',
                                   wStatus: 'En cours'),
                               reclamationStatistiques(
-                                  onClick: ()=> test(2, 2),
+                                  onClick: ()=> showListReclamation(2, 2),
                                   wIcon: Icons.check_circle_outline,
                                   wColor: colorTraitees,
                                   wCount: '${topicProvider.reclamationTraitee}',
@@ -240,19 +237,19 @@ class _Dashboard_adminState extends State<Dashboard_admin> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               reclamationStatistiques(
-                                  onClick: ()=> test(1, 0),
+                                  onClick: ()=> showListReclamation(1, 0),
                                   wIcon: Icons.move_to_inbox,
                                   wColor: colorRecus,
                                   wCount: '${topicProvider.suggestionRecue}',
                                   wStatus: 'reçues'),
                               reclamationStatistiques(
-                                  onClick: ()=> test(1, 1),
+                                  onClick: ()=> showListReclamation(1, 1),
                                   wIcon: Icons.cached_sharp,
                                   wColor: colorEnCours,
                                   wCount: '${topicProvider.suggestionEnCours}',
                                   wStatus: 'En cours'),
                               reclamationStatistiques(
-                                  onClick: ()=> test(1, 2),
+                                  onClick: ()=> showListReclamation(1, 2),
                                   wIcon: Icons.check_circle_outline,
                                   wColor: colorTraitees,
                                   wCount: '${topicProvider.suggestionTraitee}',
@@ -268,7 +265,7 @@ class _Dashboard_adminState extends State<Dashboard_admin> {
           ),
     );
   }
-  void test(int idtype_reason, int indicator){
+  void showListReclamation(int idtype_reason, int indicator){
     Navigator.push(
         context,
         MaterialPageRoute(

@@ -39,7 +39,6 @@ class PromotionProvider extends ChangeNotifier{
       var data = jsonDecode(response.body);
       _annonces.clear();
       data['data'].forEach((p)=> _annonces.add(Promotion.fromJson(p)));
-      print('*******   ${_annonces.length}');
       isBusy = false;
       notifyListeners();
     }
@@ -86,7 +85,6 @@ class PromotionProvider extends ChangeNotifier{
     notifyListeners();
     var response = await _promotionService.deletePromo(id);
     if(response.statusCode == 200 || response.statusCode == 201){
-      print('${response.body}');
       isBusy = false;
       notifyListeners();
     }

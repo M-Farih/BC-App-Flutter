@@ -78,7 +78,6 @@ class _RistourneWidgetState extends State<RistourneWidget> {
                       ),
                     ),
                     onTap: () {
-                      print("image clicked!!!");
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => MyPhotoViewer(
                               imageUrl:

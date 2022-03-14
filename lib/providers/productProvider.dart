@@ -18,7 +18,6 @@ class ProductProvider extends ChangeNotifier{
     var response = await _productService.getProducts(id);
     if(response.statusCode == 200){
       var data = jsonDecode(response.body);
-      print('product ---> ${data}');
       _product.clear();
       data['data'].forEach((p)=> _product.add(Product.fromJson(p)));
       isBusy = false;
@@ -42,7 +41,6 @@ class ProductProvider extends ChangeNotifier{
     var response = await _productService.getProductById(id);
     if(response.statusCode == 200){
       var data = jsonDecode(response.body);
-      print('all products --> ${data}');
       data['data'].forEach((p)=> _product.add(Product.fromJson(p)));
       isBusy = false;
       notifyListeners();
@@ -60,14 +58,12 @@ class ProductProvider extends ChangeNotifier{
   }
 
   Future<void> deleteProduct(String id) async{
-    print('del');
     isBusy = true;
     notifyListeners();
     var response = await _productService.deleteProduct(id);
     if(response.statusCode == 200 || response.statusCode == 201){
       isBusy = false;
       notifyListeners();
-      print('${response.body}');
     }
     isBusy = false;
     notifyListeners();

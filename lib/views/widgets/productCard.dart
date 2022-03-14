@@ -171,7 +171,6 @@ class _ProductCardState extends State<ProductCard> {
                               onTap: (){
                                 productProvider.deleteProduct(widget.id);
                                 _confirmation(context, widget.type);
-                                print(' // ${productProvider.isBusy}');
                               },
                             ),
                             GestureDetector(
@@ -203,7 +202,6 @@ class _ProductCardState extends State<ProductCard> {
 }
 
 Future<void> _confirmation(context, type) async {
-  print('disc clicked');
   return showDialog<void>(
     context: context,
     barrierDismissible: false, // user must tap button!

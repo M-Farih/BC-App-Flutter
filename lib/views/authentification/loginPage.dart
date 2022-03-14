@@ -105,6 +105,7 @@ class _LoginState extends State<LoginPage> {
                       child: RaisedButton(
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                         onPressed: () async {
+                          FocusScope.of(context).requestFocus(FocusNode());
                           if(_key.currentState.validate()){
                             _key.currentState.save();
                             progressDialog.show();
@@ -125,12 +126,10 @@ class _LoginState extends State<LoginPage> {
                                 message:  "اسم المستخدم أو كلمة المرور غير صحيحة",
                                 duration:  Duration(seconds: 3),
                               )..show(context);
-                              print('can\'t login');
                             }
 
 
-                          }else
-                            print('is not validate');
+                          }
                         },
                         color: Color(0xFF2C7DBF),
                         textColor: Colors.white,
@@ -208,7 +207,7 @@ class _LoginState extends State<LoginPage> {
           fontSize: 16.0,
         ),
         border: InputBorder.none,
-        prefixIcon: hintText == "البريد الإلكتروني" ? Icon(Icons.email) : Icon(Icons.lock),
+        prefixIcon: hintText == "اسم المستخدم" ? Icon(Icons.person) : Icon(Icons.lock),
         suffixIcon: hintText == "كلمة السر" ? IconButton(
           onPressed: _toggleVisibility,
           icon: _isHidden ? Icon(Icons.visibility_off) : Icon(Icons.visibility),

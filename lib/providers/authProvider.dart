@@ -26,7 +26,6 @@ class AuthProvider extends BaseProvider{
   bool canPass = false;
 
   Future<bool> login(String username, String password) async {
-    print("login called");
     busy = true;
     var response = await _authService.login(username.trim(), password.trim());
     if (response.statusCode == 200) {
@@ -37,14 +36,12 @@ class AuthProvider extends BaseProvider{
         saveUserInSP(data);
         _users.clear();
         data['data'].forEach((u) => _users.add(User.fromJson(u)));
-        print("psps --- ${_users[0].firstConnection}");
 
         if(_users[0].firstConnection == "0"){
           Map<String, dynamic> body = {
             "firstConnection": 1
           };
           var upUser = await api.httpPut('users', '${_users[0].iduser}', jsonEncode(body));
-          print('-------*------- ${upUser.body}');
         }
 
         setLogin();
@@ -79,11 +76,9 @@ class AuthProvider extends BaseProvider{
     final prefs = await SharedPreferences.getInstance();
     final key = 'isLogged';
     loggedIn = prefs.get(key) ?? false;
-    print('1--');
     if(loggedIn){
       await getUserFromSP();
       role_id = _currentUsr.idrole;
-      print('2--');
       userChekcerIsBusy = false;
       notifyListeners();
       return role_id;
@@ -91,7 +86,6 @@ class AuthProvider extends BaseProvider{
     }else {
       userChekcerIsBusy = false;
       notifyListeners();
-      print('3-- $userChekcerIsBusy');
       return role_id;
 
     }
@@ -111,12 +105,10 @@ class AuthProvider extends BaseProvider{
   Future<void> saveUserInSP(user) async {
     spbusy = true;
     notifyListeners();
-    print('setting user in SP');
     final prefs = await SharedPreferences.getInstance();
     prefs.remove('user');
     var currentUser = user['data'];
     prefs.setString('user', json.encode(currentUser));
-    print('user saved -> ${json.encode(currentUser)}');
 
     spbusy = false;
     notifyListeners();
@@ -124,24 +116,18 @@ class AuthProvider extends BaseProvider{
 
   bool spbusy = true;
   Future<void> getUserFromSP() async{
-    print('getting saved user form SP...');
     spbusy = true;
     final prefs = await SharedPreferences.getInstance();
     var user = jsonDecode(prefs.getString('user'));
-    print('user from Sp ==> ${user[0]['iduser']}');
-    print('user from Sp image ==> ${user[0]['profileImage']}');
-    print('user from Sp ==> ${user[0]}');
     _currentUsr = null;
     _currentUsr = User.fromJson(user[0]);
     //await Future.delayed(Duration(seconds: 5));
-    print('====username==== ${_currentUsr.iduser}');
     iduser = _currentUsr.iduser;
     spbusy = false;
     notifyListeners();
   }
 
   Future<void> updateCurrentUser(String firstName, lastName, entrepriseName, ice, city, address, telephone, profileImage) async{
-    print('updating current user');
     User _tempUser = _currentUsr;
     _currentUsr = null;
     _currentUsr = new User(_tempUser.idrole, _tempUser.idagent, firstName, lastName,
@@ -155,11 +141,9 @@ class AuthProvider extends BaseProvider{
   }
 
   Future<void> getUserSolde(int id) async{
-    print('get id 1');
     busy = true;
     notifyListeners();
     var response = await _authService.getUserSolde(id);
-    print('get id 2  ${response.statusCode}');
     if (response.statusCode == 200) {
       ///fill user model banquette, divers, matelas, mousse;
       var data = jsonDecode(response.body);

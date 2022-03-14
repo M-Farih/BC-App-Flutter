@@ -34,7 +34,6 @@ class CommentProvider extends ChangeNotifier{
     var response = await _commentService.addComments(iduser, idtopic, comment);
     if(response.statusCode == 200 || response.statusCode == 201){
       var data = jsonDecode(response.body);
-      print('comment added-> ${data['data']}');
       isBusy = false;
       notifyListeners();
     }

@@ -10,6 +10,7 @@ class NombreTotalRevendeurProvider extends ChangeNotifier{
   bool isBusy = false;
   List<SellersCount> _sellersCount = List();
   String count = '0';
+  int selectedCity = 0;
   int sellersTotalCount = 0;
 
   List<SellersCount> get sellersCount => _sellersCount;
@@ -48,6 +49,8 @@ class NombreTotalRevendeurProvider extends ChangeNotifier{
 
   getCitycount(int index){
     count = _sellersCount[index].count;
+    selectedCity = index;
+    print('city ${_sellersCount[index]}');
     notifyListeners();
   }
 

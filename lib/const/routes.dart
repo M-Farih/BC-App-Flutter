@@ -13,7 +13,6 @@ import 'package:bc_app/views/home/homePage.dart';
 import 'package:bc_app/views/product/productAdd.dart';
 import 'package:bc_app/views/product/promotionAdd.dart';
 import 'package:bc_app/views/revendeur/beASeller.dart';
-import 'package:bc_app/views/testtt.dart';
 import 'package:flutter/material.dart';
 
 const String initialRoute = "home";

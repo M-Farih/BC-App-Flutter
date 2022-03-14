@@ -90,7 +90,6 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
 Future<void> _disconnect(context, int roleId) async {
   var authProvider = Provider.of<AuthProvider>(context, listen: false);
   var userProvider = Provider.of<UserProvider>(context, listen: false);
-  print('disc clicked');
   return showDialog<void>(
     context: context,
     barrierDismissible: false, // user must tap button!
@@ -111,15 +110,9 @@ Future<void> _disconnect(context, int roleId) async {
           FlatButton(
             child: Text(roleId == 3? 'تسجيل الخروج' :'Déconnexion', style: TextStyle(color: Colors.red),),
             onPressed: () {
-              FirebaseMessaging.instance.unsubscribeFromTopic("admin").then((value) {
-                print('admin unsubscribed!!');
-              });
-              FirebaseMessaging.instance.unsubscribeFromTopic("users").then((value) {
-                print('users unsubscribed!!');
-              });
-              FirebaseMessaging.instance.unsubscribeFromTopic("revendeurs").then((value) {
-                print('revendeur unsubscribed!!');
-              });
+              FirebaseMessaging.instance.unsubscribeFromTopic("admin");
+              FirebaseMessaging.instance.unsubscribeFromTopic("users");
+              FirebaseMessaging.instance.unsubscribeFromTopic("revendeurs");
               authProvider.logout().whenComplete(() {
                 ///clear all lists
                 userProvider.sellers.clear();
