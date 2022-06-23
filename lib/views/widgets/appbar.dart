@@ -110,9 +110,9 @@ Future<void> _disconnect(context, int roleId) async {
           FlatButton(
             child: Text(roleId == 3? 'تسجيل الخروج' :'Déconnexion', style: TextStyle(color: Colors.red),),
             onPressed: () {
-              FirebaseMessaging.instance.unsubscribeFromTopic("admin");
-              FirebaseMessaging.instance.unsubscribeFromTopic("users");
-              FirebaseMessaging.instance.unsubscribeFromTopic("revendeurs");
+              // FirebaseMessaging.instance.unsubscribeFromTopic("admin");
+              // FirebaseMessaging.instance.unsubscribeFromTopic("users");
+              // FirebaseMessaging.instance.unsubscribeFromTopic("revendeurs");
               authProvider.logout().whenComplete(() {
                 ///clear all lists
                 userProvider.sellers.clear();

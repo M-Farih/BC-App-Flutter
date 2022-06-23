@@ -40,8 +40,8 @@ class _HomePage_RevendeurState extends State<HomePage_Revendeur> {
     }
 
     /// subscribe to firebase
-    FirebaseMessaging.instance.subscribeToTopic('users');
-    FirebaseMessaging.instance.subscribeToTopic('revendeurs');
+    // FirebaseMessaging.instance.subscribeToTopic('users');
+    // FirebaseMessaging.instance.subscribeToTopic('revendeurs');
 
     WidgetsBinding.instance.addPostFrameCallback((_) async{
       int role_id = await Provider.of<AuthProvider>(context, listen: false).checkLoginAndRole();

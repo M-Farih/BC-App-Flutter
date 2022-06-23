@@ -45,6 +45,7 @@ class MyHttpOverrides extends HttpOverrides{
 
 Future<void> main() async {
 
+  WidgetsFlutterBinding.ensureInitialized();
   /// --- disable orientation
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);

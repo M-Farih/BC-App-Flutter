@@ -9,6 +9,14 @@ class MyPhotoViewer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _return(context);
+        },
+        backgroundColor: Colors.blue,
+        child: const Icon(Icons.clear),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       backgroundColor: Colors.white,
         body: Container(
           child: PhotoView(

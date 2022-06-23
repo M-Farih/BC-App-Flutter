@@ -35,8 +35,8 @@ class _HomePage_adminState extends State<HomePage_admin> {
     }
 
     /// subscribe to firebase
-    FirebaseMessaging.instance.subscribeToTopic('admin');
-    FirebaseMessaging.instance.subscribeToTopic('users');
+    // FirebaseMessaging.instance.subscribeToTopic('admin');
+    // FirebaseMessaging.instance.subscribeToTopic('users');
 
     WidgetsBinding.instance.addPostFrameCallback((_) async{
       Provider.of<ContactProvider>(context, listen: false);
