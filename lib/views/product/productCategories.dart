@@ -21,7 +21,7 @@ class ProductCategories extends StatefulWidget {
 class _ProductCategoriesState extends State<ProductCategories> {
   @override
   void initState() {
-    // TODO: implement initState
+    
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<PromotionProvider>(context, listen: false).getPromotions();

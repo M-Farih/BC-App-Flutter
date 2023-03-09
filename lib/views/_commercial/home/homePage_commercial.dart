@@ -33,7 +33,7 @@ class _HomePage_CommercialState extends State<HomePage_Commercial> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    
     super.initState();
 
     if(widget.index != null){

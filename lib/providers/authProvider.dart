@@ -6,8 +6,7 @@ import 'package:bc_app/services/api.dart';
 import 'package:bc_app/services/authService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AuthProvider extends BaseProvider{
-
+class AuthProvider extends BaseProvider {
   bool busy = true;
   bool userChekcerIsBusy = true;
 
@@ -20,7 +19,6 @@ class AuthProvider extends BaseProvider{
   double banquette, divers, matelas, mousse, max;
   List<double> famillesSold;
 
-
   List<User> get users => _users;
   User get currentUsr => _currentUsr;
   bool canPass = false;
@@ -31,24 +29,22 @@ class AuthProvider extends BaseProvider{
     if (response.statusCode == 200) {
       //fill user model
       var data = jsonDecode(response.body);
-      if(data["data"].length > 0){
+      if (data["data"].length > 0) {
         canPass = true;
         saveUserInSP(data);
         _users.clear();
         data['data'].forEach((u) => _users.add(User.fromJson(u)));
 
-        if(_users[0].firstConnection == "0"){
-          Map<String, dynamic> body = {
-            "firstConnection": 1
-          };
-          var upUser = await api.httpPut('users', '${_users[0].iduser}', jsonEncode(body));
+        if (_users[0].firstConnection == "0") {
+          Map<String, dynamic> body = {"firstConnection": 1};
+          var upUser = await api.httpPut(
+              'users', '${_users[0].iduser}', jsonEncode(body));
         }
 
         setLogin();
         notifyListeners();
         busy = false;
-      }
-      else{
+      } else {
         canPass = false;
       }
     }
@@ -69,35 +65,33 @@ class AuthProvider extends BaseProvider{
   }
 
   bool loggedIn = false;
-  Future<int> checkLoginAndRole() async{
+  Future<int> checkLoginAndRole() async {
     userChekcerIsBusy = true;
     notifyListeners();
     int role_id;
     final prefs = await SharedPreferences.getInstance();
     final key = 'isLogged';
     loggedIn = prefs.get(key) ?? false;
-    if(loggedIn){
+    if (loggedIn) {
       await getUserFromSP();
       role_id = _currentUsr.idrole;
       userChekcerIsBusy = false;
       notifyListeners();
       return role_id;
-
-    }else {
+    } else {
       userChekcerIsBusy = false;
       notifyListeners();
       return role_id;
-
     }
   }
 
-  Future<void> setLogin() async{
+  Future<void> setLogin() async {
     final prefs = await SharedPreferences.getInstance();
     final key = 'isLogged';
     prefs.setBool(key, true);
   }
 
-  Future<void> logout() async{
+  Future<void> logout() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     await preferences.clear();
   }
@@ -115,7 +109,7 @@ class AuthProvider extends BaseProvider{
   }
 
   bool spbusy = true;
-  Future<void> getUserFromSP() async{
+  Future<void> getUserFromSP() async {
     spbusy = true;
     final prefs = await SharedPreferences.getInstance();
     var user = jsonDecode(prefs.getString('user'));
@@ -127,20 +121,44 @@ class AuthProvider extends BaseProvider{
     notifyListeners();
   }
 
-  Future<void> updateCurrentUser(String firstName, lastName, entrepriseName, ice, city, address, telephone, profileImage) async{
+  Future<void> updateCurrentUser(String firstName, lastName, entrepriseName,
+      ice, city, address, telephone, profileImage) async {
     User _tempUser = _currentUsr;
     _currentUsr = null;
-    _currentUsr = new User(_tempUser.idrole, _tempUser.idagent, firstName, lastName,
-        _tempUser.userName, _tempUser.email,_tempUser.password, entrepriseName, ice,
-        city, address, telephone, _tempUser.clientNumber, _tempUser.agentIduser,
-        _tempUser.agentName, _tempUser.idrole, profileImage, _tempUser.solde,
-        _tempUser.ristourne, _tempUser.agentPhone, _tempUser.firstConnection,
-      _tempUser.banquette, _tempUser.divers, _tempUser.mousse, _tempUser.matelas,
-      _tempUser.from_date_ca, _tempUser.to_date_ca
-    );
+    _currentUsr = new User(
+        _tempUser.idrole,
+        _tempUser.idagent,
+        _tempUser.idvendor,
+        firstName,
+        lastName,
+        _tempUser.userName,
+        _tempUser.email,
+        _tempUser.password,
+        entrepriseName,
+        ice,
+        city,
+        address,
+        telephone,
+        _tempUser.clientNumber,
+        _tempUser.agentIduser,
+        _tempUser.agentName,
+        _tempUser.idrole,
+        profileImage,
+        _tempUser.solde,
+        _tempUser.ristourne,
+        _tempUser.agentPhone,
+        _tempUser.firstConnection,
+        _tempUser.banquette,
+        _tempUser.divers,
+        _tempUser.mousse,
+        _tempUser.matelas,
+        _tempUser.from_date_ca,
+        _tempUser.to_date_ca,
+        _tempUser.ca,
+        _tempUser.lastpurchasedate);
   }
 
-  Future<void> getUserSolde(int id) async{
+  Future<void> getUserSolde(int id) async {
     busy = true;
     notifyListeners();
     var response = await _authService.getUserSolde(id);
@@ -158,8 +176,8 @@ class AuthProvider extends BaseProvider{
 
       famillesSold = [banquette, divers, matelas, mousse];
       max = famillesSold[0];
-      for(int i=1;i<famillesSold.length;i++){
-        if(famillesSold[i] > max){
+      for (int i = 1; i < famillesSold.length; i++) {
+        if (famillesSold[i] > max) {
           max = famillesSold[i];
         }
       }

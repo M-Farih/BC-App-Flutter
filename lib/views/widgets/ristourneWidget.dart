@@ -25,6 +25,9 @@ class _RistourneWidgetState extends State<RistourneWidget> {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 25.0, horizontal: 8.0),
           child: Container(
+            padding: EdgeInsets.all(
+              8.0,
+            ),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5.0),
               color: Colors.white,
@@ -38,7 +41,6 @@ class _RistourneWidgetState extends State<RistourneWidget> {
               ],
             ),
             width: MediaQuery.of(context).size.width - 50,
-            height: 230.0,
             child: Center(
                 child: GestureDetector(
                     child: Padding(
@@ -67,22 +69,20 @@ class _RistourneWidgetState extends State<RistourneWidget> {
                               width: MediaQuery.of(context).size.width - 50,
                               child: !widget.isLocal
                                   ? Image.network(
-                                '${widget.imageLink}',
-                                fit: BoxFit.contain,
-                              )
+                                      '${widget.imageLink}',
+                                      fit: BoxFit.contain,
+                                    )
                                   : Image.file(
-                                widget.imagePath,
-                                fit: BoxFit.contain,
-                              )),
+                                      widget.imagePath,
+                                      fit: BoxFit.contain,
+                                    )),
                         ],
                       ),
                     ),
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => MyPhotoViewer(
-                              imageUrl:
-                              widget.imageLink
-                          )));
+                          builder: (context) =>
+                              MyPhotoViewer(imageUrl: widget.imageLink)));
                     })),
           ),
         ),

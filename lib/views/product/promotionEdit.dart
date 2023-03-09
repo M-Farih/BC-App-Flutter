@@ -43,7 +43,7 @@ class _PromotionEditState extends State<PromotionEdit> {
   }
 
   void initState() {
-    // TODO: implement initState
+    
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<PromotionProvider>(context, listen: false).getPromotions();

@@ -25,7 +25,7 @@ class _BuildMessageState extends State<BuildMessage> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<AuthProvider>(context, listen: false).getUserFromSP();

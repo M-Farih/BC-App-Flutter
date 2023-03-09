@@ -19,7 +19,7 @@ class _Dashboard_commercialState extends State<Dashboard_commercial> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<NombreTotalRevendeurProvider>(context, listen: false).getStatisticsByCity();

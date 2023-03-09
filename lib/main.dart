@@ -1,8 +1,10 @@
 import 'dart:io';
 import 'package:bc_app/const/routes.dart';
 import 'package:bc_app/providers/authProvider.dart';
+import 'package:bc_app/providers/caProvider.dart';
 import 'package:bc_app/providers/commentProvider.dart';
 import 'package:bc_app/providers/contactProvider.dart';
+import 'package:bc_app/providers/myNoteProvider.dart';
 import 'package:bc_app/providers/nombre_total_revendeur_provider.dart';
 import 'package:bc_app/providers/productProvider.dart';
 import 'package:bc_app/providers/promotionProvider.dart';
@@ -19,7 +21,6 @@ import 'package:provider/provider.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter/services.dart';
 
-
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
     'high_importance_channel', // id
     'High Importance Notifications', // title
@@ -28,35 +29,32 @@ const AndroidNotificationChannel channel = AndroidNotificationChannel(
     playSound: true);
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-FlutterLocalNotificationsPlugin();
+    FlutterLocalNotificationsPlugin();
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
 }
 
 ///certif
-class MyHttpOverrides extends HttpOverrides{
+class MyHttpOverrides extends HttpOverrides {
   @override
-  HttpClient createHttpClient(SecurityContext context){
+  HttpClient createHttpClient(SecurityContext context) {
     return super.createHttpClient(context)
-      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }
 
 Future<void> main() async {
-
   /// --- disable orientation
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
   /// --- change status bar color
-  SystemChrome.setSystemUIOverlayStyle(
-    SystemUiOverlayStyle(
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarBrightness: Brightness.light,
       statusBarIconBrightness: Brightness.dark,
-      statusBarColor: Color(0xff2C7DBF)
-    )
-  );
+      statusBarColor: Color(0xff2C7DBF)));
 
   ///certif
   HttpOverrides.global = new MyHttpOverrides();
@@ -67,7 +65,8 @@ Future<void> main() async {
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   await flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
       ?.createNotificationChannel(channel);
 
   await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
@@ -86,47 +85,25 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-        providers:
-        [
-          ChangeNotifierProvider(
-              create: (context) => locator<AuthProvider>()
-          ),
-          ChangeNotifierProvider(
-              create: (context) => locator<UserProvider>()
-          ),
-          ChangeNotifierProvider(
-              create: (context) => locator<ContactProvider>()
-          ),
-          ChangeNotifierProvider(
-              create: (context) => locator<ReasonProvider>()
-          ),
-          ChangeNotifierProvider(
-              create: (context) => locator<TopicProvider>()
-          ),
-          ChangeNotifierProvider(
-              create: (context) => locator<CommentProvider>()
-          ),
-          ChangeNotifierProvider(
-              create: (context) => locator<NombreTotalRevendeurProvider>()
-          ),
-          ChangeNotifierProvider(
-              create: (context) => locator<ProductProvider>()
-          ),
-          ChangeNotifierProvider(
-              create: (context) => locator<PromotionProvider>()
-          ),
-          ChangeNotifierProvider(
-              create: (context) => locator<RistourneProvider>()
-          ),
-        ],
-        child: StartApp()
-    );
+    return MultiProvider(providers: [
+      ChangeNotifierProvider(create: (context) => locator<AuthProvider>()),
+      ChangeNotifierProvider(create: (context) => locator<UserProvider>()),
+      ChangeNotifierProvider(create: (context) => locator<ContactProvider>()),
+      ChangeNotifierProvider(create: (context) => locator<ReasonProvider>()),
+      ChangeNotifierProvider(create: (context) => locator<TopicProvider>()),
+      ChangeNotifierProvider(create: (context) => locator<CommentProvider>()),
+      ChangeNotifierProvider(
+          create: (context) => locator<NombreTotalRevendeurProvider>()),
+      ChangeNotifierProvider(create: (context) => locator<ProductProvider>()),
+      ChangeNotifierProvider(create: (context) => locator<PromotionProvider>()),
+      ChangeNotifierProvider(create: (context) => locator<RistourneProvider>()),
+      ChangeNotifierProvider(create: (context) => locator<CaProvider>()),
+      ChangeNotifierProvider(create: (context) => locator<MyNoteProvider>()),
+    ], child: StartApp());
   }
 }
 
 class StartApp extends StatefulWidget {
-
   @override
   _StartAppState createState() => _StartAppState();
 }
@@ -177,34 +154,32 @@ class _StartAppState extends State<StartApp> {
     });
     FirebaseMessaging.instance.getToken();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) async{
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<AuthProvider>(context, listen: false).getUserFromSP();
     });
   }
 
   void showNotification() {
-
     flutterLocalNotificationsPlugin.show(
         0,
         "Testing...",
         "How you doin ?",
         NotificationDetails(
-            android: AndroidNotificationDetails(channel.id, channel.name, channel.description,
+            android: AndroidNotificationDetails(
+                channel.id, channel.name, channel.description,
                 importance: Importance.high,
                 color: Colors.blue,
                 playSound: true,
                 icon: '@mipmap/ic_launcher')));
   }
 
-
   @override
   Widget build(BuildContext context) {
-
+    SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(statusBarColor: Colors.white));
     return MaterialApp(
       title: 'BC APP',
-      theme: ThemeData(
-        primaryColor: Color(0xFF57a9ed)
-      ),
+      theme: ThemeData(primaryColor: Color(0xFF57a9ed)),
       debugShowCheckedModeBanner: false,
       initialRoute: initialRoute,
       onGenerateRoute: Routes.generateRoute,

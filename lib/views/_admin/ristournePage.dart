@@ -56,7 +56,7 @@ class _RistournePageState extends State<RistournePage> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<RistourneProvider>(context, listen: false).getRistournes();

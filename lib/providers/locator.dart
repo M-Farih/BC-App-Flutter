@@ -10,12 +10,17 @@ import 'package:bc_app/providers/topicProvider.dart';
 import 'package:bc_app/providers/userProvider.dart';
 import 'package:get_it/get_it.dart';
 
+import 'caProvider.dart';
+import 'myNoteProvider.dart';
+
 GetIt locator = GetIt.instance;
-void setupLocator(){
+void setupLocator() {
   locator.registerFactory(() => AuthProvider());
   locator.registerFactory(() => UserProvider());
   locator.registerFactory(() => ContactProvider());
   locator.registerFactory(() => ReasonProvider());
+  locator.registerFactory(() => CaProvider());
+  locator.registerFactory(() => MyNoteProvider());
   locator.registerFactory(() => TopicProvider());
   locator.registerFactory(() => CommentProvider());
   locator.registerFactory(() => NombreTotalRevendeurProvider());

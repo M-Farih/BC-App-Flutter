@@ -39,7 +39,7 @@ class _ReclamationCardState extends State<ReclamationCard> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    
     super.initState();
 
     switch (widget.status) {

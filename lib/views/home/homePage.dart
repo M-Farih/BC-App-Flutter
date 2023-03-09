@@ -16,7 +16,7 @@ class _HomePageState extends State<HomePage> {
   int _role_id;
   @override
   void initState() {
-    // TODO: implement initState
+    
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async{
       _role_id = await Provider.of<AuthProvider>(context, listen: false).checkLoginAndRole();

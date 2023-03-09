@@ -19,18 +19,13 @@ class HomePage_admin extends StatefulWidget {
 
 class _HomePage_adminState extends State<HomePage_admin> {
   int _currentIndex = 0;
-  final tabs = [
-    Dashboard_admin(),
-    ProductCategories(),
-    ListSellersAdmin()
-  ];
+  final tabs = [Dashboard_admin(), ProductCategories(), ListSellersAdmin()];
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
-    if(widget.index != null){
+    if (widget.index != null) {
       _currentIndex = widget.index;
     }
 
@@ -38,7 +33,7 @@ class _HomePage_adminState extends State<HomePage_admin> {
     FirebaseMessaging.instance.subscribeToTopic('admin');
     FirebaseMessaging.instance.subscribeToTopic('users');
 
-    WidgetsBinding.instance.addPostFrameCallback((_) async{
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<ContactProvider>(context, listen: false);
     });
   }
@@ -49,77 +44,72 @@ class _HomePage_adminState extends State<HomePage_admin> {
     var contactProvider = Provider.of<ContactProvider>(context, listen: true);
 
     return authProvider.userChekcerIsBusy
-        ?Center(child: CircularProgressIndicator())
-        :WillPopScope(
-      onWillPop: () async => false,
-          child: Scaffold(
-      resizeToAvoidBottomInset: true,
-      ///appbar
-      appBar: MyAppBar(isSeller: false, roleId: 1),
+        ? Center(child: CircularProgressIndicator())
+        : WillPopScope(
+            onWillPop: () async => false,
+            child: Scaffold(
+              resizeToAvoidBottomInset: true,
 
-      ///body
-      body: tabs[_currentIndex],
+              ///appbar
+              appBar: MyAppBar(isSeller: false, roleId: 1),
 
-      ///bottom bar
-      bottomNavigationBar: Container(
-        color: Color(0xFFF1F4F7),
-        child: BubbleBottomBar(
-            opacity: .2,
-            currentIndex: _currentIndex,
-            onTap: (index) {
-              setState(() {
-                _currentIndex = index;
-              });
-            },
-            borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-            elevation: 8,
-            items: <BubbleBottomBarItem>[
-              BubbleBottomBarItem(
-                  backgroundColor: Color(0xff2C7DBF),
-                  icon: Icon(
-                    Icons.home,
-                    color: Colors.black,
-                  ),
-                  activeIcon: Icon(
-                    Icons.home,
-                    color: Color(0xff2C7DBF),
-                  ),
-                  title: Text(
-                      "Accueil",
-                      textDirection: TextDirection.rtl
-                  )),
-              BubbleBottomBarItem(
-                  backgroundColor: Color(0xff2C7DBF),
-                  icon: Icon(
-                    Icons.list,
-                    color: Colors.black,
-                  ),
-                  activeIcon: Icon(
-                    Icons.list,
-                    color: Color(0xff2C7DBF),
-                  ),
-                  title: Text(
-                      "Catalogue ",
-                      textDirection: TextDirection.rtl
-                  )),
-              BubbleBottomBarItem(
-                  backgroundColor: Color(0xff2C7DBF),
-                  icon: Icon(
-                    Icons.people,
-                    color: Colors.black,
-                  ),
-                  activeIcon: Icon(
-                    Icons.people,
-                    color: Color(0xff2C7DBF),
-                  ),
-                  title: Text(
-                      "Utilisateurs",
-                      textDirection: TextDirection.rtl
-                  )),
-            ],
-        ),
-      ),
-    ),
-        );
+              ///body
+              body: tabs[_currentIndex],
+
+              ///bottom bar
+              bottomNavigationBar: Container(
+                color: Color(0xFFF1F4F7),
+                child: BubbleBottomBar(
+                  opacity: .2,
+                  currentIndex: _currentIndex,
+                  onTap: (index) {
+                    setState(() {
+                      _currentIndex = index;
+                    });
+                  },
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+                  elevation: 8,
+                  items: <BubbleBottomBarItem>[
+                    BubbleBottomBarItem(
+                        backgroundColor: Color(0xff2C7DBF),
+                        icon: Icon(
+                          Icons.home,
+                          color: Colors.black,
+                        ),
+                        activeIcon: Icon(
+                          Icons.home,
+                          color: Color(0xff2C7DBF),
+                        ),
+                        title:
+                            Text("Accueil", textDirection: TextDirection.rtl)),
+                    BubbleBottomBarItem(
+                        backgroundColor: Color(0xff2C7DBF),
+                        icon: Icon(
+                          Icons.list,
+                          color: Colors.black,
+                        ),
+                        activeIcon: Icon(
+                          Icons.list,
+                          color: Color(0xff2C7DBF),
+                        ),
+                        title: Text("Catalogue ",
+                            textDirection: TextDirection.rtl)),
+                    BubbleBottomBarItem(
+                        backgroundColor: Color(0xff2C7DBF),
+                        icon: Icon(
+                          Icons.people,
+                          color: Colors.black,
+                        ),
+                        activeIcon: Icon(
+                          Icons.people,
+                          color: Color(0xff2C7DBF),
+                        ),
+                        title: Text("Utilisateurs",
+                            textDirection: TextDirection.rtl)),
+                  ],
+                ),
+              ),
+            ),
+          );
   }
 }

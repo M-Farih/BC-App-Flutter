@@ -13,14 +13,14 @@ class BeASeller extends StatefulWidget {
 }
 
 class _BeASellerState extends State<BeASeller> {
-
   final _key = GlobalKey<FormState>();
   final nameController = TextEditingController();
   final phoneController = TextEditingController();
   final emailController = TextEditingController();
 
-  static bool isEmail(String em){
-    String p = r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$";
+  static bool isEmail(String em) {
+    String p =
+        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$";
     RegExp regExp = new RegExp(p);
 
     return regExp.hasMatch(em);
@@ -32,6 +32,7 @@ class _BeASellerState extends State<BeASeller> {
     var progressDialog = ProgressDialog(context);
 
     return WillPopScope(
+      onWillPop: null,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: Center(
@@ -49,10 +50,9 @@ class _BeASellerState extends State<BeASeller> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Icon(Icons.arrow_back, size: 17),
-                      Text('رجوع',
-                        style: TextStyle(
-                            fontSize: 17
-                        ),
+                      Text(
+                        'رجوع',
+                        style: TextStyle(fontSize: 17),
                       )
                     ],
                   ),
@@ -60,23 +60,20 @@ class _BeASellerState extends State<BeASeller> {
               ),
               SizedBox(height: 50),
               Form(
-                key: _key,
+                  key: _key,
                   child: Column(
                     children: [
-
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20.0, vertical: 10),
                         child: Text(
-                            'خدمتك أولويتنا',
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Color(0xFF131313)
-                          ),
+                          'خدمتك أولويتنا',
+                          style:
+                              TextStyle(fontSize: 20, color: Color(0xFF131313)),
                           textDirection: TextDirection.rtl,
                         ),
                       ),
                       SizedBox(height: 20),
-
                       Padding(
                         padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 10.0),
                         child: Card(
@@ -119,31 +116,33 @@ class _BeASellerState extends State<BeASeller> {
                                   child: buildTextField('البريد الإلكتروني')),
                             )),
                       ),
-                ],
-              )),
+                    ],
+                  )),
               Center(
-                child: ButtonTheme(
-                  minWidth: 150.0,
-                  height: 45.0,
-                  child: RaisedButton(
+                  child: ButtonTheme(
+                minWidth: 150.0,
+                height: 45.0,
+                child: RaisedButton(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
                     onPressed: () {
-                      if(_key.currentState.validate()){
+                      if (_key.currentState.validate()) {
                         _key.currentState.save();
                         progressDialog.show();
-                        contactProvider.MailBc(nameController.text, phoneController.text, emailController.text).whenComplete(() => {
-                          setState(() {
-                            nameController.text = "";
-                            phoneController.text = "";
-                            emailController.text = "";
-                            progressDialog.hide();
-                            Flushbar(
-                              message: 'لقد تم ارسال طلبكم',
-                              duration: Duration(seconds: 3),
-                            )..show(context);
-                          })
-                        });
+                        contactProvider.MailBc(nameController.text,
+                                phoneController.text, emailController.text)
+                            .whenComplete(() => {
+                                  setState(() {
+                                    nameController.text = "";
+                                    phoneController.text = "";
+                                    emailController.text = "";
+                                    progressDialog.hide();
+                                    Flushbar(
+                                      message: 'لقد تم ارسال طلبكم',
+                                      duration: Duration(seconds: 3),
+                                    )..show(context);
+                                  })
+                                });
                       }
                     },
                     color: Color(0xFF2C7DBF),
@@ -152,10 +151,8 @@ class _BeASellerState extends State<BeASeller> {
                       'ارسال الطلب',
                       textDirection: TextDirection.rtl,
                       style: TextStyle(fontSize: 19.0),
-                    )
-                  ),
-                )
-              ),
+                    )),
+              )),
             ],
           ),
         ),
@@ -198,41 +195,33 @@ class _BeASellerState extends State<BeASeller> {
         validator: (v) {
           if (v.isEmpty) {
             return 'ادخل الحقل';
-          }
-          else if(myController == emailController){
-            if(!isEmail(v)){
+          } else if (myController == emailController) {
+            if (!isEmail(v)) {
               return 'البريد الالكتروني غير صحيح';
-            }
-            else {
+            } else {
               return null;
             }
-          }
-          else if(myController == phoneController){
-            if(v.length != 10){
+          } else if (myController == phoneController) {
+            if (v.length != 10) {
               return 'رقم الهاتف غير صحيح';
-            }
-            else
+            } else
               return null;
-          }
-
-          else {
+          } else {
             return null;
           }
         },
         controller: myController,
         keyboardType: _keyboardType,
         decoration: InputDecoration(
-          hintText: hintText,
-          hintTextDirection: TextDirection.rtl,
-          hintStyle: TextStyle(
-            color: Colors.grey,
-            fontSize: 16.0,
-          ),
-          border: InputBorder.none,
-          prefixIcon: Icon(myIcon)
-        ),
+            hintText: hintText,
+            hintTextDirection: TextDirection.rtl,
+            hintStyle: TextStyle(
+              color: Colors.grey,
+              fontSize: 16.0,
+            ),
+            border: InputBorder.none,
+            prefixIcon: Icon(myIcon)),
       ),
     );
   }
-
 }

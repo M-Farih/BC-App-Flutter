@@ -49,16 +49,14 @@ class _ReclamationState extends State<ReclamationPage> {
 
   final _key = GlobalKey<FormState>();
 
-
-
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _init();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<ReasonProvider>(context, listen: false).getReasons(widget.idtype_reason);
+      Provider.of<ReasonProvider>(context, listen: false)
+          .getReasons(widget.idtype_reason);
       Provider.of<AuthProvider>(context, listen: false).getUserFromSP();
     });
   }
@@ -72,430 +70,458 @@ class _ReclamationState extends State<ReclamationPage> {
     var progressDialog = ProgressDialog(context);
     return Scaffold(
       appBar: MyAppBar(
-        isSeller: authProvider.currentUsr.idrole == 3 ? true: false, roleId: authProvider.currentUsr.idrole,),
+        isSeller: authProvider.currentUsr.idrole == 3 ? true : false,
+        roleId: authProvider.currentUsr.idrole,
+      ),
       body: reasonProvider.isBusy
           ? Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
-        child: Center(
-          child: new Padding(
-            padding: new EdgeInsets.all(8.0),
-            child: Form(
-              key: _key,
-              child: new Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    ///back btn & icon-title
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Center(
-                          child: Row(
+              child: Center(
+                child: new Padding(
+                  padding: new EdgeInsets.all(8.0),
+                  child: Form(
+                    key: _key,
+                    child: new Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          ///back btn & icon-title
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context).pop();
-                                },
+                              Center(
+                                child: Row(
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(20.0),
+                                        child: Container(
+                                          width: 80,
+                                          height: 40,
+                                          color: Colors.transparent,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Icon(Icons.arrow_back, size: 17),
+                                              Text(
+                                                'رجوع',
+                                                style: TextStyle(
+                                                    fontSize: 17.0,
+                                                    fontWeight:
+                                                        FontWeight.w300),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Center(
                                 child: Padding(
                                   padding: const EdgeInsets.all(20.0),
-                                  child: Container(
-                                    width: 80,
-                                    height: 40,
-                                    color: Colors.transparent,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.start,
-                                      children: [
-                                        Icon(Icons.arrow_back, size: 17),
-                                        Text(
-                                          'رجوع',
-                                          style: TextStyle(
-                                              fontSize: 17.0,
-                                              fontWeight: FontWeight.w300),
-                                        )
-                                      ],
-                                    ),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        widget.idtype_reason == 2
+                                            ? 'شكاية'
+                                            : 'اقتراح',
+                                        style: TextStyle(
+                                            color: widget.idtype_reason == 2
+                                                ? Color(0xFFF67B97)
+                                                : Color(0xFFFC8F6E),
+                                            fontSize: 20.0),
+                                      ),
+                                      SizedBox(width: 15.0),
+                                      Container(
+                                        height: 40.0,
+                                        width: 40.0,
+                                        decoration: BoxDecoration(
+                                          color: widget.idtype_reason == 2
+                                              ? Color(0xFFF67B97)
+                                              : Color(0xFFFC8F6E),
+                                          borderRadius:
+                                              BorderRadius.circular(50.0),
+                                        ),
+                                        child: Icon(
+                                            widget.idtype_reason == 2
+                                                ? Icons.feedback
+                                                : Icons.thumb_up,
+                                            color: Colors.white),
+                                      )
+                                    ],
                                   ),
                                 ),
                               ),
                             ],
                           ),
-                        ),
-                        Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: Row(
+                          SizedBox(height: 20.0),
+
+                          ///dropdown
+                          Container(
+                            height: 40.0,
+                            width: MediaQuery.of(context).size.width - 40.0,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10.0)),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text(
-                                  widget.idtype_reason == 2 ?'شكاية' : 'اقتراح',
-                                  style: TextStyle(
-                                      color: widget.idtype_reason == 2 ?Color(0xFFF67B97) :Color(0xFFFC8F6E),
-                                      fontSize: 20.0),
-                                ),
-                                SizedBox(width: 15.0),
-                                Container(
-                                  height: 40.0,
-                                  width: 40.0,
-                                  decoration: BoxDecoration(
-                                    color: widget.idtype_reason == 2 ?Color(0xFFF67B97) :Color(0xFFFC8F6E),
-                                    borderRadius:
-                                    BorderRadius.circular(50.0),
+                                Theme(
+                                  data: Theme.of(context)
+                                      .copyWith(brightness: Brightness.dark),
+                                  child: Directionality(
+                                    textDirection: TextDirection.rtl,
+                                    child: DropdownButtonFormField(
+                                      decoration: InputDecoration.collapsed(
+                                          hintText: ''),
+                                      validator: (value) =>
+                                          value == null ? '' : null,
+                                      isExpanded: true,
+                                      hint: Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 18.0),
+                                        child: Text(
+                                          'الأسباب',
+                                        ),
+                                      ),
+                                      value: valueChoosen,
+                                      icon: Icon(
+                                        // Add this
+                                        Icons.arrow_drop_down, // Add this
+                                        color: Colors.black45, // Add this
+                                      ),
+                                      onChanged: (newValue) {
+                                        setState(() {
+                                          valueChoosen = newValue;
+                                        });
+                                      },
+                                      items: reasonProvider.reasons.map((t) {
+                                        return DropdownMenuItem(
+                                            value: t.idreason,
+                                            child: Directionality(
+                                              textDirection: TextDirection.ltr,
+                                              child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          right: 16.0),
+                                                  child: Container(
+                                                      child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
+                                                    children: [
+                                                      Text(
+                                                        t.reason,
+                                                        style: TextStyle(
+                                                            fontSize: 15),
+                                                        textDirection:
+                                                            TextDirection.rtl,
+                                                      ),
+                                                    ],
+                                                  ))),
+                                            ));
+                                      }).toList(),
+                                    ),
                                   ),
-                                  child: Icon(widget.idtype_reason == 2 ?Icons.feedback: Icons.thumb_up, color: Colors.white),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 10.0),
+
+                          ///text area
+                          Container(
+                            height: 180.0,
+                            width: MediaQuery.of(context).size.width - 40,
+                            padding: EdgeInsets.symmetric(horizontal: 20.0),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10.0)),
+                            child: Column(
+                              children: [
+                                Container(
+                                  height: 120.0,
+                                  width: MediaQuery.of(context).size.width - 40,
+                                  child: Directionality(
+                                    textDirection: TextDirection.rtl,
+                                    child: TextFormField(
+                                      validator: (v) {
+                                        if (v.isEmpty) {
+                                          return 'المرجو ادخال الرسالة';
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                      decoration: InputDecoration(
+                                        hintText: 'ادخل الرسالة',
+                                        border: InputBorder.none,
+                                        hintStyle: TextStyle(
+                                          fontStyle: FontStyle.italic,
+                                        ),
+                                      ),
+                                      controller: messageController,
+                                      keyboardType: TextInputType.multiline,
+                                      minLines: 1,
+                                      //Normal textInputField will be displayed
+                                      maxLines:
+                                          5, // when user presses enter it will adapt to it
+                                    ),
+                                  ),
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    recordState == 0
+                                        ?
+
+                                        ///state 0 (initial state)
+                                        Container(
+                                            height: 20.0,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                1.8,
+                                            decoration: BoxDecoration(
+                                                color: Colors.white),
+                                          )
+                                        : recordState == 1
+                                            ?
+
+                                            ///state 1 (recording...)
+                                            Row(
+                                                children: [
+                                                  Icon(
+                                                    Icons.mic,
+                                                    color: Colors.red,
+                                                    size: 30.0,
+                                                  ),
+                                                  SizedBox(width: 10.0),
+                                                  Text(
+                                                      '${_current.duration.toString().substring(2, 7)}',
+                                                      style: TextStyle(
+                                                          fontSize: 20.0,
+                                                          color:
+                                                              Colors.black54))
+                                                ],
+                                              )
+                                            :
+
+                                            ///state 2 (audio recorded)
+                                            Row(
+                                                children: [
+                                                  !isPlayed
+                                                      ? GestureDetector(
+                                                          child: Icon(
+                                                            Icons.play_arrow,
+                                                            size: 30.0,
+                                                          ),
+                                                          onTap: () {
+                                                            audioController(
+                                                                'play');
+                                                            setState(() {
+                                                              isPlayed =
+                                                                  !isPlayed;
+                                                            });
+                                                          })
+                                                      : GestureDetector(
+                                                          child: Icon(
+                                                            Icons.stop,
+                                                            color: Colors.red,
+                                                            size: 30.0,
+                                                          ),
+                                                          onTap: () {
+                                                            audioController(
+                                                                'stop');
+                                                            setState(() {
+                                                              isPlayed =
+                                                                  !isPlayed;
+                                                            });
+                                                          }),
+                                                  GestureDetector(
+                                                      child: Icon(
+                                                        Icons.delete,
+                                                        color: Colors.red,
+                                                        size: 30.0,
+                                                      ),
+                                                      onTap: () {
+                                                        _init();
+                                                        audioController('stop');
+                                                        setState(() {
+                                                          recordState = 0;
+                                                          audio = "";
+                                                        });
+                                                      }),
+                                                  Slider(
+                                                    max: double.parse(_current
+                                                        .duration.inSeconds
+                                                        .toString()),
+                                                    min: 0,
+                                                    value: position.toDouble(),
+                                                    onChanged: (value) {
+                                                      setState(() {
+                                                        position =
+                                                            value.toInt();
+                                                      });
+                                                    },
+                                                  ),
+                                                  Text(
+                                                      '${_recorder.recording.duration.toString().substring(2, 7)}')
+                                                ],
+                                              ),
+                                    SizedBox(
+                                      width: 10.0,
+                                    ),
+
+                                    ///btn
+                                    Visibility(
+                                      visible: recordState == 2 ? false : true,
+                                      child: Container(
+                                        height: 45.0,
+                                        width: 45.0,
+                                        decoration: BoxDecoration(
+                                            boxShadow: [
+                                              BoxShadow(
+                                                  color: Colors.blue[400],
+                                                  blurRadius: shadowValue,
+                                                  spreadRadius: shadowValue)
+                                            ],
+                                            color: Color(0xFF1B7DBB),
+                                            borderRadius:
+                                                BorderRadius.circular(40.0)),
+                                        child: GestureDetector(
+                                          child: Icon(
+                                            Icons.mic,
+                                            color: Colors.white,
+                                          ),
+                                          onTapDown:
+                                              (TapDownDetails details) async {
+                                            var status = await Permission
+                                                .microphone.status;
+                                            if (status.isGranted) {
+                                              _start();
+                                              setState(() {
+                                                shadowValue = 20.0;
+                                                recordState = 1;
+                                              });
+                                            } else {
+                                              await Permission.microphone
+                                                  .request()
+                                                  .isGranted;
+                                            }
+                                          },
+                                          onTapUp: (TapUpDetails details) {
+                                            _stop();
+                                            setState(() {
+                                              shadowValue = 0.0;
+                                              recordState = 2;
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 )
                               ],
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 20.0),
 
-                    ///dropdown
-                    Container(
-                      height: 40.0,
-                      width: MediaQuery.of(context).size.width - 40.0,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10.0)),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Theme(
-                            data: Theme.of(context)
-                                .copyWith(brightness: Brightness.dark),
-                            child: Directionality(
-                              textDirection: TextDirection.rtl,
-                              child: DropdownButtonFormField(
-                                decoration: InputDecoration.collapsed(
-                                    hintText: ''),
-                                validator: (value) =>
-                                value == null ? '' : null,
-                                isExpanded: true,
-                                hint: Padding(
-                                  padding:
-                                  const EdgeInsets.only(right: 18.0),
-                                  child: Text(
-                                    'الأسباب',
-                                  ),
+                          ///send btn
+                          Center(
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 20,
                                 ),
-                                value: valueChoosen,
-                                icon: Icon(
-                                  // Add this
-                                  Icons.arrow_drop_down, // Add this
-                                  color: Colors.black45, // Add this
-                                ),
-                                onChanged: (newValue) {
-                                  setState(() {
-                                    valueChoosen = newValue;
-                                  });
-                                },
-                                items: reasonProvider.reasons.map((t) {
-                                  return DropdownMenuItem(
-                                      value: t.idreason,
-                                      child: Directionality(
-                                        textDirection: TextDirection.ltr,
-                                        child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 16.0),
-                                            child: Container(
-                                                child: Row(
-                                                  mainAxisAlignment: MainAxisAlignment.end,
-                                                  children: [
-                                                    Text(t.reason,
-                                                      style: TextStyle(
-                                                          fontSize: 15),
-                                                      textDirection: TextDirection.rtl,
-                                                    ),
-                                                  ],
-                                                ))),
-                                      ));
-                                }).toList(),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 10.0),
+                                GestureDetector(
+                                  child: Container(
+                                      height: 40,
+                                      width: 120,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(40),
+                                          color: widget.idtype_reason == 2
+                                              ? Color(0xFFF67B97)
+                                              : Color(0xFFFC8F6E)),
+                                      child: Center(
+                                          child: Text('إرسال',
+                                              style: TextStyle(
+                                                  color: Color(0xFFFFFFFF),
+                                                  fontSize: 18,
+                                                  fontWeight:
+                                                      FontWeight.bold)))),
+                                  onTap: () {
+                                    if (_key.currentState.validate()) {
+                                      _key.currentState.save();
+                                      progressDialog.show();
 
-                    ///text area
-                    Container(
-                      height: 180.0,
-                      width: MediaQuery.of(context).size.width - 40,
-                      padding: EdgeInsets.symmetric(horizontal: 20.0),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10.0)),
-                      child: Column(
-                        children: [
-                          Container(
-                            height: 120.0,
-                            width: MediaQuery.of(context).size.width - 40,
-                            child: Directionality(
-                              textDirection: TextDirection.rtl,
-                              child: TextFormField(
-                                validator: (v) {
-                                  if (v.isEmpty) {
-                                    return 'المرجو ادخال الرسالة';
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                                decoration: InputDecoration(
-                                  hintText: 'ادخل الرسالة',
-                                  border: InputBorder.none,
-                                  hintStyle: TextStyle(
-                                    fontStyle: FontStyle.italic,
-                                  ),
-                                ),
-                                controller: messageController,
-                                keyboardType: TextInputType.multiline,
-                                minLines: 1,
-                                //Normal textInputField will be displayed
-                                maxLines:
-                                5, // when user presses enter it will adapt to it
-                              ),
-                            ),
-                          ),
-                          Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
-                            children: [
-                              recordState == 0
-                                  ?
-
-                              ///state 0 (initial state)
-                              Container(
-                                height: 20.0,
-                                width: MediaQuery.of(context)
-                                    .size
-                                    .width /
-                                    1.8,
-                                decoration: BoxDecoration(
-                                    color: Colors.white),
-                              )
-                                  : recordState == 1
-                                  ?
-
-                              ///state 1 (recording...)
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.mic,
-                                    color: Colors.red,
-                                    size: 30.0,
-                                  ),
-                                  SizedBox(width: 10.0),
-                                  Text(
-                                      '${_current.duration.toString().substring(2, 7)}',
-                                      style: TextStyle(
-                                          fontSize: 20.0,
-                                          color:
-                                          Colors.black54))
-                                ],
-                              )
-                                  :
-
-                              ///state 2 (audio recorded)
-                              Row(
-                                children: [
-                                  !isPlayed
-                                      ? GestureDetector(
-                                      child: Icon(
-                                        Icons.play_arrow,
-                                        size: 30.0,
-                                      ),
-                                      onTap: () {
-                                        audioController(
-                                            'play');
-                                        setState(() {
-                                          isPlayed =
-                                          !isPlayed;
+                                      ///call provider
+                                      if (audio.length > 0) {
+                                        contactProvider
+                                            .rec_sugg(
+                                                authProvider.currentUsr.iduser,
+                                                valueChoosen,
+                                                messageController.text,
+                                                audio)
+                                            .whenComplete(() {
+                                          progressDialog.hide();
+                                          setState(() {
+                                            messageController.text = "";
+                                            _init();
+                                            audioController('stop');
+                                            recordState = 0;
+                                            Flushbar(
+                                              flushbarPosition:
+                                                  FlushbarPosition.TOP,
+                                              message: "لقد تم الارسال",
+                                              duration: Duration(seconds: 3),
+                                            )..show(context);
+                                          });
                                         });
-                                      })
-                                      : GestureDetector(
-                                      child: Icon(
-                                        Icons.stop,
-                                        color: Colors.red,
-                                        size: 30.0,
-                                      ),
-                                      onTap: () {
-                                        audioController(
-                                            'stop');
-                                        setState(() {
-                                          isPlayed =
-                                          !isPlayed;
-                                        });
-                                      }),
-                                  GestureDetector(
-                                      child: Icon(
-                                        Icons.delete,
-                                        color: Colors.red,
-                                        size: 30.0,
-                                      ),
-                                      onTap: () {
-                                        _init();
-                                        audioController('stop');
-                                        setState(() {
-                                          recordState = 0;
-                                          audio = "";
-                                        });
-                                      }),
-                                  Slider(
-                                    max: double.parse(_current
-                                        .duration.inSeconds
-                                        .toString()),
-                                    min: 0,
-                                    value: position.toDouble(),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        position =
-                                            value.toInt();
-                                      });
-                                    },
-                                  ),
-                                  Text(
-                                      '${_recorder.recording.duration.toString().substring(2, 7)}')
-                                ],
-                              ),
-                              SizedBox(
-                                width: 10.0,
-                              ),
-
-                              ///btn
-                              Visibility(
-                                visible: recordState == 2 ? false : true,
-                                child: Container(
-                                  height: 45.0,
-                                  width: 45.0,
-                                  decoration: BoxDecoration(
-                                      boxShadow: [
-                                        BoxShadow(
-                                            color: Colors.blue[400],
-                                            blurRadius: shadowValue,
-                                            spreadRadius: shadowValue)
-                                      ],
-                                      color: Color(0xFF1B7DBB),
-                                      borderRadius:
-                                      BorderRadius.circular(40.0)),
-                                  child: GestureDetector(
-                                    child: Icon(
-                                      Icons.mic,
-                                      color: Colors.white,
-                                    ),
-                                    onTapDown: (TapDownDetails details) async {
-                                      var status = await Permission.microphone.status;
-                                      if(status.isGranted){
-                                        _start();
-                                        setState(() {
-                                          shadowValue = 20.0;
-                                          recordState = 1;
+                                      } else {
+                                        contactProvider
+                                            .rec_sugg(
+                                                authProvider.currentUsr.iduser,
+                                                valueChoosen,
+                                                messageController.text,
+                                                "")
+                                            .then((f) {
+                                          setState(() {
+                                            messageController.text = "";
+                                            _init();
+                                            audioController('stop');
+                                            recordState = 0;
+                                            Flushbar(
+                                              flushbarPosition:
+                                                  FlushbarPosition.TOP,
+                                              message: "لقد تم الارسال",
+                                              duration: Duration(seconds: 3),
+                                            )..show(context).then((value) =>
+                                                progressDialog.hide());
+                                          });
                                         });
                                       }
-                                      else{
-                                        await Permission.microphone.request().isGranted;
-                                      }
-                                    },
-                                    onTapUp: (TapUpDetails details) {
-                                      _stop();
-                                      setState(() {
-                                        shadowValue = 0.0;
-                                        recordState = 2;
-                                      });
-                                    },
-                                  ),
+                                    }
+                                  },
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           )
-                        ],
-                      ),
-                    ),
-
-
-
-                    ///send btn
-                    Center(
-                      child: Column(
-                        children: [
-                          SizedBox(height: 20,),
-                          GestureDetector(
-                            child: Container(
-                              height: 40,
-                              width: 120,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(40),
-                                  color: widget.idtype_reason == 2 ?Color(0xFFF67B97) :Color(0xFFFC8F6E)),
-                              child: Center(child: Text('إرسال', style: TextStyle(color: Color(0xFFFFFFFF), fontSize: 18, fontWeight: FontWeight.bold)))
-                            ),
-                            onTap: () {
-                              if (_key.currentState.validate()) {
-                                _key.currentState.save();
-                                progressDialog.show();
-                                ///call provider
-                                if (audio.length > 0) {
-                                  contactProvider
-                                      .rec_sugg(
-                                      authProvider.currentUsr.iduser,
-                                      valueChoosen,
-                                      messageController.text,
-                                      audio)
-                                      .whenComplete(() {
-                                    progressDialog.hide();
-                                    setState(() {
-                                      messageController.text = "";
-                                      _init();
-                                      audioController('stop');
-                                      recordState = 0;
-                                      Flushbar(
-                                        flushbarPosition:
-                                        FlushbarPosition.TOP,
-                                        message: "لقد تم الارسال",
-                                        duration: Duration(seconds: 3),
-                                      )..show(context);
-                                    });
-                                  });
-                                } else {
-                                  contactProvider
-                                      .rec_sugg(
-                                      authProvider.currentUsr.iduser,
-                                      valueChoosen,
-                                      messageController.text,
-                                      "")
-                                      .then((f) {
-
-                                    setState(() {
-                                      messageController.text = "";
-                                      _init();
-                                      audioController('stop');
-                                      recordState = 0;
-                                      Flushbar(
-                                        flushbarPosition:
-                                        FlushbarPosition.TOP,
-                                        message: "لقد تم الارسال",
-                                        duration: Duration(seconds: 3),
-                                      )..show(context).then((value) => progressDialog.hide());
-                                    });
-                                  });
-                                }
-                              }
-                            },
-                          ),
-
-                        ],
-                      ),
-                    )
-                  ]),
+                        ]),
+                  ),
+                ),
+              ),
             ),
-          ),
-        ),
-      ),
     );
   }
 
   _init() async {
     var status = await Permission.microphone.status;
-    if(status.isGranted){
+    if (status.isGranted) {
       try {
         if (await FlutterAudioRecorder.hasPermissions) {
           String customPath = '/flutter_audio_recorder_';
@@ -523,16 +549,14 @@ class _ReclamationState extends State<ReclamationPage> {
             _current = current;
             _currentStatus = current.status;
           });
-        }
-        else {
+        } else {
           Scaffold.of(context).showSnackBar(
               new SnackBar(content: new Text("You must accept permissions")));
         }
       } catch (e) {
         print(e);
       }
-    }
-    else{
+    } else {
       await Permission.microphone.request().isGranted.whenComplete(() async {
         try {
           if (await FlutterAudioRecorder.hasPermissions) {
@@ -565,8 +589,7 @@ class _ReclamationState extends State<ReclamationPage> {
               _current = current;
               _currentStatus = current.status;
             });
-          }
-          else {
+          } else {
             Scaffold.of(context).showSnackBar(
                 new SnackBar(content: new Text("You must accept permissions")));
           }
@@ -575,12 +598,11 @@ class _ReclamationState extends State<ReclamationPage> {
         }
       });
     }
-
   }
 
   _start() async {
     var status = await Permission.microphone.status;
-    if(status.isGranted){
+    if (status.isGranted) {
       try {
         await _recorder.start();
         var recording = await _recorder.current(channel: 0);
@@ -603,8 +625,7 @@ class _ReclamationState extends State<ReclamationPage> {
       } catch (e) {
         print(e);
       }
-    }
-    else{
+    } else {
       await Permission.microphone.request().isGranted.whenComplete(() async {
         try {
           await _recorder.start();

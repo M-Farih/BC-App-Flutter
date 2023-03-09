@@ -8,11 +8,7 @@ class ProductDetail extends StatefulWidget {
   final assetPath, title, description;
   final double price;
 
-  ProductDetail(
-      {this.assetPath,
-      this.price,
-      this.title,
-      this.description});
+  ProductDetail({this.assetPath, this.price, this.title, this.description});
 
   @override
   _ProductDetailState createState() => _ProductDetailState();
@@ -21,19 +17,22 @@ class ProductDetail extends StatefulWidget {
 class _ProductDetailState extends State<ProductDetail> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<AuthProvider>(context, listen: false).getUserFromSP();
     });
   }
+
   @override
   Widget build(BuildContext context) {
     var authProvider = Provider.of<AuthProvider>(context, listen: true);
     return Scaffold(
-        appBar: MyAppBar(isSeller: authProvider.currentUsr.idrole == 3 ?true :false),
+        appBar: MyAppBar(
+            isSeller: authProvider.currentUsr.idrole == 3 ? true : false),
         body: SingleChildScrollView(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               GestureDetector(
                 onTap: () {
@@ -47,11 +46,9 @@ class _ProductDetailState extends State<ProductDetail> {
                       Icon(Icons.arrow_back, size: 17),
                       Text(
                         authProvider.currentUsr.idrole == 3
-                            ?'المنتوجات'
-                            :'Produits',
-                        style: TextStyle(
-                            fontSize: 17
-                        ),
+                            ? 'المنتوجات'
+                            : 'Produits',
+                        style: TextStyle(fontSize: 17),
                       )
                     ],
                   ),
@@ -70,36 +67,31 @@ class _ProductDetailState extends State<ProductDetail> {
                   ),
                   child: Text('') /* add child content here */,
                 ),
-                onTap: (){
+                onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => MyPhotoViewer(
-                          imageUrl:
-                          widget.assetPath
-                      )
-                  ));
+                      builder: (context) =>
+                          MyPhotoViewer(imageUrl: widget.assetPath)));
                 },
               ),
               SizedBox(height: 20.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20.0),
-                    child: Text(
-                      '${widget.title}',
-                      style: TextStyle(
-                          fontSize: 25.0, fontWeight: FontWeight.bold),
-                      textDirection: TextDirection.ltr,
-                    ),
-                  ),
-                ],
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20.0,
+                ),
+                child: Text(
+                  '${widget.title}',
+                  textAlign: TextAlign.start,
+                  style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
+                  textDirection: TextDirection.ltr,
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Text(
                   '${widget.description}',
-                  style: TextStyle(
-                      fontSize: 14.0, fontWeight: FontWeight.normal),
+                  textAlign: TextAlign.start,
+                  style:
+                      TextStyle(fontSize: 14.0, fontWeight: FontWeight.normal),
                   textDirection: TextDirection.ltr,
                 ),
               ),

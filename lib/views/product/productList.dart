@@ -25,7 +25,7 @@ class _ProductListState extends State<ProductList> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<AuthProvider>(context, listen: false).getUserFromSP();

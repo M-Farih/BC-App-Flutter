@@ -1,8 +1,10 @@
 import 'package:bc_app/providers/authProvider.dart';
 import 'package:bc_app/providers/userProvider.dart';
 import 'package:bc_app/views/_commercial/sellers/sellerDetails.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class ListSellers extends StatefulWidget {
   @override
@@ -12,18 +14,43 @@ class ListSellers extends StatefulWidget {
 class _ListSellersState extends State<ListSellers> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<AuthProvider>(context, listen: false).getUserFromSP();
-      int idagent = Provider.of<AuthProvider>(context, listen: false).currentUsr.idagent;
-      Provider.of<UserProvider>(context, listen: false).getSellersByAgent(idagent);
+      int idagent =
+          Provider.of<AuthProvider>(context, listen: false).currentUsr.idagent;
+      Provider.of<UserProvider>(context, listen: false)
+          .getSellersByAgent(idagent);
       Provider.of<AuthProvider>(context, listen: false).getUserFromSP();
     });
   }
+
   final _key = GlobalKey<FormState>();
   final nameController = TextEditingController();
   final passwordController = TextEditingController();
+
+  // =============== Pull to refresh
+  int itemCount = 10;
+  bool hasMoreData = true;
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+  void _onRefresh() async {
+    itemCount = 10;
+    await Future.delayed(Duration(milliseconds: 1000));
+    _refreshController.refreshCompleted();
+  }
+
+  void _onLoading() async {
+    await Future.delayed(Duration(milliseconds: 1000));
+    // itemCount += 10;
+    // if (itemCount <= 50) {
+    //   setState(() {
+    //     hasMoreData = false;
+    //   });
+    // }
+    _refreshController.loadFailed();
+  }
+  // =============== Pull to refresh
 
   @override
   Widget build(BuildContext context) {
@@ -34,46 +61,62 @@ class _ListSellersState extends State<ListSellers> {
         : Scaffold(
             backgroundColor: Color(0xFFF1F4F7),
             body: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    /// search bar
-                    SizedBox(height: 20),
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: TextField(
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                            enabledBorder: InputBorder.none,
-                            errorBorder: InputBorder.none,
-                            disabledBorder: InputBorder.none,
-                            hintText: "Chercher un revendeur ici...",
-                            icon: Icon(Icons.search),
-                          ),
-                          onChanged: (text) {
-                            userProvider.filterUsersList(text);
-                          },
-                        ),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20,
+              ),
+              child: Column(
+                children: [
+                  /// search bar
+                  SizedBox(height: 20),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(
+                        10,
                       ),
                     ),
-
-                    /// sellers list
-                    ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: userProvider.sellers.length,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        return Container(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8.0,
+                      ),
+                      child: TextField(
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          errorBorder: InputBorder.none,
+                          disabledBorder: InputBorder.none,
+                          hintText: "Chercher un revendeur ici...",
+                          icon: Icon(Icons.search),
+                        ),
+                        onChanged: (text) {
+                          userProvider.filterUsersList(text);
+                        },
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: SmartRefresher(
+                      enablePullDown: true,
+                      enablePullUp: true,
+                      header: MaterialClassicHeader(),
+                      controller: _refreshController,
+                      onLoading: hasMoreData
+                          ? () async {
+                              _onLoading;
+                            }
+                          : null,
+                      onRefresh: _onRefresh,
+                      child: ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        itemCount: userProvider.sellers.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return Container(
                               decoration: BoxDecoration(
                                 border: Border(
-                                  bottom: BorderSide(width: 0.5, color: Color(
-                                      0xFFCBCBCB)),
+                                  bottom: BorderSide(
+                                      width: 0.5, color: Color(0xFFCBCBCB)),
                                 ),
                               ),
                               child: ListTile(
@@ -84,63 +127,88 @@ class _ListSellersState extends State<ListSellers> {
                                   ),
                                   title: Text(
                                     '${userProvider.sellers[index].firstName} ${userProvider.sellers[index].lastName}',
-                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
                                   ),
-                                  subtitle:
-                                  Text('${userProvider.sellers[index].clientNumber}'),
-                                  trailing: userProvider
-                                      .sellers[index].userName != ""
-                                      ?Container(
-                                    width: 30,height: 30,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children:[
-                                        userProvider.sellers[index].firstConnection == "0"
-                                            ?Icon(Icons.account_circle,
-                                            color: Colors.blue.withOpacity(0.3))
-                                            :Icon(Icons.account_circle,
-                                            color: Colors.green.withOpacity(0.3))
-                                      ] ,
-                                    ),
-                                  )
-                                      :Container(
-                                    width: 30,height: 30,
-                                    child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children:[
-                                          Icon(Icons.account_circle,
-                                              color: Colors.red.withOpacity(0.3))
-                                        ]
-                                    ),
-                                  ),
+                                  subtitle: Text(
+                                      '${userProvider.sellers[index].clientNumber}'),
+                                  trailing:
+                                      userProvider.sellers[index].userName != ""
+                                          ? Container(
+                                              width: 30,
+                                              height: 30,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  userProvider.sellers[index]
+                                                              .firstConnection ==
+                                                          "0"
+                                                      ? Icon(
+                                                          Icons.account_circle,
+                                                          color: Colors.blue
+                                                              .withOpacity(0.3))
+                                                      : Icon(
+                                                          Icons.account_circle,
+                                                          color: Colors.green
+                                                              .withOpacity(0.3))
+                                                ],
+                                              ),
+                                            )
+                                          : Container(
+                                              width: 30,
+                                              height: 30,
+                                              child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  children: [
+                                                    Icon(Icons.account_circle,
+                                                        color: Colors.red
+                                                            .withOpacity(0.3))
+                                                  ]),
+                                            ),
                                   onTap: () {
                                     userProvider.busy = true;
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(builder: (context) => SellerDetails(
-                                            id: userProvider.sellers[index].iduser,
-                                            phoneNumber: userProvider.sellers[index].telephone,
-                                            mail: userProvider.sellers[index].email,
-                                            username: userProvider.sellers[index].userName,
-                                            password: userProvider.sellers[index].password,
-                                            solde: userProvider.sellers[index].solde,
-                                            ristourne: userProvider.sellers[index].ristourne,
-                                            matelas: userProvider.sellers[index].matelas,
-                                            banquette: userProvider.sellers[index].banquette,
-                                            mousse: userProvider.sellers[index].mousse,
-                                            divers: userProvider.sellers[index].divers,
-                                            from: userProvider.sellers[index].from_date_ca,
-                                            to: userProvider.sellers[index].to_date_ca,
-                                            profileImg: '${userProvider.sellers[index].profileImage != "" ? userProvider.sellers[index].profileImage.replaceAll('"', '') : "https://ui-avatars.com/api/?background=FFFFF&color=2C7DBF&name=${userProvider.sellers[index].firstName}+${userProvider.sellers[index].lastName}"}'))
-                                    );
-                                  })
+                                    Navigator.of(context).push(MaterialPageRoute(
+                                        builder: (context) => SellerDetails(
+                                            id: userProvider
+                                                .sellers[index].iduser,
+                                            phoneNumber: userProvider
+                                                .sellers[index].telephone,
+                                            mail: userProvider
+                                                .sellers[index].email,
+                                            username: userProvider
+                                                .sellers[index].userName,
+                                            password: userProvider
+                                                .sellers[index].password,
+                                            solde: userProvider
+                                                .sellers[index].solde,
+                                            ristourne: userProvider
+                                                .sellers[index].ristourne,
+                                            matelas: userProvider
+                                                .sellers[index].matelas,
+                                            banquette: userProvider
+                                                .sellers[index].banquette,
+                                            mousse: userProvider
+                                                .sellers[index].mousse,
+                                            divers: userProvider
+                                                .sellers[index].divers,
+                                            from: userProvider
+                                                .sellers[index].from_date_ca,
+                                            to: userProvider
+                                                .sellers[index].to_date_ca,
+                                            profileImg: '${userProvider.sellers[index].profileImage != "" ? userProvider.sellers[index].profileImage.replaceAll('"', '') : "https://ui-avatars.com/api/?background=FFFFF&color=2C7DBF&name=${userProvider.sellers[index].firstName}+${userProvider.sellers[index].lastName}"}')));
+                                  }));
+                        },
+                      ),
+                    ),
+                  ),
 
-                          );
-                      },
-                    )
-                  ],
-                ),
+                  /// sellers list
+                ],
               ),
-            ));
+            ),
+          );
   }
 
   Widget buildTextField(String hintText, username) {
@@ -169,16 +237,12 @@ class _ListSellersState extends State<ListSellers> {
       validator: (v) {
         if (v.isEmpty) {
           return 'Champs obligatoire';
-        }
-        else if(myController == passwordController){
-          if(v.length != 10){
+        } else if (myController == passwordController) {
+          if (v.length != 10) {
             return 'Champs obligatoire';
-          }
-          else
+          } else
             return null;
-        }
-
-        else {
+        } else {
           return null;
         }
       },
@@ -192,9 +256,7 @@ class _ListSellersState extends State<ListSellers> {
             fontSize: 16.0,
           ),
           border: InputBorder.none,
-          prefixIcon: Icon(myIcon)
-      ),
+          prefixIcon: Icon(myIcon)),
     );
   }
-
 }

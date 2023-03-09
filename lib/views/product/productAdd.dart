@@ -71,7 +71,7 @@ class _ProductAddState extends State<ProductAdd> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       int role_id = await Provider.of<AuthProvider>(context, listen: false)

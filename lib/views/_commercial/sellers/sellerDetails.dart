@@ -24,7 +24,7 @@ class SellerDetails extends StatefulWidget {
 class _SellerDetailsState extends State<SellerDetails> {
   @override
   void initState() {
-    // TODO: implement initState
+    
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<UserProvider>(context, listen: false)

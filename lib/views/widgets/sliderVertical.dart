@@ -29,11 +29,12 @@ class _SliderVerticalWidgetState extends State<SliderVerticalWidget> {
         inactiveTickMarkColor: Colors.transparent,
       ),
       child: Container(
-        height: MediaQuery.of(context).size.height/3,
+        height: MediaQuery.of(context).size.height / 3,
         child: Column(
           children: [
             Expanded(
               child: Stack(
+                alignment: AlignmentDirectional.center,
                 children: [
                   RotatedBox(
                     quarterTurns: 3,
@@ -50,38 +51,54 @@ class _SliderVerticalWidgetState extends State<SliderVerticalWidget> {
                   ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text('Dhs', style: TextStyle(color: Colors.white, fontSize: 12.5)),
                       Text(
                         '${widget.turnover.round()}',
+                        textAlign: TextAlign.center,
+                        softWrap: true,
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: 15,
                         ),
                       ),
+                      Text(
+                        'Dhs',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 12.5,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),
             Container(
-              width: 75.0,
-              height: 75.0,
-              decoration: BoxDecoration(
-                color: Colors.white
-              ),
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset('${widget.imgUrl}', fit: BoxFit.fill, height: 50,),
-                    Text('${widget.title}', style: TextStyle(fontSize: 12),)
-                  ],
-                ),
-              )
-            )
+                width: 75.0,
+                height: 75.0,
+                decoration: BoxDecoration(color: Colors.white),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        '${widget.imgUrl}',
+                        fit: BoxFit.fill,
+                        height: 50,
+                      ),
+                      Text(
+                        '${widget.title}',
+                        style: TextStyle(fontSize: 12),
+                      )
+                    ],
+                  ),
+                ))
           ],
         ),
         decoration: BoxDecoration(
@@ -99,5 +116,4 @@ class _SliderVerticalWidgetState extends State<SliderVerticalWidget> {
       ),
     );
   }
-
 }

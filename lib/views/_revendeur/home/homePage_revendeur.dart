@@ -22,20 +22,19 @@ class HomePage_Revendeur extends StatefulWidget {
 }
 
 class _HomePage_RevendeurState extends State<HomePage_Revendeur> {
-
-  int _currentIndex = 0;
+  int _currentIndex = 2;
   final tabs = [
-    Dashboard_revendeur(),
+    ReclamationMenu(),
     ProductCategories(),
-    ReclamationMenu()
+    Dashboard_revendeur(),
   ];
 
   @override
   void initState() {
-    // TODO: implement initState
+    
     super.initState();
 
-    if(widget.index != null){
+    if (widget.index != null) {
       _currentIndex = widget.index;
     }
 
@@ -43,8 +42,9 @@ class _HomePage_RevendeurState extends State<HomePage_Revendeur> {
     FirebaseMessaging.instance.subscribeToTopic('users');
     FirebaseMessaging.instance.subscribeToTopic('revendeurs');
 
-    WidgetsBinding.instance.addPostFrameCallback((_) async{
-      int role_id = await Provider.of<AuthProvider>(context, listen: false).checkLoginAndRole();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      int role_id = await Provider.of<AuthProvider>(context, listen: false)
+          .checkLoginAndRole();
       Provider.of<AuthProvider>(context, listen: false).getUserFromSP();
       Provider.of<ContactProvider>(context, listen: false);
     });
@@ -55,76 +55,78 @@ class _HomePage_RevendeurState extends State<HomePage_Revendeur> {
     var authProvider = Provider.of<AuthProvider>(context, listen: false);
     var contactProvider = Provider.of<ContactProvider>(context, listen: false);
     return authProvider.userChekcerIsBusy
-      ?Center(child: CircularProgressIndicator())
-      :WillPopScope(
-      onWillPop: () async => false,
-        child: Scaffold(
-        ///appbar
-        appBar: MyAppBar(isSeller: authProvider.currentUsr.idrole == 3 ?true :false, roleId: authProvider.currentUsr.idrole),
+        ? Center(child: CircularProgressIndicator())
+        : WillPopScope(
+            onWillPop: () async => false,
+            child: Scaffold(
+              ///appbar
+              appBar: MyAppBar(
+                  isSeller: authProvider.currentUsr.idrole == 3 ? true : false,
+                  roleId: authProvider.currentUsr.idrole),
 
-        ///body
-        body: tabs[_currentIndex],
+              ///body
+              body: tabs[_currentIndex],
 
-        ///bottom bar
-        bottomNavigationBar: BubbleBottomBar(
-          opacity: .2,
-          currentIndex: _currentIndex,
-          onTap: (index) {
-            setState(() {
-              _currentIndex = index;
-            });
-          },
-          borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-          elevation: 8,
-          items: <BubbleBottomBarItem>[
-            BubbleBottomBarItem(
-                backgroundColor: Color(0xff2C7DBF),
-                icon: Icon(
-                  Icons.home,
-                  color: Colors.black,
-                ),
-                activeIcon: Icon(
-                  Icons.home,
-                  color: Color(0xff2C7DBF),
-                ),
-                title: Text(
-                  "الرئيسية",
-                  textDirection: TextDirection.rtl
-                )),
-            BubbleBottomBarItem(
-                backgroundColor: Color(0xff2C7DBF),
-                icon: Icon(
-                  Icons.list,
-                  color: Colors.black,
-                ),
-                activeIcon: Icon(
-                  Icons.list,
-                  color: Color(0xff2C7DBF),
-                ),
-                title: Text(
-                    "المنتوجات",
-                    textDirection: TextDirection.rtl
-                )),
-            BubbleBottomBarItem(
-                backgroundColor: Color(0xff2C7DBF),
-                icon: Icon(
-                  Icons.support_agent,
-                  color: Colors.black,
-                ),
-                activeIcon: Icon(
-                  Icons.support_agent,
-                  color: Color(0xff2C7DBF),
-                ),
-                title: Text(
-                    "الدعم",
-                    textDirection: TextDirection.rtl
-                )),
-          ],
-        ),
-    ),
-      );
+              ///bottom bar
+              bottomNavigationBar: BubbleBottomBar(
+                opacity: .2,
+                currentIndex: _currentIndex,
+                onTap: (index) {
+                  setState(() {
+                    _currentIndex = index;
+                  });
+                },
+                borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+                elevation: 8,
+                items: <BubbleBottomBarItem>[
+                  BubbleBottomBarItem(
+                    backgroundColor: Color(0xff2C7DBF),
+                    icon: Icon(
+                      Icons.support_agent,
+                      color: Colors.black,
+                    ),
+                    activeIcon: Icon(
+                      Icons.support_agent,
+                      color: Color(0xff2C7DBF),
+                    ),
+                    title: Text(
+                      "الدعم",
+                      textDirection: TextDirection.rtl,
+                    ),
+                  ),
+                  BubbleBottomBarItem(
+                    backgroundColor: Color(0xff2C7DBF),
+                    icon: Icon(
+                      Icons.list,
+                      color: Colors.black,
+                    ),
+                    activeIcon: Icon(
+                      Icons.list,
+                      color: Color(0xff2C7DBF),
+                    ),
+                    title: Text(
+                      "المنتوجات",
+                      textDirection: TextDirection.rtl,
+                    ),
+                  ),
+                  BubbleBottomBarItem(
+                    backgroundColor: Color(0xff2C7DBF),
+                    icon: Icon(
+                      Icons.home,
+                      color: Colors.black,
+                    ),
+                    activeIcon: Icon(
+                      Icons.home,
+                      color: Color(0xff2C7DBF),
+                    ),
+                    title: Text(
+                      "الرئيسية",
+                      textDirection: TextDirection.rtl,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
   }
 }
-
-
-
