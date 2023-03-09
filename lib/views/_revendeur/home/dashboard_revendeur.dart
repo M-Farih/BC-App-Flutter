@@ -8,6 +8,7 @@ import 'package:bc_app/views/widgets/sliderVertical.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:collection/collection.dart';
 
 class Dashboard_revendeur extends StatefulWidget {
   @override
@@ -32,10 +33,13 @@ class _Dashboard_revendeurState extends State<Dashboard_revendeur> {
 
       // NOTE ======================================
       print("dddddddddddddddddddddddddddddddddddd");
+      // int kk =
+      //     Provider.of<CaProvider>(context, listen: false).ca.first.total_ca_184;
+      // print(kk);
       // print("homa hado " +
       //     Provider.of<MyNoteProvider>(context, listen: false).getMyNote(idvendor, 8, 55, 8).toString());
-      Provider.of<MyNoteProvider>(context, listen: false)
-          .getMyNote(idvendor, 87557, 5087, 4);
+      // Provider.of<MyNoteProvider>(context, listen: false)
+      //     .getMyNote(idvendor, 87557, 5087, 4);
 
       // Provider.of<MyNoteProvider>(context, listen: false).getMyNote(
       //     idvendor,
@@ -61,6 +65,12 @@ class _Dashboard_revendeurState extends State<Dashboard_revendeur> {
     var authProvider = Provider.of<AuthProvider>(context, listen: true);
     var caProvider = Provider.of<CaProvider>(context, listen: true);
     var noteProvider = Provider.of<MyNoteProvider>(context, listen: true);
+
+    Provider.of<MyNoteProvider>(context, listen: false).getMyNote(
+        authProvider.currentUsr.idvendor,
+        caProvider.ca.first.total_ca_365,
+        caProvider.ca.first.total_ca_184,
+        caProvider.ca.first.payment_deadline);
 
     return Scaffold(
       //resizeToAvoidBottomInset: false,
@@ -236,26 +246,30 @@ class _Dashboard_revendeurState extends State<Dashboard_revendeur> {
                                                   linesData: [
                                                     {
                                                       'التنقيط': noteProvider
-                                                              .myNote[0].note
+                                                              .myNote.first.note
                                                               .toString() ??
                                                           "-----------"
                                                     },
                                                     {
                                                       'التقييم': noteProvider
-                                                              .myNote[0]
+                                                              .myNote
+                                                              .first
                                                               .notation
                                                               .toString() ??
                                                           "-----------"
                                                     },
                                                     {
                                                       'الرصيد': noteProvider
-                                                              .myNote[0].solde
+                                                              .myNote
+                                                              .first
+                                                              .solde
                                                               .toString() ??
                                                           "-----------"
                                                     },
                                                     {
                                                       'غير مدفوعة': noteProvider
-                                                              .myNote[0]
+                                                              .myNote
+                                                              .first
                                                               .total_nbrimp
                                                               .toString() ??
                                                           "-----------"
@@ -271,60 +285,61 @@ class _Dashboard_revendeurState extends State<Dashboard_revendeur> {
                                                   linesData: [
                                                     {
                                                       'رقم المعاملات / السنة':
-                                                          caProvider.ca[0]
+                                                          caProvider.ca.first
                                                                   .total_ca_184
                                                                   .toString() ??
                                                               "-----------"
                                                     },
                                                     {
                                                       'رقم المعاملات / الشهر':
-                                                          caProvider.ca[0]
+                                                          caProvider.ca.first
                                                                   .total_ca_365
                                                                   .toString() ??
                                                               "-----------"
                                                     },
-                                                    // {
-                                                    //   'الموعد الاخير للدفع': caProvider
-                                                    //                   .ca[0]
-                                                    //                   .payment_deadline ==
-                                                    //               0 ||
-                                                    //           null
-                                                    //       ? 'يوم --'
-                                                    //       : caProvider.ca[0]
-                                                    //                   .payment_deadline ==
-                                                    //               1
-                                                    //           ? caProvider.ca[0]
-                                                    //                   .payment_deadline
-                                                    //                   .toString() +
-                                                    //               " يوم"
-                                                    //           : caProvider.ca[0]
-                                                    //                       .payment_deadline ==
-                                                    //                   2
-                                                    //               ? caProvider.ca[0]
-                                                    //                       .payment_deadline
-                                                    //                       .toString() +
-                                                    //                   " يومان"
-                                                    //               : caProvider.ca[0]
-                                                    //                           .payment_deadline >=
-                                                    //                       3
-                                                    //                   ? caProvider
-                                                    //                           .ca[0]
-                                                    //                           .payment_deadline
-                                                    //                           .toString() +
-                                                    //                       " أيام"
-                                                    //                   : caProvider.ca[0]
-                                                    //                               .payment_deadline >=
-                                                    //                           11
-                                                    //                       ? caProvider.ca[0].payment_deadline.toString() + " يوم"
-                                                    //                       : 'يوم --'
-                                                    // },
                                                     {
                                                       'الموعد الاخير للدفع': caProvider
-                                                                  .ca[0]
-                                                                  .payment_deadline
-                                                                  .toString() +
-                                                              'أيام ' ??
-                                                          'يوم --'
+                                                                  .ca
+                                                                  .first
+                                                                  .payment_deadline ==
+                                                              0
+                                                          ? 'يوم --'
+                                                          : caProvider.ca.first
+                                                                      .payment_deadline ==
+                                                                  1
+                                                              ? caProvider
+                                                                      .ca
+                                                                      .first
+                                                                      .payment_deadline
+                                                                      .toString() +
+                                                                  " يوم"
+                                                              : caProvider
+                                                                          .ca
+                                                                          .first
+                                                                          .payment_deadline ==
+                                                                      2
+                                                                  ? caProvider
+                                                                          .ca
+                                                                          .first
+                                                                          .payment_deadline
+                                                                          .toString() +
+                                                                      " يومان"
+                                                                  : caProvider
+                                                                              .ca
+                                                                              .first
+                                                                              .payment_deadline >=
+                                                                          3
+                                                                      ? caProvider
+                                                                              .ca
+                                                                              .first
+                                                                              .payment_deadline
+                                                                              .toString() +
+                                                                          " أيام"
+                                                                      : caProvider.ca.first.payment_deadline >=
+                                                                              11
+                                                                          ? caProvider.ca.first.payment_deadline.toString() +
+                                                                              " يوم"
+                                                                          : 'يوم --'
                                                     },
                                                   ],
                                                   valueTextColor: Colors.white,

@@ -22,6 +22,11 @@ class CaProvider extends ChangeNotifier {
       notifyListeners();
       print(response.body);
     }
+    print(
+        "------------------------------------------LLLLLLLLLLLLLLLLLLLLLL----------------------------");
+    print(_ca.first.total_ca_184);
+    print(_ca.first.total_ca_365);
+    print(_ca.first.payment_deadline);
     return _ca;
   }
 }
