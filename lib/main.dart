@@ -21,6 +21,8 @@ import 'package:provider/provider.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter/services.dart';
 
+import 'providers/caFamilleProvider.dart';
+
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
     'high_importance_channel', // id
     'High Importance Notifications', // title
@@ -98,6 +100,7 @@ class _MyAppState extends State<MyApp> {
       ChangeNotifierProvider(create: (context) => locator<PromotionProvider>()),
       ChangeNotifierProvider(create: (context) => locator<RistourneProvider>()),
       ChangeNotifierProvider(create: (context) => locator<CaProvider>()),
+      ChangeNotifierProvider(create: (context) => locator<CaFamilleProvider>()),
       ChangeNotifierProvider(create: (context) => locator<MyNoteProvider>()),
     ], child: StartApp());
   }

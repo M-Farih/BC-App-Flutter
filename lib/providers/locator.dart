@@ -10,6 +10,7 @@ import 'package:bc_app/providers/topicProvider.dart';
 import 'package:bc_app/providers/userProvider.dart';
 import 'package:get_it/get_it.dart';
 
+import 'caFamilleProvider.dart';
 import 'caProvider.dart';
 import 'myNoteProvider.dart';
 
@@ -20,6 +21,7 @@ void setupLocator() {
   locator.registerFactory(() => ContactProvider());
   locator.registerFactory(() => ReasonProvider());
   locator.registerFactory(() => CaProvider());
+  locator.registerFactory(() => CaFamilleProvider());
   locator.registerFactory(() => MyNoteProvider());
   locator.registerFactory(() => TopicProvider());
   locator.registerFactory(() => CommentProvider());

@@ -24,7 +24,7 @@ class UserService extends BaseApi {
     return await api.httpPost('users', '', jsonEncode(body));
   }
 
-  Future<http.Response> update (int id, clientNumber, firstName, lastName, entrepriseName, ice,
+  Future<http.Response> update (int id, idvendor, firstName, lastName, entrepriseName, ice,
       city, address, telephone, int role_id, email) async {
 
     Map<String, dynamic> body ={
@@ -35,7 +35,7 @@ class UserService extends BaseApi {
           "address": address,
           "telephone": telephone,
           "email": email == "" ? "test" : email,
-          "code": clientNumber,
+          "code": idvendor,
           "flagMail": 1
     };
 

@@ -13,9 +13,35 @@ import 'package:provider/provider.dart';
 
 class SellerDetails extends StatefulWidget {
   final int id;
-  final String profileImg, phoneNumber, mail, username, password, solde, ristourne, matelas, banquette, mousse, divers, from, to;
+  final String profileImg,
+      phoneNumber,
+      mail,
+      username,
+      password,
+      solde,
+      ristourne,
+      matelas,
+      banquette,
+      mousse,
+      divers,
+      from,
+      to;
 
-  SellerDetails({this.id, this.profileImg, this.phoneNumber, this.mail, this.username, this.password, this.solde, this.ristourne, this.matelas, this.banquette, this.mousse, this.divers, this.from, this.to});
+  SellerDetails(
+      {this.id,
+      this.profileImg,
+      this.phoneNumber,
+      this.mail,
+      this.username,
+      this.password,
+      this.solde,
+      this.ristourne,
+      this.matelas,
+      this.banquette,
+      this.mousse,
+      this.divers,
+      this.from,
+      this.to});
 
   @override
   _SellerDetailsState createState() => _SellerDetailsState();
@@ -24,7 +50,6 @@ class SellerDetails extends StatefulWidget {
 class _SellerDetailsState extends State<SellerDetails> {
   @override
   void initState() {
-    
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<UserProvider>(context, listen: false)
@@ -39,11 +64,13 @@ class _SellerDetailsState extends State<SellerDetails> {
     var contactProvider = Provider.of<ContactProvider>(context, listen: true);
     return Scaffold(
       backgroundColor: Color(0xFFF1F4F7),
-      appBar: MyAppBar(isSeller: authProvider.currentUsr.idrole == 3 ?true :false, roleId: authProvider.currentUsr.idrole),
+      appBar: MyAppBar(
+          isSeller: authProvider.currentUsr.idrole == 3 ? true : false,
+          roleId: authProvider.currentUsr.idrole),
       body: userProvider.busy
           ? Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
-            child: Column(
+              child: Column(
                 children: [
                   /// back btn & icon-title
                   Row(
@@ -55,13 +82,13 @@ class _SellerDetailsState extends State<SellerDetails> {
                             GestureDetector(
                               onTap: () {
                                 Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) =>
-                                    authProvider.currentUsr.idrole == 3
-                                        ?HomePage_Revendeur(index: 2)
-                                        :authProvider.currentUsr.idrole == 2
-                                        ?HomePage_Commercial(index: 2)
-                                        :HomePage_admin(index: 2)
-                                ));
+                                    builder: (context) => authProvider
+                                                .currentUsr.idrole ==
+                                            3
+                                        ? HomePage_Revendeur(index: 2)
+                                        : authProvider.currentUsr.idrole == 2
+                                            ? HomePage_Commercial(index: 2)
+                                            : HomePage_admin(index: 2)));
                               },
                               child: Padding(
                                 padding: const EdgeInsets.all(20.0),
@@ -107,9 +134,11 @@ class _SellerDetailsState extends State<SellerDetails> {
                           width: 100,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(100),
-                              border: Border.all(color: Colors.white, width: 5)),
+                              border:
+                                  Border.all(color: Colors.white, width: 5)),
                           child: CircleAvatar(
-                            backgroundImage: NetworkImage('${widget.profileImg}'),
+                            backgroundImage:
+                                NetworkImage('${widget.profileImg}'),
                           ),
                         ),
                         SizedBox(height: 15),
@@ -117,9 +146,11 @@ class _SellerDetailsState extends State<SellerDetails> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Container(
-                              child: Text('${userProvider.userById.firstName ??""} ${userProvider.userById.lastName ??""}',
-                                  style: TextStyle(color: Colors.white, fontSize: 25),
-                                  overflow: TextOverflow.ellipsis,
+                              child: Text(
+                                '${userProvider.userById.firstName ?? ""} ${userProvider.userById.lastName ?? ""}',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 25),
+                                overflow: TextOverflow.ellipsis,
                                 textAlign: TextAlign.center,
                               ),
                               width: MediaQuery.of(context).size.width * 0.75,
@@ -127,11 +158,16 @@ class _SellerDetailsState extends State<SellerDetails> {
                           ],
                         ),
                         Text('${widget.solde} Dhs',
-                            style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold)),
                         Text('Ristourne ${widget.ristourne}',
-                            style: TextStyle(color: Colors.white, fontSize: 18)),
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 18)),
                         Text('Depuis le ${widget.from} au ${widget.to}',
-                            style: TextStyle(color: Colors.white, fontSize: 12.5)),
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 12.5)),
                       ],
                     ),
                   ),
@@ -170,15 +206,18 @@ class _SellerDetailsState extends State<SellerDetails> {
                     children: [
                       GestureDetector(
                         child: Container(
-                          height: 50,
-                          width: 50,
-                          decoration: BoxDecoration(
-                            color: widget.phoneNumber != "" ? Color(0xFF2C7DBF) :Color(0xFFA0A0A0),
-                            borderRadius: BorderRadius.circular(50)
-                          ),
-                            child: Icon(Icons.call, color: Colors.white,)
-                        ),
-                        onTap:(){
+                            height: 50,
+                            width: 50,
+                            decoration: BoxDecoration(
+                                color: widget.phoneNumber != ""
+                                    ? Color(0xFF2C7DBF)
+                                    : Color(0xFFA0A0A0),
+                                borderRadius: BorderRadius.circular(50)),
+                            child: Icon(
+                              Icons.call,
+                              color: Colors.white,
+                            )),
+                        onTap: () {
                           contactProvider.call('${widget.phoneNumber}');
                         },
                       ),
@@ -188,12 +227,15 @@ class _SellerDetailsState extends State<SellerDetails> {
                             height: 50,
                             width: 50,
                             decoration: BoxDecoration(
-                                color: widget.mail != "" ? Color(0xFF2C7DBF) :Color(0xFFA0A0A0),
-                                borderRadius: BorderRadius.circular(50)
-                            ),
-                            child: Icon(Icons.mail, color: Colors.white,)
-                        ),
-                        onTap:(){
+                                color: widget.mail != ""
+                                    ? Color(0xFF2C7DBF)
+                                    : Color(0xFFA0A0A0),
+                                borderRadius: BorderRadius.circular(50)),
+                            child: Icon(
+                              Icons.mail,
+                              color: Colors.white,
+                            )),
+                        onTap: () {
                           contactProvider.mailSeller('${widget.mail}');
                         },
                       ),
@@ -201,7 +243,7 @@ class _SellerDetailsState extends State<SellerDetails> {
                   )
                 ],
               ),
-          ),
+            ),
     );
   }
 }

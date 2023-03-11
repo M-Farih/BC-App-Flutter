@@ -29,6 +29,7 @@ class _SliderVerticalWidgetState extends State<SliderVerticalWidget> {
         inactiveTickMarkColor: Colors.transparent,
       ),
       child: Container(
+        width: MediaQuery.of(context).size.width * 0.2,
         height: MediaQuery.of(context).size.height / 3,
         child: Column(
           children: [
@@ -49,32 +50,35 @@ class _SliderVerticalWidgetState extends State<SliderVerticalWidget> {
                       onChanged: (double newValue) {},
                     ),
                   ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        '${widget.turnover.round()}',
-                        textAlign: TextAlign.center,
-                        softWrap: true,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 3.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          '${widget.turnover.round()}',
+                          textAlign: TextAlign.center,
+                          softWrap: true,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
                         ),
-                      ),
-                      Text(
-                        'Dhs',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 12.5,
+                        Text(
+                          'Dhs',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 12.5,
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                    ],
+                        SizedBox(
+                          height: 10,
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),

@@ -187,7 +187,7 @@ class _ListSellersAdminState extends State<ListSellersAdmin> {
                                       children: [
                                         userProvider.sellers[index].idrole == 3
                                             ? Text(
-                                                '${userProvider.sellers[index].clientNumber}')
+                                                '${userProvider.sellers[index].idvendor}')
                                             : SizedBox(),
                                         userProvider.sellers[index].idrole != 3
                                             ? Container(
@@ -380,23 +380,6 @@ class _ListSellersAdminState extends State<ListSellersAdmin> {
                                                     .sellers[index].userName,
                                                 password: userProvider
                                                     .sellers[index].password,
-                                                solde: userProvider
-                                                    .sellers[index].solde,
-                                                ristourne: userProvider
-                                                    .sellers[index].ristourne,
-                                                matelas: userProvider
-                                                    .sellers[index].matelas,
-                                                banquette: userProvider
-                                                    .sellers[index].banquette,
-                                                mousse: userProvider
-                                                    .sellers[index].mousse,
-                                                divers: userProvider
-                                                    .sellers[index].divers,
-                                                from: userProvider
-                                                    .sellers[index]
-                                                    .from_date_ca,
-                                                to: userProvider
-                                                    .sellers[index].to_date_ca,
                                                 profileImg:
                                                     '${userProvider.sellers[index].profileImage != "" ? userProvider.sellers[index].profileImage.replaceAll('"', '') : "https://ui-avatars.com/api/?background=FFFFF&color=2C7DBF&name=${userProvider.sellers[index].firstName}+${userProvider.sellers[index].lastName}"}')),
                                       );
@@ -424,7 +407,7 @@ class _ListSellersAdminState extends State<ListSellersAdmin> {
                                           fontWeight: FontWeight.bold),
                                     ),
                                     subtitle: Text(
-                                        '${userProvider.sellers[index].clientNumber}'),
+                                        '${userProvider.sellers[index].idvendor}'),
                                     trailing: userProvider
                                                 .sellers[index].userName !=
                                             ""
@@ -579,23 +562,6 @@ class _ListSellersAdminState extends State<ListSellersAdmin> {
                                                     .sellers[index].userName,
                                                 password: userProvider
                                                     .sellers[index].password,
-                                                solde: userProvider
-                                                    .sellers[index].solde,
-                                                ristourne: userProvider
-                                                    .sellers[index].ristourne,
-                                                matelas: userProvider
-                                                    .sellers[index].matelas,
-                                                banquette: userProvider
-                                                    .sellers[index].banquette,
-                                                mousse: userProvider
-                                                    .sellers[index].mousse,
-                                                divers: userProvider
-                                                    .sellers[index].divers,
-                                                from: userProvider
-                                                    .sellers[index]
-                                                    .from_date_ca,
-                                                to: userProvider
-                                                    .sellers[index].to_date_ca,
                                                 profileImg:
                                                     '${userProvider.sellers[index].profileImage != "" ? userProvider.sellers[index].profileImage.replaceAll('"', '') : "https://ui-avatars.com/api/?background=FFFFF&color=2C7DBF&name=${userProvider.sellers[index].firstName}+${userProvider.sellers[index].lastName}"}')),
                                       );
@@ -615,7 +581,7 @@ class _ListSellersAdminState extends State<ListSellersAdmin> {
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                                 subtitle: Text(
-                                    '${userProvider.sellers[index].clientNumber}'),
+                                    '${userProvider.sellers[index].idvendor}'),
                                 onTap: () {
                                   userProvider.busy = true;
                                   Navigator.of(context).push(
@@ -631,22 +597,6 @@ class _ListSellersAdminState extends State<ListSellersAdmin> {
                                                 .sellers[index].userName,
                                             password: userProvider
                                                 .sellers[index].password,
-                                            solde: userProvider
-                                                .sellers[index].solde,
-                                            ristourne: userProvider
-                                                .sellers[index].ristourne,
-                                            matelas: userProvider
-                                                .sellers[index].matelas,
-                                            banquette: userProvider
-                                                .sellers[index].banquette,
-                                            mousse: userProvider
-                                                .sellers[index].mousse,
-                                            divers: userProvider
-                                                .sellers[index].divers,
-                                            from: userProvider
-                                                .sellers[index].from_date_ca,
-                                            to: userProvider
-                                                .sellers[index].to_date_ca,
                                             profileImg:
                                                 '${userProvider.sellers[index].profileImage != "" ? userProvider.sellers[index].profileImage.replaceAll('"', '') : "https://ui-avatars.com/api/?background=FFFFF&color=2C7DBF&name=${userProvider.sellers[index].firstName}+${userProvider.sellers[index].lastName}"}')),
                                   );

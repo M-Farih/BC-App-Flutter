@@ -126,64 +126,55 @@ class AuthProvider extends BaseProvider {
     User _tempUser = _currentUsr;
     _currentUsr = null;
     _currentUsr = new User(
-        _tempUser.idrole,
-        _tempUser.idagent,
-        _tempUser.idvendor,
-        firstName,
-        lastName,
-        _tempUser.userName,
-        _tempUser.email,
-        _tempUser.password,
-        entrepriseName,
-        ice,
-        city,
-        address,
-        telephone,
-        _tempUser.clientNumber,
-        _tempUser.agentIduser,
-        _tempUser.agentName,
-        _tempUser.idrole,
-        profileImage,
-        _tempUser.solde,
-        _tempUser.ristourne,
-        _tempUser.agentPhone,
-        _tempUser.firstConnection,
-        _tempUser.banquette,
-        _tempUser.divers,
-        _tempUser.mousse,
-        _tempUser.matelas,
-        _tempUser.from_date_ca,
-        _tempUser.to_date_ca,
-        _tempUser.ca,
-        _tempUser.lastpurchasedate);
+      _tempUser.idrole,
+      _tempUser.idagent,
+      firstName,
+      lastName,
+      _tempUser.userName,
+      _tempUser.email,
+      _tempUser.password,
+      entrepriseName,
+      ice,
+      city,
+      address,
+      telephone,
+      _tempUser.idvendor,
+      _tempUser.agentIduser,
+      _tempUser.agentName,
+      _tempUser.idrole,
+      profileImage,
+      _tempUser.agentPhone,
+      _tempUser.firstConnection,
+    );
   }
 
-  Future<void> getUserSolde(int id) async {
-    busy = true;
-    notifyListeners();
-    var response = await _authService.getUserSolde(id);
-    if (response.statusCode == 200) {
-      ///fill user model banquette, divers, matelas, mousse;
-      var data = jsonDecode(response.body);
-      solde = data['data'][0]['solde'];
-      from = data['data'][0]['from_date_ca'];
-      to = data['data'][0]['to_date_ca'];
-      banquette = double.parse(data['data'][0]['banquette']);
-      divers = double.parse(data['data'][0]['divers']);
-      matelas = double.parse(data['data'][0]['matelas']);
-      mousse = double.parse(data['data'][0]['mousse']);
-      ristourne = data['data'][0]['ristourne'];
+  // Future<void> getUserSolde(int id) async {
+  //   busy = true;
+  //   notifyListeners();
+  //   var response = await _authService.getUserSolde(id);
+  //   if (response.statusCode == 200) {
+  //     ///fill user model banquette, divers, matelas, mousse;
+  //     var data = jsonDecode(response.body);
+  //     solde = data['data'][0]['solde'];
+  //     from = data['data'][0]['from_date_ca'];
+  //     to = data['data'][0]['to_date_ca'];
+  //     banquette = double.parse(data['data'][0]['banquette']);
+  //     divers = double.parse(data['data'][0]['divers']);
+  //     matelas = double.parse(data['data'][0]['matelas']);
+  //     mousse = double.parse(data['data'][0]['mousse']);
+  //     ristourne = data['data'][0]['ristourne'];
 
-      famillesSold = [banquette, divers, matelas, mousse];
-      max = famillesSold[0];
-      for (int i = 1; i < famillesSold.length; i++) {
-        if (famillesSold[i] > max) {
-          max = famillesSold[i];
-        }
-      }
-      max = max * 1.5;
-      busy = false;
-      notifyListeners();
-    }
-  }
+  //     famillesSold = [banquette, divers, matelas, mousse];
+  //     max = famillesSold[0];
+  //     for (int i = 1; i < famillesSold.length; i++) {
+  //       if (famillesSold[i] > max) {
+  //         max = famillesSold[i];
+  //       }
+  //     }
+  //     max = max * 1.5;
+  //     busy = false;
+  //     notifyListeners();
+  //   }
+  // }
+  // later 1
 }

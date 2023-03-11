@@ -113,92 +113,74 @@ class _ListSellersState extends State<ListSellers> {
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           return Container(
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(
-                                      width: 0.5, color: Color(0xFFCBCBCB)),
-                                ),
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                    width: 0.5, color: Color(0xFFCBCBCB)),
                               ),
-                              child: ListTile(
-                                  leading: CircleAvatar(
-                                    backgroundColor: Colors.transparent,
-                                    backgroundImage: NetworkImage(
-                                        '${userProvider.sellers[index].profileImage != "" ? userProvider.sellers[index].profileImage.replaceAll('"', '') : "https://ui-avatars.com/api/?background=FFFFF&color=2C7DBF&name=${userProvider.sellers[index].firstName}+${userProvider.sellers[index].lastName}"}'),
-                                  ),
-                                  title: Text(
-                                    '${userProvider.sellers[index].firstName} ${userProvider.sellers[index].lastName}',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  subtitle: Text(
-                                      '${userProvider.sellers[index].clientNumber}'),
-                                  trailing:
-                                      userProvider.sellers[index].userName != ""
-                                          ? Container(
-                                              width: 30,
-                                              height: 30,
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.end,
-                                                children: [
-                                                  userProvider.sellers[index]
-                                                              .firstConnection ==
-                                                          "0"
-                                                      ? Icon(
-                                                          Icons.account_circle,
-                                                          color: Colors.blue
-                                                              .withOpacity(0.3))
-                                                      : Icon(
-                                                          Icons.account_circle,
-                                                          color: Colors.green
-                                                              .withOpacity(0.3))
-                                                ],
-                                              ),
-                                            )
-                                          : Container(
-                                              width: 30,
-                                              height: 30,
-                                              child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.end,
-                                                  children: [
-                                                    Icon(Icons.account_circle,
-                                                        color: Colors.red
-                                                            .withOpacity(0.3))
-                                                  ]),
-                                            ),
-                                  onTap: () {
-                                    userProvider.busy = true;
-                                    Navigator.of(context).push(MaterialPageRoute(
-                                        builder: (context) => SellerDetails(
-                                            id: userProvider
-                                                .sellers[index].iduser,
-                                            phoneNumber: userProvider
-                                                .sellers[index].telephone,
-                                            mail: userProvider
-                                                .sellers[index].email,
-                                            username: userProvider
-                                                .sellers[index].userName,
-                                            password: userProvider
-                                                .sellers[index].password,
-                                            solde: userProvider
-                                                .sellers[index].solde,
-                                            ristourne: userProvider
-                                                .sellers[index].ristourne,
-                                            matelas: userProvider
-                                                .sellers[index].matelas,
-                                            banquette: userProvider
-                                                .sellers[index].banquette,
-                                            mousse: userProvider
-                                                .sellers[index].mousse,
-                                            divers: userProvider
-                                                .sellers[index].divers,
-                                            from: userProvider
-                                                .sellers[index].from_date_ca,
-                                            to: userProvider
-                                                .sellers[index].to_date_ca,
-                                            profileImg: '${userProvider.sellers[index].profileImage != "" ? userProvider.sellers[index].profileImage.replaceAll('"', '') : "https://ui-avatars.com/api/?background=FFFFF&color=2C7DBF&name=${userProvider.sellers[index].firstName}+${userProvider.sellers[index].lastName}"}')));
-                                  }));
+                            ),
+                            child: ListTile(
+                              leading: CircleAvatar(
+                                backgroundColor: Colors.transparent,
+                                backgroundImage: NetworkImage(
+                                    '${userProvider.sellers[index].profileImage != "" ? userProvider.sellers[index].profileImage.replaceAll('"', '') : "https://ui-avatars.com/api/?background=FFFFF&color=2C7DBF&name=${userProvider.sellers[index].firstName}+${userProvider.sellers[index].lastName}"}'),
+                              ),
+                              title: Text(
+                                '${userProvider.sellers[index].firstName} ${userProvider.sellers[index].lastName}',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              subtitle: Text(
+                                  '${userProvider.sellers[index].idvendor}'),
+                              trailing: userProvider.sellers[index].userName !=
+                                      ""
+                                  ? Container(
+                                      width: 30,
+                                      height: 30,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          userProvider.sellers[index]
+                                                      .firstConnection ==
+                                                  "0"
+                                              ? Icon(Icons.account_circle,
+                                                  color: Colors.blue
+                                                      .withOpacity(0.3))
+                                              : Icon(Icons.account_circle,
+                                                  color: Colors.green
+                                                      .withOpacity(0.3))
+                                        ],
+                                      ),
+                                    )
+                                  : Container(
+                                      width: 30,
+                                      height: 30,
+                                      child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            Icon(Icons.account_circle,
+                                                color:
+                                                    Colors.red.withOpacity(0.3))
+                                          ]),
+                                    ),
+                              onTap: () {
+                                userProvider.busy = true;
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => SellerDetails(
+                                        id: userProvider.sellers[index].iduser,
+                                        phoneNumber: userProvider
+                                            .sellers[index].telephone,
+                                        mail: userProvider.sellers[index].email,
+                                        username: userProvider
+                                            .sellers[index].userName,
+                                        password: userProvider
+                                            .sellers[index].password,
+                                        profileImg:
+                                            '${userProvider.sellers[index].profileImage != "" ? userProvider.sellers[index].profileImage.replaceAll('"', '') : "https://ui-avatars.com/api/?background=FFFFF&color=2C7DBF&name=${userProvider.sellers[index].firstName}+${userProvider.sellers[index].lastName}"}')));
+                              },
+                            ),
+                          );
                         },
                       ),
                     ),

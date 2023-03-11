@@ -55,6 +55,7 @@ dependencies:
   firebase_messaging: any
   flutter_local_notifications: ^5.0.0+4
   pull_to_refresh: ^2.0.0
+  flutter_rating_bar: ^4.0.0
 
 
 

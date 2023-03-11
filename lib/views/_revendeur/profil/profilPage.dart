@@ -281,7 +281,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                               authProvider.currentUsr == null
                                                   ? Text('')
                                                   : Text(
-                                                      '${authProvider.currentUsr.clientNumber}',
+                                                      '${authProvider.currentUsr.idvendor}',
                                                       style: TextStyle(
                                                           color: Colors.white,
                                                           fontWeight:
@@ -404,7 +404,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                             .update(
                                                 id,
                                                 authProvider
-                                                    .currentUsr.clientNumber,
+                                                    .currentUsr.idvendor,
                                                 fnameController.text,
                                                 lnameController.text,
                                                 companyController.text,
