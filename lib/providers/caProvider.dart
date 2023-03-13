@@ -20,7 +20,6 @@ class CaProvider extends ChangeNotifier {
       data['data'].forEach((u) => _ca.add(CA.fromJson(u)));
       isBusy = false;
       notifyListeners();
-      print(response.body);
     }
     return _ca;
   }

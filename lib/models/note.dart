@@ -1,6 +1,6 @@
 class MyNote {
-  final int note, solde;
-  final String notation, cat, total_nbrimp;
+  int note, solde;
+  String notation, cat, total_nbrimp;
   MyNote(this.note, this.notation, this.solde, this.total_nbrimp, this.cat);
 
   dynamic toJson() => {

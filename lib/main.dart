@@ -164,16 +164,18 @@ class _StartAppState extends State<StartApp> {
 
   void showNotification() {
     flutterLocalNotificationsPlugin.show(
-        0,
-        "Testing...",
-        "How you doin ?",
-        NotificationDetails(
-            android: AndroidNotificationDetails(
-                channel.id, channel.name, channel.description,
-                importance: Importance.high,
-                color: Colors.blue,
-                playSound: true,
-                icon: '@mipmap/ic_launcher')));
+      0,
+      "Testing...",
+      "How you doin ?",
+      NotificationDetails(
+        android: AndroidNotificationDetails(
+            channel.id, channel.name, channel.description,
+            importance: Importance.high,
+            color: Colors.blue,
+            playSound: true,
+            icon: '@mipmap/ic_launcher'),
+      ),
+    );
   }
 
   @override

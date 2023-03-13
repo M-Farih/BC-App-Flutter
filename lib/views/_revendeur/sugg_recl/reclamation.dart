@@ -282,12 +282,13 @@ class _ReclamationState extends State<ReclamationPage> {
                                         ///state 0 (initial state)
                                         Container(
                                             height: 20.0,
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width /
-                                                1.8,
+                                            // width: MediaQuery.of(context)
+                                            //         .size
+                                            //         .width /
+                                            //     1.8,
                                             decoration: BoxDecoration(
-                                                color: Colors.white),
+                                              color: Colors.white,
+                                            ),
                                           )
                                         : recordState == 1
                                             ?
@@ -380,48 +381,59 @@ class _ReclamationState extends State<ReclamationPage> {
                                     ///btn
                                     Visibility(
                                       visible: recordState == 2 ? false : true,
-                                      child: Container(
-                                        height: 45.0,
-                                        width: 45.0,
-                                        decoration: BoxDecoration(
-                                            boxShadow: [
-                                              BoxShadow(
-                                                  color: Colors.blue[400],
-                                                  blurRadius: shadowValue,
-                                                  spreadRadius: shadowValue)
-                                            ],
-                                            color: Color(0xFF1B7DBB),
-                                            borderRadius:
-                                                BorderRadius.circular(40.0)),
-                                        child: GestureDetector(
-                                          child: Icon(
-                                            Icons.mic,
-                                            color: Colors.white,
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            "استمر بالضغط لتسجيل",
+                                            style: TextStyle(
+                                              color: Colors.black38,
+                                            ),
                                           ),
-                                          onTapDown:
-                                              (TapDownDetails details) async {
-                                            var status = await Permission
-                                                .microphone.status;
-                                            if (status.isGranted) {
-                                              _start();
-                                              setState(() {
-                                                shadowValue = 20.0;
-                                                recordState = 1;
-                                              });
-                                            } else {
-                                              await Permission.microphone
-                                                  .request()
-                                                  .isGranted;
-                                            }
-                                          },
-                                          onTapUp: (TapUpDetails details) {
-                                            _stop();
-                                            setState(() {
-                                              shadowValue = 0.0;
-                                              recordState = 2;
-                                            });
-                                          },
-                                        ),
+                                          Container(
+                                            height: 45.0,
+                                            width: 45.0,
+                                            decoration: BoxDecoration(
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                      color: Colors.blue[400],
+                                                      blurRadius: shadowValue,
+                                                      spreadRadius: shadowValue)
+                                                ],
+                                                color: Color(0xFF1B7DBB),
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        40.0)),
+                                            child: GestureDetector(
+                                              child: Icon(
+                                                Icons.mic,
+                                                color: Colors.white,
+                                              ),
+                                              onTapDown: (TapDownDetails
+                                                  details) async {
+                                                var status = await Permission
+                                                    .microphone.status;
+                                                if (status.isGranted) {
+                                                  _start();
+                                                  setState(() {
+                                                    shadowValue = 20.0;
+                                                    recordState = 1;
+                                                  });
+                                                } else {
+                                                  await Permission.microphone
+                                                      .request()
+                                                      .isGranted;
+                                                }
+                                              },
+                                              onTapUp: (TapUpDetails details) {
+                                                _stop();
+                                                setState(() {
+                                                  shadowValue = 0.0;
+                                                  recordState = 2;
+                                                });
+                                              },
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ],

@@ -11,7 +11,9 @@ class UserProvider extends ChangeNotifier {
   bool busy = true;
   User _currentUser;
   User _userById;
+  // ignore: deprecated_member_use
   List<User> _sellers = List();
+  // ignore: deprecated_member_use
   List<User> _tempSellersList = List();
 
   User get currentUser => _currentUser;
@@ -91,11 +93,11 @@ class UserProvider extends ChangeNotifier {
         _sellers = tempSellersList;
         _sellers
             .removeWhere((element) => element.iduser == authProvider.iduser);
-        if (_sellers.length > 150) {
-          myIndex = 80;
-        } else {
-          myIndex = _sellers.length;
-        }
+        // if (_sellers.length > 150) {
+        //   myIndex = 80;
+        // } else {
+        //   myIndex = _sellers.length;
+        // }
         busy = false;
         notifyListeners();
       }
@@ -119,11 +121,11 @@ class UserProvider extends ChangeNotifier {
       }
       _sellers = new List.from(_commercialsList)..addAll(_sellersList);
       _sellers.removeWhere((element) => element.idrole == 1);
-      if (_sellers.length > 150) {
-        myIndex = 80;
-      } else {
-        myIndex = _sellers.length;
-      }
+      // if (_sellers.length > 150) {
+      //   myIndex = 80;
+      // } else {
+      //   myIndex = _sellers.length;
+      // }
       busy = false;
       notifyListeners();
     }
@@ -186,9 +188,7 @@ class UserProvider extends ChangeNotifier {
         if (element.firstName.toLowerCase().contains(text.toLowerCase()) ||
                 element.lastName.toLowerCase().contains(text.toLowerCase()) ||
                 fullName.contains(text.toLowerCase()) ||
-                // ignore: unrelated_type_equality_checks
-                element.idvendor == text
-            // ||  element.clientNumber.toLowerCase().contains(text.toLowerCase())
+                element.code.toLowerCase().contains(text.toLowerCase())
             // later
             ) {
           filteredUsers.add(element);

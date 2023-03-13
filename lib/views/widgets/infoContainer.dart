@@ -7,7 +7,8 @@ class InfoContainer extends StatefulWidget {
   final double vec;
   final String label;
 
-  InfoContainer({this.textController, this.canEdit, this.td, this.vec, this.label});
+  InfoContainer(
+      {this.textController, this.canEdit, this.td, this.vec, this.label});
 
   @override
   _InfoContainerState createState() => _InfoContainerState();
@@ -29,8 +30,13 @@ class _InfoContainerState extends State<InfoContainer> {
         width: MediaQuery.of(context).size.width * widget.vec,
         height: 50.0,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(40.0), color: widget.canEdit ?Colors.white :Color(
-            0xFFECECEC)),
+          borderRadius: BorderRadius.circular(40.0),
+          color: widget.canEdit
+              ? Colors.white
+              : Color(
+                  0xFFECECEC,
+                ),
+        ),
         child: Padding(
           padding: const EdgeInsets.only(right: 16.0, left: 16.0),
           child: Directionality(

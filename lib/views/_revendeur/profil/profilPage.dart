@@ -281,7 +281,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                               authProvider.currentUsr == null
                                                   ? Text('')
                                                   : Text(
-                                                      '${authProvider.currentUsr.idvendor}',
+                                                      '${authProvider.currentUsr.code}',
                                                       style: TextStyle(
                                                           color: Colors.white,
                                                           fontWeight:
@@ -292,17 +292,17 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
                                                 children: [
+                                                  SizedBox(
+                                                    height: 30,
+                                                  ),
                                                   Text(
-                                                    '${authProvider.ristourne}',
-                                                    textDirection:
-                                                        TextDirection.rtl,
+                                                    '${authProvider.currentUsr.agentName}',
                                                     overflow:
                                                         TextOverflow.ellipsis,
                                                     style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 20.0),
+                                                      color: Colors.white,
+                                                      fontSize: 14.0,
+                                                    ),
                                                   ),
                                                 ],
                                               ),
@@ -376,55 +376,62 @@ class _ProfilePageState extends State<ProfilePage> {
                         SizedBox(height: 10.0),
 
                         ///btn
-                        Padding(
-                          padding: const EdgeInsets.only(left: 40.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              GestureDetector(
-                                child: ProfilInfoBtn(
-                                    btnHeight: 35,
-                                    btnWidth: canEdit ? 180 : 80,
-                                    text: '$btntext',
-                                    color: btnColor,
-                                    textColor: btntextColor),
-                                onTap: () {
-                                  setState(() {
-                                    canEdit = !canEdit;
-                                    if (canEdit) {
-                                      btntext = 'إرسال طلب التعديل';
-                                      btntextColor = 0xFFFFFFFF;
-                                      btnColor = 0xFF2C7DBF;
-                                    } else {
-                                      btntext = 'تعديل';
-                                      btntextColor = 0xFF2C7DBF;
-                                      btnColor = 0xFFFFFFFF;
-                                      setState(() {
-                                        userProvider
-                                            .update(
-                                                id,
-                                                authProvider
-                                                    .currentUsr.idvendor,
-                                                fnameController.text,
-                                                lnameController.text,
-                                                companyController.text,
-                                                iceController.text,
-                                                cityController.text,
-                                                addressController.text,
-                                                phoneController.text,
-                                                role_id,
-                                                email)
-                                            .then((value) {
-                                          _confirmation(context,
-                                              'لقد تم ارسال طلب التعديل');
+                        Center(
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              left: 25.0,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                GestureDetector(
+                                  child: ProfilInfoBtn(
+                                      btnHeight: 35,
+                                      btnWidth: canEdit ? 180 : 80,
+                                      text: '$btntext',
+                                      color: btnColor,
+                                      textColor: btntextColor),
+                                  onTap: () {
+                                    setState(() {
+                                      canEdit = !canEdit;
+                                      if (canEdit) {
+                                        btntext = 'إرسال طلب التعديل';
+                                        btntextColor = 0xFFFFFFFF;
+                                        btnColor = 0xFF2C7DBF;
+                                      } else {
+                                        btntext = 'تعديل';
+                                        btntextColor = 0xFF2C7DBF;
+                                        btnColor = 0xFFFFFFFF;
+                                        setState(() {
+                                          userProvider
+                                              .update(
+                                                  id,
+                                                  authProvider
+                                                      .currentUsr.idvendor,
+                                                  fnameController.text,
+                                                  lnameController.text,
+                                                  companyController.text,
+                                                  iceController.text,
+                                                  cityController.text,
+                                                  addressController.text,
+                                                  phoneController.text,
+                                                  role_id,
+                                                  email)
+                                              .then((value) {
+                                            _confirmation(context,
+                                                'لقد تم ارسال طلب التعديل');
+                                          });
                                         });
-                                      });
-                                    }
-                                  });
-                                },
-                              ),
-                            ],
+                                      }
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
                           ),
+                        ),
+                        SizedBox(
+                          height: 20,
                         ),
                       ],
                     ),

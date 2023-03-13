@@ -1,5 +1,6 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:bc_app/models/user.dart';
 import 'package:bc_app/providers/authProvider.dart';
 import 'package:bc_app/providers/userProvider.dart';
 import 'package:bc_app/views/_admin/home/homePage_admin.dart';
@@ -22,7 +23,6 @@ class _ListSellersAdminState extends State<ListSellersAdmin> {
 
   @override
   void initState() {
-    
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       int idRole =
@@ -68,6 +68,10 @@ class _ListSellersAdminState extends State<ListSellersAdmin> {
   Widget build(BuildContext context) {
     var userProvider = Provider.of<UserProvider>(context, listen: true);
     var authProvider = Provider.of<AuthProvider>(context, listen: true);
+    // List<User> userProvider.sellers =
+    //     userProvider.sellers.where((item) => item.idrole != 0).toList();
+    // List<User> userProvider.sellers =
+    //     userProvider.sellers.where((item) => item.idrole != 1).toList();
     return userProvider.busy
         ? Center(child: CircularProgressIndicator())
         : Scaffold(
@@ -83,9 +87,7 @@ class _ListSellersAdminState extends State<ListSellersAdmin> {
                   Row(
                     children: [
                       Container(
-                        width: authProvider.currentUsr.idrole == 0
-                            ? MediaQuery.of(context).size.width * 0.65
-                            : MediaQuery.of(context).size.width * 0.75,
+                        width: MediaQuery.of(context).size.width * 0.75,
                         decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10)),
@@ -126,28 +128,28 @@ class _ListSellersAdminState extends State<ListSellersAdmin> {
                               },
                             )
                           : SizedBox(),
-                      GestureDetector(
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: Container(
-                              width: 35,
-                              height: 35,
-                              decoration: BoxDecoration(
-                                  color: Color(0xFF2C7DBF),
-                                  borderRadius: BorderRadius.circular(30)),
-                              child: Icon(Icons.drive_folder_upload,
-                                  color: Colors.white)),
-                        ),
-                        onTap: () {
-                          Navigator.of(context).pushNamed('upload-csv');
-                        },
-                      )
+                      // GestureDetector(
+                      //   child: Padding(
+                      //     padding: const EdgeInsets.only(left: 8.0),
+                      //     child: Container(
+                      //         width: 35,
+                      //         height: 35,
+                      //         decoration: BoxDecoration(
+                      //             color: Color(0xFF2C7DBF),
+                      //             borderRadius: BorderRadius.circular(30)),
+                      //         child: Icon(Icons.drive_folder_upload,
+                      //             color: Colors.white)),
+                      //   ),
+                      //   onTap: () {
+                      //     Navigator.of(context).pushNamed('upload-csv');
+                      //   },
+                      // )
                     ],
                   ),
                   Expanded(
                     child: SmartRefresher(
                       enablePullDown: true,
-                      enablePullUp: true,
+                      enablePullUp: false,
                       header: MaterialClassicHeader(),
                       controller: _refreshController,
                       onLoading: hasMoreData
@@ -160,7 +162,7 @@ class _ListSellersAdminState extends State<ListSellersAdmin> {
                       /// sellers list
                       child: ListView.builder(
                         physics: const BouncingScrollPhysics(),
-                        itemCount: userProvider.myIndex,
+                        itemCount: userProvider.sellers.length,
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           ///super admin
@@ -181,7 +183,8 @@ class _ListSellersAdminState extends State<ListSellersAdmin> {
                                     title: Text(
                                       '${userProvider.sellers[index].firstName} ${userProvider.sellers[index].lastName}',
                                       style: TextStyle(
-                                          fontWeight: FontWeight.bold),
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                     subtitle: Row(
                                       children: [
@@ -407,7 +410,7 @@ class _ListSellersAdminState extends State<ListSellersAdmin> {
                                           fontWeight: FontWeight.bold),
                                     ),
                                     subtitle: Text(
-                                        '${userProvider.sellers[index].idvendor}'),
+                                        '${userProvider.sellers[index].code}'),
                                     trailing: userProvider
                                                 .sellers[index].userName !=
                                             ""
@@ -580,8 +583,8 @@ class _ListSellersAdminState extends State<ListSellersAdmin> {
                                   '${userProvider.sellers[index].firstName} ${userProvider.sellers[index].lastName}',
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
-                                subtitle: Text(
-                                    '${userProvider.sellers[index].idvendor}'),
+                                subtitle:
+                                    Text('${userProvider.sellers[index].code}'),
                                 onTap: () {
                                   userProvider.busy = true;
                                   Navigator.of(context).push(

@@ -30,54 +30,64 @@ class _SliderVerticalWidgetState extends State<SliderVerticalWidget> {
       ),
       child: Container(
         width: MediaQuery.of(context).size.width * 0.2,
-        height: MediaQuery.of(context).size.height / 3,
+        height: MediaQuery.of(context).size.height / 2.6,
         child: Column(
           children: [
+            Padding(
+              padding: EdgeInsets.only(
+                left: 3.0,
+                right: 3.0,
+                top: 8.0,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    '${widget.turnover.round()}',
+                    textAlign: TextAlign.center,
+                    softWrap: true,
+                    style: TextStyle(
+                      color: Color(0xFF2C7DBF),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                  Text(
+                    'درهم',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Color(0xFF2C7DBF),
+                      fontSize: 12.5,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                ],
+              ),
+            ),
             Expanded(
               child: Stack(
                 alignment: AlignmentDirectional.center,
                 children: [
-                  RotatedBox(
-                    quarterTurns: 3,
-                    child: Slider(
-                      value: widget.turnover,
-                      activeColor: Color(0xFF2C7DBF),
-                      inactiveColor: Color(0xFFBEE1FF),
-                      min: min,
-                      max: max,
-                      divisions: 20,
-                      label: widget.turnover.round().toString(),
-                      onChanged: (double newValue) {},
+                  ClipRRect(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(6),
+                      topRight: Radius.circular(6),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 3.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          '${widget.turnover.round()}',
-                          textAlign: TextAlign.center,
-                          softWrap: true,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15,
-                          ),
-                        ),
-                        Text(
-                          'Dhs',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12.5,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                      ],
+                    child: RotatedBox(
+                      quarterTurns: 3,
+                      child: Slider(
+                        value: widget.turnover,
+                        activeColor: Color(0xFF2C7DBF),
+                        inactiveColor: Color(0xFFBEE1FF),
+                        min: min,
+                        max: max,
+                        divisions: 30,
+                        label: widget.turnover.round().toString(),
+                        onChanged: (double newValue) {},
+                      ),
                     ),
                   ),
                 ],

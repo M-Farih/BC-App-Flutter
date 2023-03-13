@@ -1,15 +1,14 @@
 import 'dart:convert';
 
-import 'package:bc_app/models/ca.dart';
 import 'package:bc_app/models/caFamille.dart';
 import 'package:bc_app/services/CaFamilleService.dart';
-import 'package:bc_app/services/caService.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class CaFamilleProvider extends ChangeNotifier {
   bool isBusy = true;
   CAFamilleService _caFamilleService = CAFamilleService();
+  // ignore: deprecated_member_use
   List<CAFamille> _caFamille = List();
   List<CAFamille> get caFamille => _caFamille;
 
@@ -22,7 +21,6 @@ class CaFamilleProvider extends ChangeNotifier {
       data['data'].forEach((u) => _caFamille.add(CAFamille.fromJson(u)));
       isBusy = false;
       notifyListeners();
-      print(response.body);
     }
     return _caFamille;
   }

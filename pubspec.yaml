@@ -60,8 +60,8 @@ dependencies:
 
 
 flutter_native_splash:
-  color: "#2C7DBF"
-  image: "assets/images/splash.png"
+  color: "#ffffff"
+  image: "assets/images/logo3d.png"
 
 
 

@@ -52,10 +52,11 @@ class TextLinesCard extends StatelessWidget {
                       flex: 1,
                       child: Text(
                         value.isEmpty ? '----------------------' : value,
+                        textAlign: TextAlign.left,
                         style: TextStyle(
                           color: valueTextColor,
                         ),
-                        textDirection: TextDirection.ltr,
+                        textDirection: TextDirection.rtl,
                         overflow: TextOverflow.fade,
                         maxLines: 1,
                         softWrap: false,

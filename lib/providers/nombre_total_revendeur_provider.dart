@@ -5,8 +5,7 @@ import 'package:bc_app/services/NombreTotalRevendeurService.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
-class NombreTotalRevendeurProvider extends ChangeNotifier{
-
+class NombreTotalRevendeurProvider extends ChangeNotifier {
   bool isBusy = false;
   List<SellersCount> _sellersCount = List();
   String count = '0';
@@ -15,14 +14,15 @@ class NombreTotalRevendeurProvider extends ChangeNotifier{
 
   List<SellersCount> get sellersCount => _sellersCount;
 
-  NombreTotalRevendeurService _nombreTotalRevendeurService = NombreTotalRevendeurService();
+  NombreTotalRevendeurService _nombreTotalRevendeurService =
+      NombreTotalRevendeurService();
 
-
-  Future<List<SellersCount>> getStatisticsByCity() async{
+  Future<List<SellersCount>> getStatisticsByCity(int agentIduser) async {
     isBusy = true;
     notifyListeners();
-    var response = await _nombreTotalRevendeurService.getStatisticsByCity();
-    if(response.statusCode == 200){
+    var response =
+        await _nombreTotalRevendeurService.getStatisticsByCity(agentIduser);
+    if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
       _sellersCount.clear();
       data['data'].forEach((s) => _sellersCount.add(SellersCount.fromJson(s)));
@@ -30,14 +30,15 @@ class NombreTotalRevendeurProvider extends ChangeNotifier{
       isBusy = false;
       notifyListeners();
     }
+
     return _sellersCount;
   }
 
-  Future<int> getSellersCount() async{
+  Future<int> getSellersCount() async {
     isBusy = true;
     notifyListeners();
     var response = await _nombreTotalRevendeurService.getSellersCount();
-    if(response.statusCode == 200){
+    if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
 
       sellersTotalCount = data['count'];
@@ -47,11 +48,10 @@ class NombreTotalRevendeurProvider extends ChangeNotifier{
     return sellersTotalCount;
   }
 
-  getCitycount(int index){
+  getCitycount(int index) {
     count = _sellersCount[index].count;
     selectedCity = index;
     print('city ${_sellersCount[index]}');
     notifyListeners();
   }
-
 }

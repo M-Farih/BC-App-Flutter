@@ -142,6 +142,7 @@ class AuthProvider extends BaseProvider {
       _tempUser.agentIduser,
       _tempUser.agentName,
       _tempUser.idrole,
+      _tempUser.code,
       profileImage,
       _tempUser.agentPhone,
       _tempUser.firstConnection,

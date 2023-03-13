@@ -24,7 +24,7 @@ class _Dashboard_adminState extends State<Dashboard_admin> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<NombreTotalRevendeurProvider>(context, listen: false)
-          .getStatisticsByCity();
+          .getStatisticsByCity(null);
       Provider.of<NombreTotalRevendeurProvider>(context, listen: false)
           .getSellersCount();
 

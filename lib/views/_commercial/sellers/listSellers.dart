@@ -95,10 +95,11 @@ class _ListSellersState extends State<ListSellers> {
                       ),
                     ),
                   ),
+                  Text(userProvider.sellers.length.toString()),
                   Expanded(
                     child: SmartRefresher(
                       enablePullDown: true,
-                      enablePullUp: true,
+                      enablePullUp: false,
                       header: MaterialClassicHeader(),
                       controller: _refreshController,
                       onLoading: hasMoreData
@@ -116,21 +117,27 @@ class _ListSellersState extends State<ListSellers> {
                             decoration: BoxDecoration(
                               border: Border(
                                 bottom: BorderSide(
-                                    width: 0.5, color: Color(0xFFCBCBCB)),
+                                  width: 0.5,
+                                  color: Color(0xFFCBCBCB),
+                                ),
                               ),
                             ),
                             child: ListTile(
                               leading: CircleAvatar(
                                 backgroundColor: Colors.transparent,
                                 backgroundImage: NetworkImage(
-                                    '${userProvider.sellers[index].profileImage != "" ? userProvider.sellers[index].profileImage.replaceAll('"', '') : "https://ui-avatars.com/api/?background=FFFFF&color=2C7DBF&name=${userProvider.sellers[index].firstName}+${userProvider.sellers[index].lastName}"}'),
+                                  '${userProvider.sellers[index].profileImage != "" ? userProvider.sellers[index].profileImage.replaceAll('"', '') : "https://ui-avatars.com/api/?background=FFFFF&color=2C7DBF&name=${userProvider.sellers[index].firstName}+${userProvider.sellers[index].lastName}"}',
+                                ),
                               ),
                               title: Text(
                                 '${userProvider.sellers[index].firstName} ${userProvider.sellers[index].lastName}',
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                               subtitle: Text(
-                                  '${userProvider.sellers[index].idvendor}'),
+                                '${userProvider.sellers[index].idvendor}',
+                              ),
                               trailing: userProvider.sellers[index].userName !=
                                       ""
                                   ? Container(
@@ -143,12 +150,16 @@ class _ListSellersState extends State<ListSellers> {
                                           userProvider.sellers[index]
                                                       .firstConnection ==
                                                   "0"
-                                              ? Icon(Icons.account_circle,
+                                              ? Icon(
+                                                  Icons.account_circle,
                                                   color: Colors.blue
-                                                      .withOpacity(0.3))
-                                              : Icon(Icons.account_circle,
+                                                      .withOpacity(0.3),
+                                                )
+                                              : Icon(
+                                                  Icons.account_circle,
                                                   color: Colors.green
-                                                      .withOpacity(0.3))
+                                                      .withOpacity(0.3),
+                                                )
                                         ],
                                       ),
                                     )
@@ -169,6 +180,7 @@ class _ListSellersState extends State<ListSellers> {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => SellerDetails(
                                         id: userProvider.sellers[index].iduser,
+                                        idvendor: userProvider.sellers[index].idvendor,
                                         phoneNumber: userProvider
                                             .sellers[index].telephone,
                                         mail: userProvider.sellers[index].email,

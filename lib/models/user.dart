@@ -13,6 +13,7 @@ class User {
       agentName,
       profileImage,
       agentPhone,
+      code,
       firstConnection;
 
   User(
@@ -34,6 +35,7 @@ class User {
     this.idrole,
     this.profileImage,
     this.agentPhone,
+    this.code,
     this.firstConnection,
   );
 
@@ -56,6 +58,7 @@ class User {
         'idrole': idrole,
         'profileImage': profileImage,
         'agentPhone': agentPhone,
+        'code': code,
         'firstConnection': firstConnection,
       };
 
@@ -78,5 +81,6 @@ class User {
         idrole = json['idrole'],
         profileImage = json['profileImage'],
         agentPhone = json['agentPhone'],
+        code = json['code'],
         firstConnection = json['firstConnection'];
 }
