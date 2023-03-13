@@ -22,7 +22,6 @@ class PromotionAdd extends StatefulWidget {
 class _PromotionAddState extends State<PromotionAdd> {
   @override
   void initState() {
-    
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<PromotionProvider>(context, listen: false).getPromotions();
@@ -533,6 +532,39 @@ class _PromotionAddState extends State<PromotionAdd> {
                                               .replaceAll('"', '')
                                               .trim(),
                                           fit: BoxFit.cover,
+                                          errorBuilder: (BuildContext context,
+                                              Object exception,
+                                              StackTrace stackTrace) {
+                                            return const Center(
+                                              child: SizedBox(
+                                                width: 20,
+                                                height: 20,
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  strokeWidth: 2.0,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          loadingBuilder: (BuildContext context,
+                                              Widget child,
+                                              ImageChunkEvent loadingProgress) {
+                                            if (loadingProgress == null) {
+                                              return child;
+                                            }
+                                            return Center(
+                                              child: CircularProgressIndicator(
+                                                value: loadingProgress
+                                                            .expectedTotalBytes !=
+                                                        null
+                                                    ? loadingProgress
+                                                            .cumulativeBytesLoaded /
+                                                        loadingProgress
+                                                            .expectedTotalBytes
+                                                    : null,
+                                              ),
+                                            );
+                                          },
                                         ),
                                       ),
                                     ),

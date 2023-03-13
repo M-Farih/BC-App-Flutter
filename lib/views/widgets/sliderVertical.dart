@@ -84,7 +84,7 @@ class _SliderVerticalWidgetState extends State<SliderVerticalWidget> {
                         inactiveColor: Color(0xFFBEE1FF),
                         min: min,
                         max: max,
-                        divisions: 30,
+                        divisions: 40,
                         label: widget.turnover.round().toString(),
                         onChanged: (double newValue) {},
                       ),
@@ -94,25 +94,26 @@ class _SliderVerticalWidgetState extends State<SliderVerticalWidget> {
               ),
             ),
             Container(
-                width: 75.0,
-                height: 75.0,
-                decoration: BoxDecoration(color: Colors.white),
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        '${widget.imgUrl}',
-                        fit: BoxFit.fill,
-                        height: 50,
-                      ),
-                      Text(
-                        '${widget.title}',
-                        style: TextStyle(fontSize: 12),
-                      )
-                    ],
-                  ),
-                ))
+              width: 75.0,
+              height: 75.0,
+              decoration: BoxDecoration(color: Colors.white),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      '${widget.imgUrl}',
+                      fit: BoxFit.fill,
+                      height: 50,
+                    ),
+                    Text(
+                      '${widget.title}',
+                      style: TextStyle(fontSize: 12),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
         decoration: BoxDecoration(

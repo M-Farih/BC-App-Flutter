@@ -46,7 +46,7 @@ class _ProductDetailState extends State<ProductDetail> {
                       Icon(Icons.arrow_back, size: 17),
                       Text(
                         authProvider.currentUsr.idrole == 3
-                            ? 'المنتوجات'
+                            ? 'المنتجات'
                             : 'Produits',
                         style: TextStyle(fontSize: 17),
                       )
@@ -56,17 +56,21 @@ class _ProductDetailState extends State<ProductDetail> {
               ),
               SizedBox(height: 20.0),
               GestureDetector(
-                child: Container(
-                  width: double.infinity,
-                  height: 160,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: NetworkImage("${widget.assetPath}"),
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                  child: Text('') /* add child content here */,
-                ),
+                child: widget.assetPath == null
+                    ? CircularProgressIndicator()
+                    : Container(
+                        width: double.infinity,
+                        height: 160,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: NetworkImage(
+                              "${widget.assetPath}",
+                            ),
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                        child: Text('') /* add child content here */,
+                      ),
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) =>

@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Dashboard_revendeur extends StatefulWidget {
   @override
@@ -21,7 +22,6 @@ class _Dashboard_revendeurState extends State<Dashboard_revendeur> {
   @override
   void initState() {
     super.initState();
-
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<RistourneProvider>(context, listen: false)
           .getRistourneImage();
@@ -34,6 +34,22 @@ class _Dashboard_revendeurState extends State<Dashboard_revendeur> {
       Provider.of<CaFamilleProvider>(context, listen: false)
           .getCAFamille(idvendor);
     });
+  }
+
+  showPDFDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: SizedBox(
+            height: 300,
+            // child: SfPdfViewer.asset(
+            //   "assets/pdf.pdf",
+            // ),
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -274,15 +290,19 @@ class _Dashboard_revendeurState extends State<Dashboard_revendeur> {
                                                       Color(0xFF7ad1ca),
                                                   linesData: [
                                                     {
-                                                      'الاسم الكامل للبائع':
-                                                          (authProvider
+                                                      'الاسم الكامل للبائع': (authProvider
+                                                                  .currentUsr
+                                                                  .firstName +
+                                                              (authProvider
                                                                       .currentUsr
-                                                                      .firstName +
-                                                                  ' ' +
-                                                                  authProvider
-                                                                      .currentUsr
-                                                                      .lastName) ??
-                                                              "-----------"
+                                                                      .firstName
+                                                                      .isEmpty
+                                                                  ? ''
+                                                                  : ' ') +
+                                                              authProvider
+                                                                  .currentUsr
+                                                                  .lastName) ??
+                                                          "-----------"
                                                     },
                                                     {
                                                       'مندوب مبيعاتي':
@@ -325,7 +345,8 @@ class _Dashboard_revendeurState extends State<Dashboard_revendeur> {
                                                               .first
                                                               .notation
                                                               .toString() ??
-                                                          "-----------"
+                                                          "-----------",
+                                                      'isRTL': false,
                                                     },
                                                     {
                                                       'الرصيد': noteProvider
@@ -447,6 +468,22 @@ class _Dashboard_revendeurState extends State<Dashboard_revendeur> {
                     ),
                   ),
                 ),
+      floatingActionButton: FloatingActionButton(
+        foregroundColor: Colors.white,
+        backgroundColor: Color(0xFF2C7DBF),
+        onPressed: () async {
+          String url =
+              "https://apps.who.int/iris/bitstream/handle/10665/205234/9789242500196_software_fre.pdf";
+          if (await canLaunch(url)) {
+            await launch(url);
+          } else {
+            throw 'Could not launch the guide file';
+          }
+        },
+        child: Icon(
+          Icons.my_library_books_rounded,
+        ),
+      ),
     );
   }
 }

@@ -163,11 +163,13 @@ class _ReclamationState extends State<ReclamationPage> {
 
                           ///dropdown
                           Container(
-                            height: 40.0,
+                            height: 60.0,
                             width: MediaQuery.of(context).size.width - 40.0,
+                            alignment: Alignment.center,
                             decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10.0)),
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -179,8 +181,9 @@ class _ReclamationState extends State<ReclamationPage> {
                                     child: DropdownButtonFormField(
                                       decoration: InputDecoration.collapsed(
                                           hintText: ''),
-                                      validator: (value) =>
-                                          value == null ? '' : null,
+                                      validator: (value) => value == null
+                                          ? 'المرجو اختيار سبب من الأسباب'
+                                          : null,
                                       isExpanded: true,
                                       hint: Padding(
                                         padding:
@@ -250,8 +253,8 @@ class _ReclamationState extends State<ReclamationPage> {
                                     textDirection: TextDirection.rtl,
                                     child: TextFormField(
                                       validator: (v) {
-                                        if (v.isEmpty) {
-                                          return 'المرجو ادخال الرسالة';
+                                        if (v.isEmpty && audio == '') {
+                                          return 'المرجو ادخال الرسالة أو تسجيل مقطع صوتي';
                                         } else {
                                           return null;
                                         }
@@ -451,21 +454,23 @@ class _ReclamationState extends State<ReclamationPage> {
                                 ),
                                 GestureDetector(
                                   child: Container(
-                                      height: 40,
-                                      width: 120,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(40),
-                                          color: widget.idtype_reason == 2
-                                              ? Color(0xFFF67B97)
-                                              : Color(0xFFFC8F6E)),
-                                      child: Center(
-                                          child: Text('إرسال',
-                                              style: TextStyle(
-                                                  color: Color(0xFFFFFFFF),
-                                                  fontSize: 18,
-                                                  fontWeight:
-                                                      FontWeight.bold)))),
+                                    height: 40,
+                                    width: 120,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(40),
+                                        color: widget.idtype_reason == 2
+                                            ? Color(0xFFF67B97)
+                                            : Color(0xFFFC8F6E)),
+                                    child: Center(
+                                      child: Text(
+                                        'إرسال',
+                                        style: TextStyle(
+                                            color: Color(0xFFFFFFFF),
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ),
                                   onTap: () {
                                     if (_key.currentState.validate()) {
                                       _key.currentState.save();
@@ -490,8 +495,11 @@ class _ReclamationState extends State<ReclamationPage> {
                                               flushbarPosition:
                                                   FlushbarPosition.TOP,
                                               message: "لقد تم الارسال",
-                                              duration: Duration(seconds: 3),
+                                              duration: Duration(
+                                                seconds: 3,
+                                              ),
                                             )..show(context);
+                                            valueChoosen = null;
                                           });
                                         });
                                       } else {
@@ -514,6 +522,7 @@ class _ReclamationState extends State<ReclamationPage> {
                                               duration: Duration(seconds: 3),
                                             )..show(context).then((value) =>
                                                 progressDialog.hide());
+                                            valueChoosen = null;
                                           });
                                         });
                                       }

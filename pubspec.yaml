@@ -3,7 +3,7 @@ description: A new Flutter application.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 2.2.0+2
 
 environment:
-  sdk: '>=2.7.0 <3.0.0'
+  sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -29,7 +29,7 @@ dependencies:
   bubble_bottom_bar: ^1.2.0
   flutter_slidable: ^0.5.7
   flutter_speed_dial: ^3.0.5
-  sleek_circular_slider : ^2.0.0
+  sleek_circular_slider: ^2.0.0
   photo_view: ^0.12.0
   another_flushbar: ^1.10.20
   record_mp3: ^2.1.0
@@ -50,20 +50,11 @@ dependencies:
   awesome_dialog: ^2.0.0
   url_launcher: ^6.0.3
   lazy_loading_list: ^1.0.1
-  flutter_native_splash: ^0.3.0
   firebase_core: any
   firebase_messaging: any
   flutter_local_notifications: ^5.0.0+4
   pull_to_refresh: ^2.0.0
   flutter_rating_bar: ^4.0.0
-
-
-
-flutter_native_splash:
-  color: "#ffffff"
-  image: "assets/images/logo3d.png"
-
-
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -73,14 +64,11 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-
-
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -97,6 +85,7 @@ flutter:
     - assets/images/g.jpg
     - assets/images/profil.jpg
     - assets/images/logo3d.png
+    - assets/images/logo3dd.png
     - assets/images/logo-appbar.png
     - assets/images/restourne.png
     - assets/images/banquette.png
@@ -110,7 +99,6 @@ flutter:
     - assets/images/adminbc.png
     - assets/images/dummyproduct.jpg
     - assets/send.mp3
-
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

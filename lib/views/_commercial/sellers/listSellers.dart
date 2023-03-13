@@ -180,7 +180,8 @@ class _ListSellersState extends State<ListSellers> {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => SellerDetails(
                                         id: userProvider.sellers[index].iduser,
-                                        idvendor: userProvider.sellers[index].idvendor,
+                                        idvendor: userProvider
+                                            .sellers[index].idvendor,
                                         phoneNumber: userProvider
                                             .sellers[index].telephone,
                                         mail: userProvider.sellers[index].email,

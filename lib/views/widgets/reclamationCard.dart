@@ -39,7 +39,6 @@ class _ReclamationCardState extends State<ReclamationCard> {
 
   @override
   void initState() {
-    
     super.initState();
 
     switch (widget.status) {
@@ -64,94 +63,101 @@ class _ReclamationCardState extends State<ReclamationCard> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2.0),
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: 90,
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(10.0)),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('$statusName',
-                          style: widget.status == 0
-                              ? TextStyle(color: Colors.blue)
-                              : widget.status == 1
-                                  ? TextStyle(color: Colors.green)
-                                  : TextStyle(color: Colors.red)),
-                      Expanded(
-                        child: Text(
-                          '${widget.topic}',
-                          textDirection: TextDirection.rtl,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2.0),
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: 90,
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(10.0)),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('$statusName',
+                        style: widget.status == 0
+                            ? TextStyle(color: Colors.blue)
+                            : widget.status == 1
+                                ? TextStyle(color: Colors.green)
+                                : TextStyle(color: Colors.red)),
+                    Expanded(
+                      child: Text(
+                        '${widget.topic}',
+                        textDirection: TextDirection.rtl,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 14),
+                      child: Text(
+                        '${widget.dateToShow.substring(0, widget.dateToShow.length - 3)}',
+                        style: TextStyle(
+                          color: Colors.black54,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      child: Row(
+                        children: [
+                          Text(
+                            '${widget.message}',
+                            textDirection: TextDirection.rtl,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(color: Colors.black45),
                           ),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                        ),
+                        ],
+                        mainAxisAlignment: MainAxisAlignment.end,
                       ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 14),
-                        child: Text(
-                          '${widget.dateToShow.substring(0,16)}',
-                          style: TextStyle(color: Colors.black54),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Flexible(
-                        child: Row(
-                          children: [
-                            Text(
-                              '${widget.message}',
-                              textDirection: TextDirection.rtl,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(color: Colors.black45),
-                            ),
-                          ],
-                          mainAxisAlignment: MainAxisAlignment.end,
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
+                    ),
+                  ],
+                )
+              ],
             ),
           ),
         ),
-        onTap: () {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => ReclamationDetails(
-                    img: widget.image,
-                    phone: widget.phone,
-                    topic: widget.topic,
-                    reason: widget.reason,
-                    rec_id: widget.rec_id,
-                    Message: widget.message,
-                    status: widget.status,
-                    date: widget.date,
-                    record: widget.record,
-                    sellerName: widget.username,
-                    isReclamation: widget.reason == 2 ? true : false,
-                    code: widget.code,
-                    agentName: widget.agentName,
-                  )));
-        });
+      ),
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => ReclamationDetails(
+              img: widget.image,
+              phone: widget.phone,
+              topic: widget.topic,
+              reason: widget.reason,
+              rec_id: widget.rec_id,
+              Message: widget.message,
+              status: widget.status,
+              date: widget.date,
+              record: widget.record,
+              sellerName: widget.username,
+              // ignore: unrelated_type_equality_checks
+              isReclamation: widget.reason == 2 ? true : false,
+              code: widget.code,
+              agentName: widget.agentName,
+            ),
+          ),
+        );
+      },
+    );
   }
 }

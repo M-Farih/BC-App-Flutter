@@ -31,7 +31,6 @@ class _HomePage_RevendeurState extends State<HomePage_Revendeur> {
 
   @override
   void initState() {
-    
     super.initState();
 
     if (widget.index != null) {
@@ -105,7 +104,7 @@ class _HomePage_RevendeurState extends State<HomePage_Revendeur> {
                       color: Color(0xff2C7DBF),
                     ),
                     title: Text(
-                      "المنتوجات",
+                      "المنتجات",
                       textDirection: TextDirection.rtl,
                     ),
                   ),

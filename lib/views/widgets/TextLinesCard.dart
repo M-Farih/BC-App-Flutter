@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class TextLinesCard extends StatelessWidget {
-  final List<Map<String, String>> linesData;
+  final List<Map<String, dynamic>> linesData;
   final Color backgroundColor, titleTextColor, valueTextColor;
 
   TextLinesCard({
@@ -42,6 +42,7 @@ class TextLinesCard extends StatelessWidget {
             final lineData = entry.value;
             final title = lineData.keys.first;
             final value = lineData.values.first;
+            final isRTL = lineData['isRTL'] ?? true;
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -56,7 +57,8 @@ class TextLinesCard extends StatelessWidget {
                         style: TextStyle(
                           color: valueTextColor,
                         ),
-                        textDirection: TextDirection.rtl,
+                        textDirection:
+                            isRTL ? TextDirection.rtl : TextDirection.ltr,
                         overflow: TextOverflow.fade,
                         maxLines: 1,
                         softWrap: false,

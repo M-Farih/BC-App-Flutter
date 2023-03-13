@@ -71,7 +71,6 @@ class _ProductAddState extends State<ProductAdd> {
 
   @override
   void initState() {
-    
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       int role_id = await Provider.of<AuthProvider>(context, listen: false)
@@ -170,7 +169,48 @@ class _ProductAddState extends State<ProductAdd> {
                                       child: _image == null
                                           ? Center(
                                               child: !widget.isAdd
-                                                  ? Image.network(widget.image)
+                                                  ? Image.network(
+                                                      widget.image,
+                                                      errorBuilder:
+                                                          (BuildContext context,
+                                                              Object exception,
+                                                              StackTrace
+                                                                  stackTrace) {
+                                                        return const Center(
+                                                          child: SizedBox(
+                                                            width: 20,
+                                                            height: 20,
+                                                            child:
+                                                                CircularProgressIndicator(
+                                                              strokeWidth: 2.0,
+                                                            ),
+                                                          ),
+                                                        );
+                                                      },
+                                                      loadingBuilder: (BuildContext
+                                                              context,
+                                                          Widget child,
+                                                          ImageChunkEvent
+                                                              loadingProgress) {
+                                                        if (loadingProgress ==
+                                                            null) {
+                                                          return child;
+                                                        }
+                                                        return Center(
+                                                          child:
+                                                              CircularProgressIndicator(
+                                                            value: loadingProgress
+                                                                        .expectedTotalBytes !=
+                                                                    null
+                                                                ? loadingProgress
+                                                                        .cumulativeBytesLoaded /
+                                                                    loadingProgress
+                                                                        .expectedTotalBytes
+                                                                : null,
+                                                          ),
+                                                        );
+                                                      },
+                                                    )
                                                   : Text('Ajouter une image'))
                                           : Image.file(
                                               _image,
@@ -287,15 +327,14 @@ class _ProductAddState extends State<ProductAdd> {
                                         _image.path,
                                         _value.toString())
                                     .whenComplete(() {
-                                      image = "";
+                                  image = "";
                                   progressDialog.hide();
                                   nomController.text = "";
                                   descriptionController.text = "";
                                 }).whenComplete(() {
                                   _confirmation(context);
                                 });
-                              }
-                              else {
+                              } else {
                                 if (imageChosen) {
                                   productProvider
                                       .updateProduct(

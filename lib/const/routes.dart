@@ -13,13 +13,16 @@ import 'package:bc_app/views/home/homePage.dart';
 import 'package:bc_app/views/product/productAdd.dart';
 import 'package:bc_app/views/product/promotionAdd.dart';
 import 'package:bc_app/views/revendeur/beASeller.dart';
+import 'package:bc_app/views/splash.dart';
 import 'package:flutter/material.dart';
 
-const String initialRoute = "home";
+const String initialRoute = "splash";
 
 class Routes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
+      case 'splash':
+        return MaterialPageRoute(builder: (_) => SplashPage());
       case 'home':
         return MaterialPageRoute(builder: (_) => HomePage());
       case 'home-admin':

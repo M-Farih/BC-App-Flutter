@@ -117,102 +117,97 @@ class _ProductCategoriesState extends State<ProductCategories> {
                           ),
                         ),
                         // promoProvider.promotions.length > 0
-                        //     ? 
-                            Visibility(
-                                visible: authProvider.currentUsr.idrole == 3
-                                    ? false
-                                    : true,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    //btn
-                                    Row(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              20, 20, 5, 20),
-                                          child: Text(
-                                            promoProvider.promotions.length > 0
-                                                ? 'Promos'
-                                                : 'Nos Promos',
-                                            style: TextStyle(
-                                                fontSize: 20.0,
-                                                fontWeight: FontWeight.bold),
-                                            textDirection: TextDirection.rtl,
-                                          ),
-                                        ),
-                                        authProvider.currentUsr.idrole == 1
-                                            ? Row(
-                                                children: [
-                                                  SizedBox(width: 10),
-                                                  GestureDetector(
-                                                    child: Icon(Icons.add,
-                                                        color:
-                                                            Color(0xff2C7DBF),
-                                                        size: 22),
-                                                    onTap: () {
-                                                      Navigator.of(context).push(
-                                                          MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  PromotionAdd()));
-                                                    },
-                                                  ),
-                                                ],
-                                              )
-                                            : authProvider.currentUsr.idrole ==
-                                                    0
-                                                ? Row(
-                                                    children: [
-                                                      SizedBox(width: 10),
-                                                      GestureDetector(
-                                                        child: Icon(Icons.add,
-                                                            color: Color(
-                                                                0xff2C7DBF),
-                                                            size: 22),
-                                                        onTap: () {
-                                                          Navigator.of(context).push(
-                                                              MaterialPageRoute(
-                                                                  builder:
-                                                                      (context) =>
-                                                                          PromotionAdd()));
-                                                        },
-                                                      ),
-                                                    ],
-                                                  )
-                                                : SizedBox(),
-                                      ],
+                        //     ?
+                        Visibility(
+                          visible: authProvider.currentUsr.idrole == 3
+                              ? false
+                              : true,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              //btn
+                              Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        20, 20, 5, 20),
+                                    child: Text(
+                                      promoProvider.promotions.length > 0
+                                          ? 'Promos'
+                                          : 'Nos Promos',
+                                      style: TextStyle(
+                                          fontSize: 20.0,
+                                          fontWeight: FontWeight.bold),
+                                      textDirection: TextDirection.rtl,
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(20.0),
-                                      child: ElevatedButton.icon(
-                                        style: ElevatedButton.styleFrom(
-                                          primary: Color(0xff2C7DBF),
-                                        ),
-                                        onPressed: () async {
-                                          String url = promoProvider.pdfLink;
-                                          if (await canLaunch(url)) {
-                                            await launch(url);
-                                          } else {
-                                            throw 'Could not launch $url';
-                                          }
-                                        },
-                                        icon: Icon(
-                                          Icons.download_outlined,
-                                          size: 18,
-                                          color: Colors.white,
-                                        ),
-                                        label: Text(
-                                            authProvider.currentUsr.idrole == 3
-                                                ? "تحميل"
-                                                : "Télécharger"),
-                                      ),
-                                    ),
-                                  ],
+                                  ),
+                                  authProvider.currentUsr.idrole == 1
+                                      ? Row(
+                                          children: [
+                                            SizedBox(width: 10),
+                                            GestureDetector(
+                                              child: Icon(Icons.add,
+                                                  color: Color(0xff2C7DBF),
+                                                  size: 22),
+                                              onTap: () {
+                                                Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            PromotionAdd()));
+                                              },
+                                            ),
+                                          ],
+                                        )
+                                      : authProvider.currentUsr.idrole == 0
+                                          ? Row(
+                                              children: [
+                                                SizedBox(width: 10),
+                                                GestureDetector(
+                                                  child: Icon(Icons.add,
+                                                      color: Color(0xff2C7DBF),
+                                                      size: 22),
+                                                  onTap: () {
+                                                    Navigator.of(context).push(
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                PromotionAdd()));
+                                                  },
+                                                ),
+                                              ],
+                                            )
+                                          : SizedBox(),
+                                ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                child: ElevatedButton.icon(
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Color(0xff2C7DBF),
+                                  ),
+                                  onPressed: () async {
+                                    String url = promoProvider.pdfLink;
+                                    if (await canLaunch(url)) {
+                                      await launch(url);
+                                    } else {
+                                      throw 'Could not launch $url';
+                                    }
+                                  },
+                                  icon: Icon(
+                                    Icons.download_outlined,
+                                    size: 18,
+                                    color: Colors.white,
+                                  ),
+                                  label: Text(
+                                      authProvider.currentUsr.idrole == 3
+                                          ? "تحميل"
+                                          : "Télécharger"),
                                 ),
-                              )
-                            // : SizedBox()
-                            ,
+                              ),
+                            ],
+                          ),
+                        )
+                        // : SizedBox()
+                        ,
 
                         /// carousel:SizedBox(),
                         promoProvider.promotions.length > 0
@@ -404,11 +399,48 @@ class _ProductCategoriesState extends State<ProductCategories> {
                                                   .size
                                                   .width,
                                               child: Image.network(
-                                                  promoProvider
-                                                      .annonces[0].promo
-                                                      .replaceAll('"', '')
-                                                      .trim(),
-                                                  fit: BoxFit.cover),
+                                                promoProvider.annonces[0].promo
+                                                    .replaceAll('"', '')
+                                                    .trim(),
+                                                fit: BoxFit.cover,
+                                                errorBuilder:
+                                                    (BuildContext context,
+                                                        Object exception,
+                                                        StackTrace stackTrace) {
+                                                  return const Center(
+                                                    child: SizedBox(
+                                                      width: 20,
+                                                      height: 20,
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                        strokeWidth: 2.0,
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                                loadingBuilder:
+                                                    (BuildContext context,
+                                                        Widget child,
+                                                        ImageChunkEvent
+                                                            loadingProgress) {
+                                                  if (loadingProgress == null) {
+                                                    return child;
+                                                  }
+                                                  return Center(
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      value: loadingProgress
+                                                                  .expectedTotalBytes !=
+                                                              null
+                                                          ? loadingProgress
+                                                                  .cumulativeBytesLoaded /
+                                                              loadingProgress
+                                                                  .expectedTotalBytes
+                                                          : null,
+                                                    ),
+                                                  );
+                                                },
+                                              ),
                                             ),
                                             onTap: () {
                                               Navigator.of(context).push(

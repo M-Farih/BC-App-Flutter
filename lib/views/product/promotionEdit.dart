@@ -43,7 +43,6 @@ class _PromotionEditState extends State<PromotionEdit> {
   }
 
   void initState() {
-    
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<PromotionProvider>(context, listen: false).getPromotions();
@@ -91,8 +90,43 @@ class _PromotionEditState extends State<PromotionEdit> {
                                 child: _image == null
                                     ? Center(
                                         child: Image.network(
-                                          widget.promo.replaceAll('"', '').trim(),
+                                          widget.promo
+                                              .replaceAll('"', '')
+                                              .trim(),
                                           fit: BoxFit.cover,
+                                          errorBuilder: (BuildContext context,
+                                              Object exception,
+                                              StackTrace stackTrace) {
+                                            return const Center(
+                                              child: SizedBox(
+                                                width: 20,
+                                                height: 20,
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  strokeWidth: 2.0,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          loadingBuilder: (BuildContext context,
+                                              Widget child,
+                                              ImageChunkEvent loadingProgress) {
+                                            if (loadingProgress == null) {
+                                              return child;
+                                            }
+                                            return Center(
+                                              child: CircularProgressIndicator(
+                                                value: loadingProgress
+                                                            .expectedTotalBytes !=
+                                                        null
+                                                    ? loadingProgress
+                                                            .cumulativeBytesLoaded /
+                                                        loadingProgress
+                                                            .expectedTotalBytes
+                                                    : null,
+                                              ),
+                                            );
+                                          },
                                         ),
                                       )
                                     : Image.file(
@@ -103,8 +137,7 @@ class _PromotionEditState extends State<PromotionEdit> {
                               SizedBox(height: 20),
                               GestureDetector(
                                 child: Icon(Icons.photo_camera,
-                                    size: 36,
-                                    color: Colors.black54),
+                                    size: 36, color: Colors.black54),
                                 onTap: () => getImage(),
                               )
                             ],
@@ -120,7 +153,13 @@ class _PromotionEditState extends State<PromotionEdit> {
                     child: Column(
                   children: [
                     GestureDetector(
-                      child: ProfilInfoBtn(text: "Modifier", color: 0xFF2C7DBF, textColor: 0xFFFFFFFF, btnHeight: 50, btnWidth: 120,),
+                      child: ProfilInfoBtn(
+                        text: "Modifier",
+                        color: 0xFF2C7DBF,
+                        textColor: 0xFFFFFFFF,
+                        btnHeight: 50,
+                        btnWidth: 120,
+                      ),
                       onTap: () async {
                         if (_image != null) {
                           progressDialog.show();
