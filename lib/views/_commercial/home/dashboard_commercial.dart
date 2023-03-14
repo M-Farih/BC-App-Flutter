@@ -19,14 +19,17 @@ class _Dashboard_commercialState extends State<Dashboard_commercial> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Provider.of<NombreTotalRevendeurProvider>(context, listen: false)
-          .getSellersCount();
-      Provider.of<NombreTotalRevendeurProvider>(context, listen: false)
-          .getStatisticsByCity(Provider.of<AuthProvider>(context, listen: false)
-              .currentUsr
-              .idagent);
-    });
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        Provider.of<NombreTotalRevendeurProvider>(context, listen: false)
+            .getSellersCount();
+        Provider.of<NombreTotalRevendeurProvider>(context, listen: false)
+            .getStatisticsByCity(
+                Provider.of<AuthProvider>(context, listen: false)
+                    .currentUsr
+                    .idagent);
+      },
+    );
   }
 
   @override
@@ -63,27 +66,30 @@ class _Dashboard_commercialState extends State<Dashboard_commercial> {
                     ],
                   ),
                   Expanded(
-                      child: Container(
-                    decoration: BoxDecoration(
+                    child: Container(
+                      decoration: BoxDecoration(
                         color: Color(0xFFF1F4F7),
                         borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(30.0),
-                            topRight: Radius.circular(30.0))),
-                    child: Column(
-                      children: [
-                        SizedBox(height: 40.0),
-                        NombreRevendeurWidget(
-                          nbrRevendeur: nbrRevendeur,
-                          citySelected: nbrRevendeur.selectedCity,
+                          topLeft: Radius.circular(30.0),
+                          topRight: Radius.circular(30.0),
                         ),
-                        SizedBox(height: 30),
-                        RistourneWidget(
-                          isLocal: false,
-                          imageLink: ristourneProvider.image,
-                        )
-                      ],
+                      ),
+                      child: Column(
+                        children: [
+                          SizedBox(height: 40.0),
+                          NombreRevendeurWidget(
+                            nbrRevendeur: nbrRevendeur,
+                            citySelected: nbrRevendeur.selectedCity,
+                          ),
+                          SizedBox(height: 30),
+                          RistourneWidget(
+                            isLocal: false,
+                            imageLink: ristourneProvider.image,
+                          ),
+                        ],
+                      ),
                     ),
-                  ))
+                  ),
                 ],
               ),
             ),

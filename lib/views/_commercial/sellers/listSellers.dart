@@ -95,7 +95,6 @@ class _ListSellersState extends State<ListSellers> {
                       ),
                     ),
                   ),
-                  Text(userProvider.sellers.length.toString()),
                   Expanded(
                     child: SmartRefresher(
                       enablePullDown: true,
@@ -136,7 +135,7 @@ class _ListSellersState extends State<ListSellers> {
                                 ),
                               ),
                               subtitle: Text(
-                                '${userProvider.sellers[index].idvendor}',
+                                '${userProvider.sellers[index].code}',
                               ),
                               trailing: userProvider.sellers[index].userName !=
                                       ""
@@ -182,6 +181,8 @@ class _ListSellersState extends State<ListSellers> {
                                         id: userProvider.sellers[index].iduser,
                                         idvendor: userProvider
                                             .sellers[index].idvendor,
+                                        idrole:
+                                            userProvider.sellers[index].idrole,
                                         phoneNumber: userProvider
                                             .sellers[index].telephone,
                                         mail: userProvider.sellers[index].email,

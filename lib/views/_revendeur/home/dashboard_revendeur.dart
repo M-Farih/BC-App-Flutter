@@ -63,10 +63,11 @@ class _Dashboard_revendeurState extends State<Dashboard_revendeur> {
     var noteProvider = Provider.of<MyNoteProvider>(context, listen: true);
 
     Provider.of<MyNoteProvider>(context, listen: false).getMyNote(
-        authProvider.currentUsr.idvendor,
-        caProvider.ca.first.total_ca_365,
-        caProvider.ca.first.total_ca_184,
-        caProvider.ca.first.payment_deadline);
+      authProvider.currentUsr.idvendor,
+      caProvider.ca.first.total_ca_365,
+      caProvider.ca.first.total_ca_184,
+      caProvider.ca.first.payment_deadline,
+    );
 
     return Scaffold(
       //resizeToAvoidBottomInset: false,

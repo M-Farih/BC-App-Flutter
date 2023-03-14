@@ -16,18 +16,8 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 
 class SellerDetails extends StatefulWidget {
-  final int id, idvendor;
-  final String profileImg,
-      phoneNumber,
-      mail,
-      username,
-      password,
-      solde,
-      ristourne,
-      matelas,
-      banquette,
-      mousse,
-      divers;
+  final int id, idvendor, idrole;
+  final String profileImg, phoneNumber, mail, username, password;
 
   SellerDetails({
     this.id,
@@ -37,12 +27,7 @@ class SellerDetails extends StatefulWidget {
     this.mail,
     this.username,
     this.password,
-    this.solde,
-    this.ristourne,
-    this.matelas,
-    this.banquette,
-    this.mousse,
-    this.divers,
+    this.idrole,
   });
 
   @override
@@ -50,53 +35,53 @@ class SellerDetails extends StatefulWidget {
 }
 
 class _SellerDetailsState extends State<SellerDetails> {
+  String extractTwoDigitsAfterDot(String numberString) {
+    int dotIndex = numberString.indexOf(".");
+    if (dotIndex != -1 && dotIndex + 3 <= numberString.length) {
+      return numberString.substring(0, dotIndex + 3);
+    } else {
+      return numberString;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<UserProvider>(context, listen: false)
-          .getSellerById(widget.id);
-      Provider.of<CaFamilleProvider>(context, listen: false)
-          .getCAFamille(widget.idvendor);
-      Provider.of<CaProvider>(context, listen: false).getCA(widget.idvendor);
-
-      Provider.of<AuthProvider>(context, listen: false).getUserFromSP();
-      int iduser =
-          Provider.of<AuthProvider>(context, listen: false).currentUsr.iduser;
-      int idvendor =
-          Provider.of<AuthProvider>(context, listen: false).currentUsr.idvendor;
-      Provider.of<CaProvider>(context, listen: false).getCA(idvendor);
-    });
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) async {
+        Provider.of<UserProvider>(context, listen: false)
+            .getSellerById(widget.id);
+        Provider.of<CaFamilleProvider>(context, listen: false)
+            .getCAFamille(widget.idvendor);
+        Provider.of<CaProvider>(context, listen: false).getCA(widget.idvendor);
+        Provider.of<AuthProvider>(context, listen: false).getUserFromSP();
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    var userProvider = Provider.of<UserProvider>(context, listen: true);
     var authProvider = Provider.of<AuthProvider>(context, listen: true);
+    var userProvider = Provider.of<UserProvider>(context, listen: true);
     var contactProvider = Provider.of<ContactProvider>(context, listen: true);
-
     // New
+    var caProvider = Provider.of<CaProvider>(context, listen: true);
     var caFamilleProvider =
         Provider.of<CaFamilleProvider>(context, listen: true);
-    var caProvider = Provider.of<CaProvider>(context, listen: true);
-    Provider.of<MyNoteProvider>(context, listen: false).getMyNote(
-        widget.idvendor,
-        caProvider.ca.first.total_ca_365,
-        caProvider.ca.first.total_ca_184,
-        caProvider.ca.first.payment_deadline);
     var noteProvider = Provider.of<MyNoteProvider>(context, listen: true);
-
     Provider.of<MyNoteProvider>(context, listen: false).getMyNote(
-        authProvider.currentUsr.idvendor,
-        caProvider.ca.first.total_ca_365,
-        caProvider.ca.first.total_ca_184,
-        caProvider.ca.first.payment_deadline);
+      widget.idvendor,
+      caProvider.ca.first.total_ca_365,
+      caProvider.ca.first.total_ca_184,
+      caProvider.ca.first.payment_deadline,
+    );
 
     return Scaffold(
       backgroundColor: Color(0xFFF1F4F7),
       appBar: MyAppBar(
-          isSeller: userProvider.userById.idrole == 3 ? true : false,
-          roleId: userProvider.userById.idrole),
+        isSeller: userProvider.userById.idrole == 3 ? true : false,
+        roleId: userProvider.userById.idrole,
+      ),
       body: userProvider.busy
           ? Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
@@ -319,98 +304,98 @@ class _SellerDetailsState extends State<SellerDetails> {
                     productImage: 'assets/images/matelas.png',
                     familleName: 'Matelas',
                     famillePrice: caFamilleProvider
-                                .caFamille.first.total_ca_Matelas !=
-                            null
-                        ? '${caFamilleProvider.caFamille.first.total_ca_Matelas}'
-                        : '----',
+                                    .caFamille.first.total_ca_Matelas !=
+                                null &&
+                            // ignore: unrelated_type_equality_checks
+                            caFamilleProvider
+                                    .caFamille.first.total_ca_Matelas !=
+                                0
+                        ? '${extractTwoDigitsAfterDot(caFamilleProvider.caFamille.first.total_ca_Matelas)}'
+                        : '0 Dhs',
                     textColor: 0xFF2C7DBF,
                   ),
                   sellerProductStatistics(
                     productImage: 'assets/images/banquette.png',
                     familleName: 'Banquette',
                     famillePrice: caFamilleProvider
-                                .caFamille.first.total_ca_Banquette !=
-                            null
-                        ? '${caFamilleProvider.caFamille.first.total_ca_Banquette}'
-                        : '----',
+                                    .caFamille.first.total_ca_Banquette !=
+                                null &&
+                            // ignore: unrelated_type_equality_checks
+                            caFamilleProvider
+                                    .caFamille.first.total_ca_Banquette !=
+                                0
+                        ? '${extractTwoDigitsAfterDot(caFamilleProvider.caFamille.first.total_ca_Banquette)}'
+                        : '0 Dhs',
                     textColor: 0xFF84489B,
                   ),
                   sellerProductStatistics(
                     productImage: 'assets/images/mousse.png',
                     familleName: 'Mousse',
                     famillePrice: caFamilleProvider
-                                .caFamille.first.total_ca_Banquette !=
-                            null
-                        ? '${caFamilleProvider.caFamille.first.total_ca_Mousse}'
-                        : '----',
+                                    .caFamille.first.total_ca_Mousse !=
+                                null &&
+                            // ignore: unrelated_type_equality_checks
+                            caFamilleProvider.caFamille.first.total_ca_Mousse !=
+                                0
+                        ? '${extractTwoDigitsAfterDot(caFamilleProvider.caFamille.first.total_ca_Mousse)}'
+                        : '0 Dhs',
                     textColor: 0xFF81BA48,
                   ),
                   sellerProductStatistics(
                     productImage: 'assets/images/salon.png',
                     familleName: 'Salon',
                     famillePrice: caFamilleProvider
-                                .caFamille.first.total_ca_Banquette !=
-                            null
-                        ? '${caFamilleProvider.caFamille.first.total_ca_Divers}'
-                        : '----',
+                                    .caFamille.first.total_ca_Divers !=
+                                null &&
+                            // ignore: unrelated_type_equality_checks
+                            caFamilleProvider.caFamille.first.total_ca_Divers !=
+                                0
+                        ? '${extractTwoDigitsAfterDot(caFamilleProvider.caFamille.first.total_ca_Divers)}'
+                        : '0 Dhs',
                     textColor: 0xFFE32A33,
                   ),
 
                   caFamilleProvider.caFamille.first.total_ca != null
-                      ? Column(
-                          children: [
-                            double.parse(caFamilleProvider
-                                        .caFamille.first.total_ca) >=
-                                    10000.00
-                                ? TextLinesCard(
+                      ? double.parse(
+                                  caFamilleProvider.caFamille.first.total_ca) >=
+                              10000.00
+                          ? Column(
+                              children: [
+                                TextLinesCard(
                                       backgroundColor: Color(0xFF7ad1ca),
                                       linesData: [
                                         {
-                                          'الاسم الكامل للبائع':
-                                              userProvider.userById.firstName !=
-                                                          null ||
-                                                      userProvider.userById
-                                                              .lastName ==
-                                                          null
-                                                  ? (capitalize(userProvider
-                                                          .userById.firstName) +
-                                                      ' ' +
-                                                      capitalize(userProvider
-                                                          .userById.lastName))
-                                                  : "-----------"
+                                          'الاسم الكامل للبائع': (authProvider
+                                                      .currentUsr.firstName +
+                                                  (authProvider.currentUsr
+                                                          .firstName.isEmpty
+                                                      ? ''
+                                                      : ' ') +
+                                                  authProvider
+                                                      .currentUsr.lastName) ??
+                                              "-----------"
                                         },
                                         {
-                                          'مندوب مبيعاتي':
-                                              userProvider.userById.agentName !=
-                                                      null
-                                                  ? capitalize(userProvider
-                                                      .userById.agentName)
-                                                  : "-----------"
+                                          'مندوب مبيعاتي': authProvider
+                                                  .currentUsr.agentName ??
+                                              "-----------"
                                         },
                                         {
                                           'المدينة':
-                                              userProvider.userById.city != null
-                                                  ? userProvider.userById.city
-                                                  : "-----------"
+                                              authProvider.currentUsr.city ??
+                                                  "-----------"
                                         },
                                         {
-                                          'تاريخ آخر شراء': caProvider.ca.first
-                                                      .lastpurchasedate !=
-                                                  null
-                                              ? caProvider
-                                                  .ca.first.lastpurchasedate
-                                              : "-- / -- / ----"
+                                          'تاريخ آخر شراء': caProvider
+                                                  .ca.first.lastpurchasedate ??
+                                              "-- / -- / ----"
                                         },
                                       ],
                                       valueTextColor: Colors.white,
                                       titleTextColor: Colors.white,
                                     ) ??
-                                    CircularProgressIndicator()
-                                : SizedBox(),
-                            double.parse(caFamilleProvider
-                                        .caFamille.first.total_ca) >=
-                                    10000.00
-                                ? TextLinesCard(
+                                    CircularProgressIndicator(),
+                                TextLinesCard(
                                       backgroundColor: Color(0xFF7ab1d1),
                                       linesData: [
                                         {
@@ -423,13 +408,15 @@ class _SellerDetailsState extends State<SellerDetails> {
                                           'التقييم': noteProvider
                                                   .myNote.first.notation
                                                   .toString() ??
-                                              "-----------"
+                                              "-----------",
+                                          'isRTL': false,
                                         },
                                         {
                                           'الرصيد': noteProvider
-                                                  .myNote.first.solde
-                                                  .toString() ??
-                                              "-----------"
+                                                      .myNote.first.solde
+                                                      .toString() +
+                                                  ' درهم' ??
+                                              "---- درهم"
                                         },
                                         {
                                           'المستحقات الغير مدفوعة': noteProvider
@@ -441,25 +428,23 @@ class _SellerDetailsState extends State<SellerDetails> {
                                       valueTextColor: Colors.white,
                                       titleTextColor: Colors.white,
                                     ) ??
-                                    CircularProgressIndicator()
-                                : SizedBox(),
-                            double.parse(caFamilleProvider
-                                        .caFamille.first.total_ca) >=
-                                    10000.00
-                                ? TextLinesCard(
+                                    CircularProgressIndicator(),
+                                TextLinesCard(
                                       backgroundColor: Color(0xFFef888d),
                                       linesData: [
                                         {
                                           'إجمالي المبيعات / السنة': caProvider
-                                                  .ca.first.total_ca_365
-                                                  .toString() ??
-                                              "-----------"
+                                                      .ca.first.total_ca_365
+                                                      .toString() +
+                                                  ' درهم' ??
+                                              "---- درهم"
                                         },
                                         {
                                           'إجمالي المبيعات / الشهر': caProvider
-                                                  .ca.first.total_ca_184
-                                                  .toString() ??
-                                              "-----------"
+                                                      .ca.first.total_ca_184
+                                                      .toString() +
+                                                  ' درهم' ??
+                                              "---- درهم"
                                         },
                                         {
                                           'مهلة الدفع': caProvider.ca.first
@@ -498,32 +483,31 @@ class _SellerDetailsState extends State<SellerDetails> {
                                       valueTextColor: Colors.white,
                                       titleTextColor: Colors.white,
                                     ) ??
-                                    CircularProgressIndicator()
-                                : SizedBox(),
-                            // TextLinesCard(
-                            //       backgroundColor:
-                            //           Color(0xFFfac759),
-                            //       linesData: [
-                            //         {
-                            //           'إجمالي المبيعات / الفئة':
-                            //               ''
-                            //         },
-                            //         {'البلاتين': '-- %'},
-                            //         {'الذهب': '-- %'},
-                            //         {'الفضة': '-- %'},
-                            //         {'أخرى': '-- %'},
-                            //       ],
-                            //       valueTextColor: Colors.white,
-                            //       titleTextColor: Colors.white,
-                            //     ) ??
-                            //     CircularProgressIndicator(),
-                            SizedBox(
-                              height: 10,
-                            ),
-                          ],
-                        )
+                                    CircularProgressIndicator(),
+                                // TextLinesCard(
+                                //       backgroundColor:
+                                //           Color(0xFFfac759),
+                                //       linesData: [
+                                //         {
+                                //           'إجمالي المبيعات / الفئة':
+                                //               ''
+                                //         },
+                                //         {'البلاتين': '-- %'},
+                                //         {'الذهب': '-- %'},
+                                //         {'الفضة': '-- %'},
+                                //         {'أخرى': '-- %'},
+                                //       ],
+                                //       valueTextColor: Colors.white,
+                                //       titleTextColor: Colors.white,
+                                //     ) ??
+                                //     CircularProgressIndicator(),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                              ],
+                            )
+                          : SizedBox()
                       : SizedBox(),
-                  // : SizedBox(),
 
                   ///btn
                   SizedBox(height: 30),

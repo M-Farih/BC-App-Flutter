@@ -23,14 +23,11 @@ class _NombreRevendeurWidgetState extends State<NombreRevendeurWidget> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<UserProvider>(context, listen: false);
-      Provider.of<AuthProvider>(context, listen: false).currentUsr;
-
+      int idagent =
+          Provider.of<AuthProvider>(context, listen: false).currentUsr.idagent;
       Provider.of<AuthProvider>(context, listen: false).getUserFromSP();
-      int idvendor =
-          Provider.of<AuthProvider>(context, listen: false).currentUsr.idvendor;
       Provider.of<UserProvider>(context, listen: false)
-          .getSellersByAgent(idvendor);
+          .getSellersByAgent(idagent);
       Provider.of<AuthProvider>(context, listen: false).getUserFromSP();
     });
   }
