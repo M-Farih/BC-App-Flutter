@@ -48,15 +48,28 @@ class MyHttpOverrides extends HttpOverrides {
 }
 
 Future<void> main() async {
+  ErrorWidget.builder = (FlutterErrorDetails details) {
+    // Return an empty container to hide the error screen
+    return Container(
+      color: Colors.white,
+      child: Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+  };
+
   /// --- disable orientation
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
   /// --- change status bar color
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle(
       statusBarBrightness: Brightness.light,
       statusBarIconBrightness: Brightness.dark,
-      statusBarColor: Color(0xff2C7DBF)));
+      statusBarColor: Color(0xffFFFFFF),
+    ),
+  );
 
   ///certif
   HttpOverrides.global = new MyHttpOverrides();
@@ -136,11 +149,12 @@ class _StartAppState extends State<StartApp> {
       }
     });
 
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      RemoteNotification notification = message.notification;
-      AndroidNotification android = message.notification?.android;
-      if (notification != null && android != null) {
-        showDialog(
+    FirebaseMessaging.onMessageOpenedApp.listen(
+      (RemoteMessage message) {
+        RemoteNotification notification = message.notification;
+        AndroidNotification android = message.notification?.android;
+        if (notification != null && android != null) {
+          showDialog(
             context: context,
             builder: (_) {
               return AlertDialog(
@@ -148,18 +162,24 @@ class _StartAppState extends State<StartApp> {
                 content: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [Text(notification.body)],
+                    children: [
+                      Text(notification.body),
+                    ],
                   ),
                 ),
               );
-            });
-      }
-    });
+            },
+          );
+        }
+      },
+    );
     FirebaseMessaging.instance.getToken();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<AuthProvider>(context, listen: false).getUserFromSP();
-    });
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) async {
+        Provider.of<AuthProvider>(context, listen: false).getUserFromSP();
+      },
+    );
   }
 
   void showNotification() {
@@ -169,11 +189,14 @@ class _StartAppState extends State<StartApp> {
       "How you doin ?",
       NotificationDetails(
         android: AndroidNotificationDetails(
-            channel.id, channel.name, channel.description,
-            importance: Importance.high,
-            color: Colors.blue,
-            playSound: true,
-            icon: '@mipmap/ic_launcher'),
+          channel.id,
+          channel.name,
+          channel.description,
+          importance: Importance.high,
+          color: Colors.blue,
+          playSound: true,
+          icon: '@mipmap/ic_launcher',
+        ),
       ),
     );
   }

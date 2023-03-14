@@ -188,6 +188,13 @@ class _ListSellersState extends State<ListSellers> {
                                         mail: userProvider.sellers[index].email,
                                         username: userProvider
                                             .sellers[index].userName,
+                                        firstName: userProvider
+                                            .sellers[index].firstName,
+                                        lastName: userProvider
+                                            .sellers[index].lastName,
+                                        agentName: userProvider
+                                            .sellers[index].agentName,
+                                        city: userProvider.sellers[index].city,
                                         password: userProvider
                                             .sellers[index].password,
                                         profileImg:

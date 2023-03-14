@@ -13,11 +13,32 @@ import 'package:provider/provider.dart';
 
 class ReclamationDetails extends StatefulWidget {
   final int rec_id, status;
-  final String Message, date, reason, img, phone, sellerName, record, topic, code, agentName;
+  final String Message,
+      date,
+      reason,
+      img,
+      phone,
+      sellerName,
+      record,
+      topic,
+      code,
+      agentName;
   final bool isReclamation;
 
   ReclamationDetails(
-      {this.rec_id, this.Message, this.status, this.date, this.reason, this.img, this.phone, this.sellerName, this.record, this.isReclamation, this.topic, this.code, this.agentName});
+      {this.rec_id,
+      this.Message,
+      this.status,
+      this.date,
+      this.reason,
+      this.img,
+      this.phone,
+      this.sellerName,
+      this.record,
+      this.isReclamation,
+      this.topic,
+      this.code,
+      this.agentName});
 
   @override
   _ReclamationDetailsState createState() => _ReclamationDetailsState();
@@ -33,7 +54,7 @@ class _ReclamationDetailsState extends State<ReclamationDetails> {
 
   bool isPlayed = false;
   int position = 0;
-  int audioDuration =0;
+  int audioDuration = 0;
 
   @override
   void initState() {
@@ -72,7 +93,8 @@ class _ReclamationDetailsState extends State<ReclamationDetails> {
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         appBar: MyAppBar(
-            isSeller: authProvider.currentUsr.idrole == 3 ? true : false, roleId: authProvider.currentUsr.idrole),
+            isSeller: authProvider.currentUsr.idrole == 3 ? true : false,
+            roleId: authProvider.currentUsr.idrole),
         body: commentProvider.isBusy
             ? Center(child: CircularProgressIndicator())
             : SingleChildScrollView(
@@ -82,145 +104,162 @@ class _ReclamationDetailsState extends State<ReclamationDetails> {
                       children: [
                         ///back btn & icon-title
                         widget.reason == "2"
-                            ?Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Center(
-                              child: Row(
+                            ? Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      authProvider.currentUsr.idrole != 3
-                                          ?Navigator.of(context).pop()
-                                          :Navigator.of(context).push(MaterialPageRoute(
-                                          builder: (context) =>HomePage_Revendeur(index: 2)
-                                      ));
-                                      },
+                                  Center(
+                                    child: Row(
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            authProvider.currentUsr.idrole != 3
+                                                ? Navigator.of(context).pop()
+                                                : Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            HomePage_Revendeur(
+                                                                index: 2)));
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(20.0),
+                                            child: Container(
+                                              width: 80,
+                                              height: 40,
+                                              color: Colors.transparent,
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  Icon(
+                                                    Icons.arrow_back,
+                                                    size: 16,
+                                                  ),
+                                                  Text(
+                                                    authProvider.currentUsr
+                                                                .idrole ==
+                                                            3
+                                                        ? 'رجوع'
+                                                        : 'Retour',
+                                                    style:
+                                                        TextStyle(fontSize: 16),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(height: 20.0),
+                                      ],
+                                    ),
+                                  ),
+                                  Center(
                                     child: Padding(
                                       padding: const EdgeInsets.all(20.0),
-                                      child: Container(
-                                        width: 80,
-                                        height: 40,
-                                        color: Colors.transparent,
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Icon(Icons.arrow_back, size: 16,),
-                                            Text(
-                                              authProvider.currentUsr.idrole == 3
-                                                  ?'رجوع'
-                                                  :'Retour',
-                                              style: TextStyle(fontSize: 16),
-                                            )
-                                          ],
-                                        ),
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            authProvider.currentUsr.idrole == 3
+                                                ? 'شكاية'
+                                                : 'Réclamation',
+                                            style: TextStyle(
+                                                color: Color(0xFFF67B97),
+                                                fontSize: 20.0),
+                                          ),
+                                          SizedBox(width: 15.0),
+                                          Container(
+                                            height: 40.0,
+                                            width: 40.0,
+                                            decoration: BoxDecoration(
+                                              color: Color(0xFFF67B97),
+                                              borderRadius:
+                                                  BorderRadius.circular(50.0),
+                                            ),
+                                            child: Icon(Icons.feedback,
+                                                color: Colors.white),
+                                          )
+                                        ],
                                       ),
                                     ),
                                   ),
-                                  SizedBox(height: 20.0),
                                 ],
-                              ),
-                            ),
-                            Center(
-                              child: Padding(
-                                padding: const EdgeInsets.all(20.0),
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      authProvider.currentUsr.idrole == 3
-                                          ?'شكاية'
-                                              :'Réclamation',
-                                      style: TextStyle(
-                                          color: Color(0xFFF67B97),
-                                          fontSize: 20.0),
-                                    ),
-                                    SizedBox(width: 15.0),
-                                    Container(
-                                      height: 40.0,
-                                      width: 40.0,
-                                      decoration: BoxDecoration(
-                                        color: Color(0xFFF67B97),
-                                        borderRadius:
-                                            BorderRadius.circular(50.0),
-                                      ),
-                                      child: Icon(Icons.feedback,
-                                          color: Colors.white),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        )
-                            :Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Center(
-                              child: Row(
+                              )
+                            : Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      Navigator.of(context).pop();
-                                    },
+                                  Center(
+                                    child: Row(
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(20.0),
+                                            child: Container(
+                                              width: 80,
+                                              height: 40,
+                                              color: Colors.transparent,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  Icon(
+                                                    Icons.arrow_back,
+                                                    size: 16,
+                                                  ),
+                                                  Text(
+                                                    authProvider.currentUsr
+                                                                .idrole ==
+                                                            3
+                                                        ? 'رجوع'
+                                                        : 'Retour',
+                                                    style:
+                                                        TextStyle(fontSize: 16),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(height: 20.0),
+                                      ],
+                                    ),
+                                  ),
+                                  Center(
                                     child: Padding(
                                       padding: const EdgeInsets.all(20.0),
-                                      child: Container(
-                                        width: 80,
-                                        height: 40,
-                                        color: Colors.transparent,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                          children: [
-                                            Icon(Icons.arrow_back, size: 16,),
-                                            Text(
-                                              authProvider.currentUsr.idrole == 3
-                                                  ?'رجوع'
-                                                  :'Retour',
-                                              style: TextStyle(fontSize: 16),
-                                            )
-                                          ],
-                                        ),
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            authProvider.currentUsr.idrole == 3
+                                                ? 'اقتراح'
+                                                : 'Suggestion',
+                                            style: TextStyle(
+                                                color: Color(0xFFFC8F6E),
+                                                fontSize: 20.0),
+                                          ),
+                                          SizedBox(width: 15.0),
+                                          Container(
+                                            height: 40.0,
+                                            width: 40.0,
+                                            decoration: BoxDecoration(
+                                              color: Color(0xFFFC8F6E),
+                                              borderRadius:
+                                                  BorderRadius.circular(50.0),
+                                            ),
+                                            child: Icon(Icons.thumb_up,
+                                                color: Colors.white),
+                                          )
+                                        ],
                                       ),
                                     ),
                                   ),
-                                  SizedBox(height: 20.0),
                                 ],
                               ),
-                            ),
-                            Center(
-                              child: Padding(
-                                padding: const EdgeInsets.all(20.0),
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      authProvider.currentUsr.idrole == 3
-                                          ?'اقتراح'
-                                          :'Suggestion',
-                                      style: TextStyle(
-                                          color: Color(0xFFFC8F6E),
-                                          fontSize: 20.0),
-                                    ),
-                                    SizedBox(width: 15.0),
-                                    Container(
-                                      height: 40.0,
-                                      width: 40.0,
-                                      decoration: BoxDecoration(
-                                        color: Color(0xFFFC8F6E),
-                                        borderRadius:
-                                        BorderRadius.circular(50.0),
-                                      ),
-                                      child: Icon(Icons.thumb_up,
-                                          color: Colors.white),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
 
                         ///Reclamation details
                         Padding(
@@ -251,11 +290,13 @@ class _ReclamationDetailsState extends State<ReclamationDetails> {
                                       children: [
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
-                                          child: CircleAvatar(backgroundImage: NetworkImage(
-                                            widget.img != ""
-                                                ?'${widget.img.replaceAll('"', '').trim()}'
-                                                :'https://ui-avatars.com/api/?background=FFFFF&color=2C7DBF&name=${widget.sellerName}'
-                                          ),),
+                                          child: CircleAvatar(
+                                            backgroundImage: NetworkImage(widget
+                                                        .img !=
+                                                    ""
+                                                ? '${widget.img.replaceAll('"', '').trim()}'
+                                                : 'https://ui-avatars.com/api/?background=FFFFF&color=2C7DBF&name=${widget.sellerName}'),
+                                          ),
                                         ),
                                         Column(
                                           crossAxisAlignment:
@@ -264,21 +305,40 @@ class _ReclamationDetailsState extends State<ReclamationDetails> {
                                             Row(
                                               children: [
                                                 Text('${widget.sellerName}'),
-                                               // Text(' (R15453)', overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 11, color: Colors.redAccent.withOpacity(0.5)),),
+                                                // Text(' (R15453)', overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 11, color: Colors.redAccent.withOpacity(0.5)),),
                                               ],
                                             ),
                                             authProvider.currentUsr.idrole == 3
-                                                ?Text('${widget.date.substring(0,16)}',
-                                                style: TextStyle(
-                                                    fontSize: 10.0,
-                                                    color: Colors.black54))
-                                                :Text('${widget.date.substring(0,16)}',
-                                                style: TextStyle(
-                                                    fontSize: 10.0,
-                                                    color: Colors.black)),
-                                            Text(widget.code, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 13, color: Colors.blue.withOpacity(0.8)),),
-                                            Text(widget.agentName, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 13, color: Colors.blue.withOpacity(0.8)),),
-
+                                                ? Text(
+                                                    '${widget.date.substring(0, widget.date.length - 3)}',
+                                                    style: TextStyle(
+                                                      fontSize: 10.0,
+                                                      color: Colors.black54,
+                                                    ),
+                                                  )
+                                                : Text(
+                                                    '${widget.date.substring(0, widget.date.length - 3)}',
+                                                    style: TextStyle(
+                                                      fontSize: 10.0,
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                            Text(
+                                              widget.code,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                  fontSize: 13,
+                                                  color: Colors.blue
+                                                      .withOpacity(0.8)),
+                                            ),
+                                            Text(
+                                              widget.agentName,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                  fontSize: 13,
+                                                  color: Colors.blue
+                                                      .withOpacity(0.8)),
+                                            ),
                                           ],
                                         )
                                       ],
@@ -323,15 +383,15 @@ class _ReclamationDetailsState extends State<ReclamationDetails> {
                                     ],
                                   ),
                                 ),
-                                Padding
-                                  (
+                                Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Row(
                                     children: [
                                       Expanded(
                                         child: Text(
                                           '${widget.Message}',
-                                          style: TextStyle(color: Colors.black45),
+                                          style:
+                                              TextStyle(color: Colors.black45),
                                           textDirection: TextDirection.rtl,
                                         ),
                                       )
@@ -339,46 +399,43 @@ class _ReclamationDetailsState extends State<ReclamationDetails> {
                                   ),
                                 ),
                                 SizedBox(height: 20.0),
+
                                 ///audio player
                                 widget.record != ""
-                                    ?Column(
-                                  children: [
-                                    Divider(color: Colors.grey),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        GestureDetector(
-                                            child: Icon(
-                                              !isPlayed
-                                                  ?Icons.play_arrow
-                                                  :Icons.pause,
-                                              size: 30.0,
-                                            ),
-                                            onTap: () {
-                                              audioController(
-                                                  !isPlayed
-                                                      ?'play'
-                                                      :'stop'
-                                              );
-                                              setState(() {
-                                                isPlayed =
-                                                !isPlayed;
-                                              });
-                                            }
-                                        ),
-                                        Slider(
-                                          max: audioDuration.toDouble(),
-                                          min: 0,
-                                          value: position.toDouble(),
-                                          onChanged: (v){},
-                                        ),
-                                        //Text('${audioDuration}'),
-                                      ],
-                                    ),
-                                  ],
-                                )
-                                    :SizedBox(),
-
+                                    ? Column(
+                                        children: [
+                                          Divider(color: Colors.grey),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              GestureDetector(
+                                                  child: Icon(
+                                                    !isPlayed
+                                                        ? Icons.play_arrow
+                                                        : Icons.pause,
+                                                    size: 30.0,
+                                                  ),
+                                                  onTap: () {
+                                                    audioController(!isPlayed
+                                                        ? 'play'
+                                                        : 'stop');
+                                                    setState(() {
+                                                      isPlayed = !isPlayed;
+                                                    });
+                                                  }),
+                                              Slider(
+                                                max: audioDuration.toDouble(),
+                                                min: 0,
+                                                value: position.toDouble(),
+                                                onChanged: (v) {},
+                                              ),
+                                              //Text('${audioDuration}'),
+                                            ],
+                                          ),
+                                        ],
+                                      )
+                                    : SizedBox(),
                               ],
                             ),
                           ),
@@ -389,254 +446,336 @@ class _ReclamationDetailsState extends State<ReclamationDetails> {
 
                         /// btn send msg & btn call
                         widget.status != 2
-                        ?Padding(
-                          padding: const EdgeInsets.only(left: 20),
-                          child: authProvider.currentUsr.idrole != 3
-                              ?Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Visibility(
-                                visible: true,
-                                child: GestureDetector(
-                                  child: ProfilInfoBtn(
-                                    text: authProvider.currentUsr.idrole == 3
-                                    ?'الرد' :'Répondre',
-                                    color: 0xFF1B7DBB,
-                                    textColor: 0xFFFFFFFF,
-                                    btnHeight: 35.0,
-                                    btnWidth: 120.0,
-                                  ),
-                                  onTap: () {
-                                    AwesomeDialog(
-                                      context: context,
-                                      customHeader: Icon(
-                                        Icons.mail_outline_rounded,
-                                        size: 55,
-                                      ),
-                                      borderSide: BorderSide(
-                                          color: Color(0xFF1B7DBB), width: 2),
-                                      width: MediaQuery.of(context).size.width,
-                                      buttonsBorderRadius:
-                                          BorderRadius.all(Radius.circular(2)),
-                                      headerAnimationLoop: false,
-                                      animType: AnimType.BOTTOMSLIDE,
-                                      title: 'INFO',
-                                      desc: 'Dialog description here...',
-                                      btnOkColor: Color(0xFF1B7DBB),
-                                      body: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Directionality(
-                                          textDirection: TextDirection.rtl,
-                                          child: TextField(
-                                            decoration: InputDecoration(
-                                              hintText: 'ادخل الرسالة',
-                                              border: null,
-                                              hintStyle: TextStyle(
-                                                fontStyle: FontStyle.italic,
+                            ? Padding(
+                                padding: const EdgeInsets.only(left: 20),
+                                child: authProvider.currentUsr.idrole != 3
+                                    ? Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Visibility(
+                                            visible: true,
+                                            child: GestureDetector(
+                                              child: ProfilInfoBtn(
+                                                text: authProvider.currentUsr
+                                                            .idrole ==
+                                                        3
+                                                    ? 'الرد'
+                                                    : 'Répondre',
+                                                color: 0xFF1B7DBB,
+                                                textColor: 0xFFFFFFFF,
+                                                btnHeight: 35.0,
+                                                btnWidth: 120.0,
+                                              ),
+                                              onTap: () {
+                                                AwesomeDialog(
+                                                  context: context,
+                                                  customHeader: Icon(
+                                                    Icons.mail_outline_rounded,
+                                                    size: 55,
+                                                  ),
+                                                  borderSide: BorderSide(
+                                                      color: Color(0xFF1B7DBB),
+                                                      width: 2),
+                                                  width: MediaQuery.of(context)
+                                                      .size
+                                                      .width,
+                                                  buttonsBorderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(2)),
+                                                  headerAnimationLoop: false,
+                                                  animType:
+                                                      AnimType.BOTTOMSLIDE,
+                                                  title: 'INFO',
+                                                  desc:
+                                                      'Dialog description here...',
+                                                  btnOkColor: Color(0xFF1B7DBB),
+                                                  body: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Directionality(
+                                                      textDirection:
+                                                          TextDirection.rtl,
+                                                      child: TextField(
+                                                        decoration:
+                                                            InputDecoration(
+                                                          hintText:
+                                                              'ادخل الرسالة',
+                                                          border: null,
+                                                          hintStyle: TextStyle(
+                                                            fontStyle: FontStyle
+                                                                .italic,
+                                                          ),
+                                                        ),
+                                                        controller:
+                                                            messageController,
+                                                        keyboardType:
+                                                            TextInputType
+                                                                .multiline,
+                                                        minLines: 1,
+                                                        //Normal textInputField will be displayed
+                                                        maxLines:
+                                                            8, // when user presses enter it will adapt to it
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  showCloseIcon: true,
+                                                  btnOkText: 'ارسال',
+                                                  btnOkOnPress: () {
+                                                    commentProvider.sendComment(
+                                                        authProvider
+                                                            .currentUsr.iduser,
+                                                        widget.rec_id,
+                                                        messageController.text,
+                                                        '${authProvider.currentUsr.firstName} ${authProvider.currentUsr.lastName}',
+                                                        authProvider.currentUsr
+                                                            .profileImage,
+                                                        context);
+                                                    topicProvider.updateTopic(
+                                                        widget.rec_id, 1);
+                                                    playSound();
+                                                    messageController.text = "";
+                                                  },
+                                                )..show();
+                                              },
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          widget.phone != ""
+                                              ? Visibility(
+                                                  visible: authProvider
+                                                              .currentUsr
+                                                              .idrole ==
+                                                          3
+                                                      ? false
+                                                      : true,
+                                                  child: GestureDetector(
+                                                    child: ProfilInfoBtn(
+                                                      text: 'Appeler',
+                                                      color: 0xFFFFFFFF,
+                                                      textColor: 0xFF1B7DBB,
+                                                      btnHeight: 35.0,
+                                                      btnWidth: 120.0,
+                                                    ),
+                                                    onTap: () {
+                                                      if (widget.phone != "") {
+                                                        contactProvider
+                                                            .call(widget.phone);
+                                                      }
+                                                    },
+                                                  ),
+                                                )
+                                              : SizedBox(),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          GestureDetector(
+                                            child: Container(
+                                              height: 35,
+                                              width: 35,
+                                              decoration: BoxDecoration(
+                                                  color: Color(0xFFF67B97),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          50)),
+                                              child: Icon(
+                                                Icons.lock,
+                                                color: Colors.white,
+                                                size: 19,
                                               ),
                                             ),
-                                            controller: messageController,
-                                            keyboardType: TextInputType.multiline,
-                                            minLines: 1,
-                                            //Normal textInputField will be displayed
-                                            maxLines:
-                                                8, // when user presses enter it will adapt to it
-                                          ),
-                                        ),
-                                      ),
-                                      showCloseIcon: true,
-                                      btnOkText: 'ارسال',
-                                      btnOkOnPress: () {
-                                        commentProvider.sendComment(
-                                            authProvider.currentUsr.iduser,
-                                            widget.rec_id,
-                                            messageController.text,
-                                            '${authProvider.currentUsr.firstName} ${authProvider.currentUsr.lastName}',
-                                            authProvider.currentUsr.profileImage,
-                                          context
-                                        );
-                                        topicProvider.updateTopic(widget.rec_id, 1);
-                                        playSound();
-                                        messageController.text = "";
-                                      },
-                                    )..show();
-                                  },
-                                ),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              widget.phone != ""
-                                  ?Visibility(
-                                visible: authProvider.currentUsr.idrole == 3 ?false :true,
-                                child: GestureDetector(
-                                  child: ProfilInfoBtn(
-                                    text: 'Appeler',
-                                    color: 0xFFFFFFFF,
-                                    textColor: 0xFF1B7DBB,
-                                    btnHeight: 35.0,
-                                    btnWidth: 120.0,
-                                  ),
-                                  onTap: (){
-                                    if(widget.phone != ""){
-                                      contactProvider.call(widget.phone);
-                                    }
-                                  },
-                                ),
-                              )
-                                  :SizedBox(),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              GestureDetector(
-                                child: Container(
-                                  height: 35,
-                                  width: 35,
-                                  decoration: BoxDecoration(
-                                    color: Color(0xFFF67B97),
-                                    borderRadius: BorderRadius.circular(50)
-                                  ),
-                                  child: Icon(Icons.lock, color: Colors.white, size: 19,),
-                                ),
-                                onTap: (){
-                                  showDialog<void>(
-                                    context: context,
-                                    barrierDismissible: false, // user must tap button!
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        content: SingleChildScrollView(
-                                          child: ListBody(
-                                            children: <Widget>[
-                                              Text('Êtes-vous sûr'),
-                                            ],
-                                          ),
-                                        ),
-                                        actions: <Widget>[
-                                          FlatButton(
-                                            child: Text('Clôturer', style: TextStyle(color: Colors.red),),
-                                            onPressed: () {
-                                              topicProvider.updateTopic(widget.rec_id, 2).then((value) => Navigator.of(context).pushReplacementNamed('home'));
+                                            onTap: () {
+                                              showDialog<void>(
+                                                context: context,
+                                                barrierDismissible:
+                                                    false, // user must tap button!
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return AlertDialog(
+                                                    content:
+                                                        SingleChildScrollView(
+                                                      child: ListBody(
+                                                        children: <Widget>[
+                                                          Text('Êtes-vous sûr'),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    actions: <Widget>[
+                                                      FlatButton(
+                                                        child: Text(
+                                                          'Clôturer',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.red),
+                                                        ),
+                                                        onPressed: () {
+                                                          topicProvider
+                                                              .updateTopic(
+                                                                  widget.rec_id,
+                                                                  2)
+                                                              .then((value) =>
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .pushReplacementNamed(
+                                                                          'home'));
+                                                        },
+                                                      ),
+                                                      FlatButton(
+                                                        child: Text('Fermer'),
+                                                        onPressed: () {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
                                             },
+                                          )
+                                        ],
+                                      )
+                                    : Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Visibility(
+                                            visible: widget.status == 1
+                                                ? true
+                                                : false,
+                                            child: GestureDetector(
+                                              child: ProfilInfoBtn(
+                                                text: authProvider.currentUsr
+                                                            .idrole ==
+                                                        3
+                                                    ? 'الرد'
+                                                    : 'Répondre',
+                                                color: 0xFF1B7DBB,
+                                                textColor: 0xFFFFFFFF,
+                                                btnHeight: 35.0,
+                                                btnWidth: 120.0,
+                                              ),
+                                              onTap: () {
+                                                AwesomeDialog(
+                                                  context: context,
+                                                  customHeader: Icon(
+                                                    Icons.mail_outline_rounded,
+                                                    size: 55,
+                                                  ),
+                                                  borderSide: BorderSide(
+                                                      color: Color(0xFF1B7DBB),
+                                                      width: 2),
+                                                  width: MediaQuery.of(context)
+                                                      .size
+                                                      .width,
+                                                  buttonsBorderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(2)),
+                                                  headerAnimationLoop: false,
+                                                  animType:
+                                                      AnimType.BOTTOMSLIDE,
+                                                  title: 'INFO',
+                                                  desc:
+                                                      'Dialog description here...',
+                                                  btnOkColor: Color(0xFF1B7DBB),
+                                                  body: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Directionality(
+                                                      textDirection:
+                                                          TextDirection.rtl,
+                                                      child: TextField(
+                                                        decoration:
+                                                            InputDecoration(
+                                                          hintText:
+                                                              'ادخل الرسالة',
+                                                          border: null,
+                                                          hintStyle: TextStyle(
+                                                            fontStyle: FontStyle
+                                                                .italic,
+                                                          ),
+                                                        ),
+                                                        controller:
+                                                            messageController,
+                                                        keyboardType:
+                                                            TextInputType
+                                                                .multiline,
+                                                        minLines: 1,
+                                                        //Normal textInputField will be displayed
+                                                        maxLines:
+                                                            8, // when user presses enter it will adapt to it
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  showCloseIcon: true,
+                                                  btnOkText: 'ارسال',
+                                                  btnOkOnPress: () {
+                                                    commentProvider.sendComment(
+                                                        authProvider
+                                                            .currentUsr.iduser,
+                                                        widget.rec_id,
+                                                        messageController.text,
+                                                        '${authProvider.currentUsr.firstName} ${authProvider.currentUsr.lastName}',
+                                                        authProvider.currentUsr
+                                                            .profileImage,
+                                                        context);
+                                                    topicProvider.updateTopic(
+                                                        widget.rec_id, 1);
+                                                    playSound();
+                                                    messageController.text = "";
+                                                  },
+                                                )..show();
+                                              },
+                                            ),
                                           ),
-                                          FlatButton(
-                                            child: Text('Fermer'),
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
+                                          SizedBox(
+                                            width: 10,
                                           ),
                                         ],
-                                      );
-                                    },
-                                  );
-                                },
-                              )
-                            ],
-                          )
-                              :Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Visibility(
-                                visible: widget.status ==1 ?true :false,
-                                child: GestureDetector(
-                                  child: ProfilInfoBtn(
-                                    text: authProvider.currentUsr.idrole == 3
-                                        ?'الرد' :'Répondre',
-                                    color: 0xFF1B7DBB,
-                                    textColor: 0xFFFFFFFF,
-                                    btnHeight: 35.0,
-                                    btnWidth: 120.0,
-                                  ),
-                                  onTap: () {
-                                    AwesomeDialog(
-                                      context: context,
-                                      customHeader: Icon(
-                                        Icons.mail_outline_rounded,
-                                        size: 55,
-                                      ),
-                                      borderSide: BorderSide(
-                                          color: Color(0xFF1B7DBB), width: 2),
-                                      width: MediaQuery.of(context).size.width,
-                                      buttonsBorderRadius:
-                                      BorderRadius.all(Radius.circular(2)),
-                                      headerAnimationLoop: false,
-                                      animType: AnimType.BOTTOMSLIDE,
-                                      title: 'INFO',
-                                      desc: 'Dialog description here...',
-                                      btnOkColor: Color(0xFF1B7DBB),
-                                      body: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Directionality(
-                                          textDirection: TextDirection.rtl,
-                                          child: TextField(
-                                            decoration: InputDecoration(
-                                              hintText: 'ادخل الرسالة',
-                                              border: null,
-                                              hintStyle: TextStyle(
-                                                fontStyle: FontStyle.italic,
-                                              ),
-                                            ),
-                                            controller: messageController,
-                                            keyboardType: TextInputType.multiline,
-                                            minLines: 1,
-                                            //Normal textInputField will be displayed
-                                            maxLines:
-                                            8, // when user presses enter it will adapt to it
-                                          ),
-                                        ),
-                                      ),
-                                      showCloseIcon: true,
-                                      btnOkText: 'ارسال',
-                                      btnOkOnPress: () {
-                                        commentProvider.sendComment(
-                                            authProvider.currentUsr.iduser,
-                                            widget.rec_id,
-                                            messageController.text,
-                                            '${authProvider.currentUsr.firstName} ${authProvider.currentUsr.lastName}',
-                                          authProvider.currentUsr.profileImage,
-                                          context
-                                        );
-                                        topicProvider.updateTopic(widget.rec_id, 1);
-                                        playSound();
-                                        messageController.text = "";
-                                      },
-                                    )..show();
-                                  },
-                                ),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-
-                            ],
-                          )
-                        )
-                        :SizedBox(),
+                                      ))
+                            : SizedBox(),
 
                         /// cloture message
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: authProvider.currentUsr.idrole == 3
-                              ?Text(widget.status == 2 ? 'لقد تمت معالجة طلبكم' : '', style: TextStyle(color: Colors.grey))
-                              :Text(widget.status == 2 ? 'Demande clôturée' : '', style: TextStyle(color: Colors.grey),),
-
+                              ? Text(
+                                  widget.status == 2
+                                      ? 'لقد تمت معالجة طلبكم'
+                                      : '',
+                                  style: TextStyle(color: Colors.grey))
+                              : Text(
+                                  widget.status == 2 ? 'Demande clôturée' : '',
+                                  style: TextStyle(color: Colors.grey),
+                                ),
                         ),
 
                         ///responses
                         ListView.builder(
-                            physics: ClampingScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: commentProvider.comments.length,
-                            itemBuilder: (context, int index) {
-                              return BuildMessage(
-                                senderName: commentProvider.comments[index].Name,
-                                senderId: commentProvider.comments[index].iduser,
-                                name: commentProvider.comments[index].Name,
-                                img: commentProvider.comments[index].image != "" ?commentProvider.comments[index].image.replaceAll('"', '').trim() :'https://ui-avatars.com/api/?background=FFFFF&color=2C7DBF&name=${commentProvider.comments[index].Name}',
-                                message: commentProvider.comments[index].comment,
-                                senderRoleId: commentProvider.comments[index].idrole,
-                                date: commentProvider.comments[index].created_at,
-                              );
-                            }),
+                          physics: ClampingScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: commentProvider.comments.length,
+                          itemBuilder: (context, int index) {
+                            return BuildMessage(
+                              senderName: commentProvider.comments[index].Name,
+                              senderId: commentProvider.comments[index].iduser,
+                              name: commentProvider.comments[index].Name,
+                              img: commentProvider.comments[index].image != ""
+                                  ? commentProvider.comments[index].image
+                                      .replaceAll('"', '')
+                                      .trim()
+                                  : 'https://ui-avatars.com/api/?background=FFFFF&color=2C7DBF&name=${commentProvider.comments[index].Name}',
+                              message: commentProvider.comments[index].comment,
+                              senderRoleId:
+                                  commentProvider.comments[index].idrole,
+                              date: commentProvider.comments[index].created_at,
+                            );
+                          },
+                        ),
                         SizedBox(height: 20.0),
                       ],
                     ),
@@ -655,7 +794,8 @@ class _ReclamationDetailsState extends State<ReclamationDetails> {
   void audioController(String state) async {
     switch (state) {
       case 'play':
-        await audioPlayer.play('${widget.record.toString().replaceAll('"', '').trim()}');
+        await audioPlayer
+            .play('${widget.record.toString().replaceAll('"', '').trim()}');
         audioPlayer.onAudioPositionChanged.listen((Duration p) {
           setState(() => position = p.inSeconds);
         });

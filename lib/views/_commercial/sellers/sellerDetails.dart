@@ -17,7 +17,15 @@ import 'package:provider/provider.dart';
 
 class SellerDetails extends StatefulWidget {
   final int id, idvendor, idrole;
-  final String profileImg, phoneNumber, mail, username, password;
+  final String profileImg,
+      phoneNumber,
+      mail,
+      username,
+      password,
+      firstName,
+      lastName,
+      agentName,
+      city;
 
   SellerDetails({
     this.id,
@@ -28,6 +36,10 @@ class SellerDetails extends StatefulWidget {
     this.username,
     this.password,
     this.idrole,
+    this.firstName,
+    this.lastName,
+    this.agentName,
+    this.city,
   });
 
   @override
@@ -195,12 +207,16 @@ class _SellerDetailsState extends State<SellerDetails> {
                           height: 100,
                           width: 100,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(100),
-                              border:
-                                  Border.all(color: Colors.white, width: 5)),
+                            borderRadius: BorderRadius.circular(100),
+                            border: Border.all(
+                              color: Colors.white,
+                              width: 5,
+                            ),
+                          ),
                           child: CircleAvatar(
-                            backgroundImage:
-                                NetworkImage('${widget.profileImg}'),
+                            backgroundImage: NetworkImage(
+                              '${widget.profileImg}',
+                            ),
                           ),
                         ),
                         SizedBox(height: 15),
@@ -365,29 +381,25 @@ class _SellerDetailsState extends State<SellerDetails> {
                                       backgroundColor: Color(0xFF7ad1ca),
                                       linesData: [
                                         {
-                                          'الاسم الكامل للبائع': (authProvider
-                                                      .currentUsr.firstName +
-                                                  (authProvider.currentUsr
-                                                          .firstName.isEmpty
-                                                      ? ''
-                                                      : ' ') +
-                                                  authProvider
-                                                      .currentUsr.lastName) ??
-                                              "-----------"
-                                        },
-                                        {
-                                          'مندوب مبيعاتي': authProvider
-                                                  .currentUsr.agentName ??
-                                              "-----------"
-                                        },
-                                        {
-                                          'المدينة':
-                                              authProvider.currentUsr.city ??
+                                          'الاسم الكامل للبائع':
+                                              (widget.firstName +
+                                                      (widget.firstName.isEmpty
+                                                          ? ''
+                                                          : ' ') +
+                                                      widget.lastName) ??
                                                   "-----------"
                                         },
                                         {
+                                          'مندوب مبيعاتي':
+                                              widget.agentName ?? "-----------",
+                                        },
+                                        {
+                                          'المدينة':
+                                              widget.city ?? "-----------"
+                                        },
+                                        {
                                           'تاريخ آخر شراء': caProvider
-                                                  .ca.first.lastpurchasedate ??
+                                                  .ca.first?.lastpurchasedate ??
                                               "-- / -- / ----"
                                         },
                                       ],
@@ -400,27 +412,27 @@ class _SellerDetailsState extends State<SellerDetails> {
                                       linesData: [
                                         {
                                           'التنقيط': noteProvider
-                                                  .myNote.first.note
+                                                  .myNote.first?.note
                                                   .toString() ??
                                               "-----------"
                                         },
                                         {
                                           'التقييم': noteProvider
-                                                  .myNote.first.notation
+                                                  .myNote.first?.notation
                                                   .toString() ??
                                               "-----------",
                                           'isRTL': false,
                                         },
                                         {
                                           'الرصيد': noteProvider
-                                                      .myNote.first.solde
+                                                      .myNote.first?.solde
                                                       .toString() +
                                                   ' درهم' ??
                                               "---- درهم"
                                         },
                                         {
                                           'المستحقات الغير مدفوعة': noteProvider
-                                                  .myNote.first.total_nbrimp
+                                                  .myNote.first?.total_nbrimp
                                                   .toString() ??
                                               "-----------"
                                         },
@@ -433,50 +445,52 @@ class _SellerDetailsState extends State<SellerDetails> {
                                       backgroundColor: Color(0xFFef888d),
                                       linesData: [
                                         {
-                                          'إجمالي المبيعات / السنة': caProvider
-                                                      .ca.first.total_ca_365
-                                                      .toString() +
-                                                  ' درهم' ??
-                                              "---- درهم"
+                                          'إجمالي المبيعات (365 يوم)':
+                                              caProvider.ca.first?.total_ca_365
+                                                          .toString() +
+                                                      ' درهم' ??
+                                                  "---- درهم"
                                         },
                                         {
-                                          'إجمالي المبيعات / الشهر': caProvider
-                                                      .ca.first.total_ca_184
-                                                      .toString() +
-                                                  ' درهم' ??
-                                              "---- درهم"
+                                          'إجمالي المبيعات (184 يوم)':
+                                              caProvider.ca.first?.total_ca_184
+                                                          .toString() +
+                                                      ' درهم' ??
+                                                  "---- درهم"
                                         },
                                         {
                                           'مهلة الدفع': caProvider.ca.first
-                                                      .payment_deadline ==
+                                                      ?.payment_deadline ==
                                                   0
                                               ? 'يوم --'
-                                              : caProvider.ca.first.payment_deadline ==
+                                              : caProvider.ca.first?.payment_deadline ==
                                                       1
                                                   ? caProvider.ca.first
-                                                          .payment_deadline
+                                                          ?.payment_deadline
                                                           .toString() +
                                                       " يوم"
-                                                  : caProvider.ca.first.payment_deadline ==
+                                                  : caProvider.ca.first?.payment_deadline ==
                                                           2
                                                       ? caProvider.ca.first
-                                                              .payment_deadline
+                                                              ?.payment_deadline
                                                               .toString() +
                                                           " يومان"
-                                                      : caProvider.ca.first.payment_deadline >= 3 &&
+                                                      // ignore: null_aware_before_operator
+                                                      : caProvider.ca.first?.payment_deadline >=
+                                                                  3 &&
+                                                              // ignore: null_aware_before_operator
                                                               caProvider
                                                                       .ca
                                                                       .first
-                                                                      .payment_deadline <=
+                                                                      ?.payment_deadline <=
                                                                   10
                                                           ? caProvider.ca.first
-                                                                  .payment_deadline
+                                                                  ?.payment_deadline
                                                                   .toString() +
                                                               " أيام"
-                                                          : caProvider.ca.first
-                                                                      .payment_deadline >=
-                                                                  11
-                                                              ? caProvider.ca.first.payment_deadline.toString() + " يوم"
+                                                          // ignore: null_aware_before_operator
+                                                          : caProvider.ca.first?.payment_deadline >= 11
+                                                              ? caProvider.ca.first?.payment_deadline.toString() + " يوم"
                                                               : 'يوم --'
                                         },
                                       ],

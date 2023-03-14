@@ -52,7 +52,7 @@ class TextLinesCard extends StatelessWidget {
                     Expanded(
                       flex: 1,
                       child: Text(
-                        value.isEmpty ? '----------------------' : value,
+                        value == null ? '----------------------' : value,
                         textAlign: TextAlign.left,
                         style: TextStyle(
                           color: valueTextColor,
@@ -70,7 +70,7 @@ class TextLinesCard extends StatelessWidget {
                     Expanded(
                       flex: 1,
                       child: Text(
-                        title.isEmpty ? '-----------' : '$title:',
+                        title == null ? '-----------' : '$title:',
                         style: TextStyle(
                           color: titleTextColor,
                           fontWeight: FontWeight.bold,

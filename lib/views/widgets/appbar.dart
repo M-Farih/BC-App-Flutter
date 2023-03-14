@@ -129,6 +129,7 @@ Future<void> _disconnect(context, int roleId) async {
               Navigator.of(context).pushNamedAndRemoveUntil(LoginPage.routeName, (Route<dynamic> route) => false);
             },
           ),
+          // ignore: deprecated_member_use
           FlatButton(
             child: Text(roleId == 3?'غلق':'Fermer'),
             onPressed: () {

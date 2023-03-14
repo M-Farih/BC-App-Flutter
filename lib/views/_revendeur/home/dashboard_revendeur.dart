@@ -291,38 +291,40 @@ class _Dashboard_revendeurState extends State<Dashboard_revendeur> {
                                                       Color(0xFF7ad1ca),
                                                   linesData: [
                                                     {
+                                                      // ignore: null_aware_before_operator
                                                       'الاسم الكامل للبائع': (authProvider
                                                                   .currentUsr
-                                                                  .firstName +
+                                                                  ?.firstName +
+                                                              // ignore: can_be_null_after_null_aware
                                                               (authProvider
                                                                       .currentUsr
-                                                                      .firstName
+                                                                      ?.firstName
                                                                       .isEmpty
                                                                   ? ''
                                                                   : ' ') +
                                                               authProvider
-                                                                  .currentUsr
-                                                                  .lastName) ??
+                                                                  ?.currentUsr
+                                                                  ?.lastName) ??
                                                           "-----------"
                                                     },
                                                     {
                                                       'مندوب مبيعاتي':
                                                           authProvider
                                                                   .currentUsr
-                                                                  .agentName ??
+                                                                  ?.agentName ??
                                                               "-----------"
                                                     },
                                                     {
                                                       'المدينة': authProvider
                                                               .currentUsr
-                                                              .city ??
+                                                              ?.city ??
                                                           "-----------"
                                                     },
                                                     {
                                                       'تاريخ آخر شراء': caProvider
                                                               .ca
                                                               .first
-                                                              .lastpurchasedate ??
+                                                              ?.lastpurchasedate ??
                                                           "-- / -- / ----"
                                                     },
                                                   ],
@@ -336,7 +338,9 @@ class _Dashboard_revendeurState extends State<Dashboard_revendeur> {
                                                   linesData: [
                                                     {
                                                       'التنقيط': noteProvider
-                                                              .myNote.first.note
+                                                              .myNote
+                                                              .first
+                                                              ?.note
                                                               .toString() ??
                                                           "-----------"
                                                     },
@@ -344,7 +348,7 @@ class _Dashboard_revendeurState extends State<Dashboard_revendeur> {
                                                       'التقييم': noteProvider
                                                               .myNote
                                                               .first
-                                                              .notation
+                                                              ?.notation
                                                               .toString() ??
                                                           "-----------",
                                                       'isRTL': false,
@@ -353,7 +357,7 @@ class _Dashboard_revendeurState extends State<Dashboard_revendeur> {
                                                       'الرصيد': noteProvider
                                                                   .myNote
                                                                   .first
-                                                                  .solde
+                                                                  ?.solde
                                                                   .toString() +
                                                               ' درهم' ??
                                                           "---- درهم"
@@ -363,7 +367,7 @@ class _Dashboard_revendeurState extends State<Dashboard_revendeur> {
                                                           noteProvider
                                                                   .myNote
                                                                   .first
-                                                                  .total_nbrimp
+                                                                  ?.total_nbrimp
                                                                   .toString() ??
                                                               "-----------"
                                                     },
@@ -377,17 +381,17 @@ class _Dashboard_revendeurState extends State<Dashboard_revendeur> {
                                                       Color(0xFFef888d),
                                                   linesData: [
                                                     {
-                                                      'إجمالي المبيعات / السنة':
+                                                      'إجمالي المبيعات (365 يوم)':
                                                           caProvider.ca.first
-                                                                      .total_ca_365
+                                                                      ?.total_ca_365
                                                                       .toString() +
                                                                   ' درهم' ??
                                                               "---- درهم"
                                                     },
                                                     {
-                                                      'إجمالي المبيعات / الشهر':
+                                                      'إجمالي المبيعات (184 يوم)':
                                                           caProvider.ca.first
-                                                                      .total_ca_184
+                                                                      ?.total_ca_184
                                                                       .toString() +
                                                                   ' درهم' ??
                                                               "---- درهم"
@@ -396,37 +400,39 @@ class _Dashboard_revendeurState extends State<Dashboard_revendeur> {
                                                       'مهلة الدفع': caProvider
                                                                   .ca
                                                                   .first
-                                                                  .payment_deadline ==
+                                                                  ?.payment_deadline ==
                                                               0
                                                           ? 'يوم --'
                                                           : caProvider.ca.first
-                                                                      .payment_deadline ==
+                                                                      ?.payment_deadline ==
                                                                   1
                                                               ? caProvider
                                                                       .ca
                                                                       .first
-                                                                      .payment_deadline
+                                                                      ?.payment_deadline
                                                                       .toString() +
                                                                   " يوم"
                                                               : caProvider
                                                                           .ca
                                                                           .first
-                                                                          .payment_deadline ==
+                                                                          ?.payment_deadline ==
                                                                       2
                                                                   ? caProvider
                                                                           .ca
                                                                           .first
-                                                                          .payment_deadline
+                                                                          ?.payment_deadline
                                                                           .toString() +
                                                                       " يومان"
-                                                                  : caProvider.ca.first.payment_deadline >= 3 &&
-                                                                          caProvider.ca.first.payment_deadline <=
+                                                                  // ignore: null_aware_before_operator
+                                                                  : caProvider.ca.first?.payment_deadline >=
+                                                                              3 &&
+                                                                          // ignore: null_aware_before_operator
+                                                                          caProvider.ca.first?.payment_deadline <=
                                                                               10
-                                                                      ? caProvider.ca.first.payment_deadline.toString() +
-                                                                          " أيام"
-                                                                      : caProvider.ca.first.payment_deadline >=
-                                                                              11
-                                                                          ? caProvider.ca.first.payment_deadline.toString() + " يوم"
+                                                                      ? caProvider.ca.first?.payment_deadline.toString() + " أيام"
+                                                                      // ignore: null_aware_before_operator
+                                                                      : caProvider.ca.first?.payment_deadline >= 11
+                                                                          ? caProvider.ca.first?.payment_deadline.toString() + " يوم"
                                                                           : 'يوم --'
                                                     },
                                                   ],
