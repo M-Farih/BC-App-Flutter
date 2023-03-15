@@ -194,6 +194,7 @@ class _ListSellersState extends State<ListSellers> {
                                             .sellers[index].lastName,
                                         agentName: userProvider
                                             .sellers[index].agentName,
+                                        address: userProvider.sellers[index].address,
                                         city: userProvider.sellers[index].city,
                                         password: userProvider
                                             .sellers[index].password,

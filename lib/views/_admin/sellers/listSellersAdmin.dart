@@ -394,6 +394,8 @@ class _ListSellersAdminState extends State<ListSellersAdmin> {
                                             .sellers[index].lastName,
                                         agentName: userProvider
                                             .sellers[index].agentName,
+                                        address:
+                                            userProvider.sellers[index].address,
                                         city: userProvider.sellers[index].city,
                                         profileImg:
                                             '${userProvider.sellers[index].profileImage != "" ? userProvider.sellers[index].profileImage.replaceAll('"', '') : "https://ui-avatars.com/api/?background=FFFFF&color=2C7DBF&name=${userProvider.sellers[index].firstName}+${userProvider.sellers[index].lastName}"}',
@@ -597,6 +599,8 @@ class _ListSellersAdminState extends State<ListSellersAdmin> {
                                               .sellers[index].lastName,
                                           agentName: userProvider
                                               .sellers[index].agentName,
+                                          address: userProvider
+                                              .sellers[index].address,
                                           city:
                                               userProvider.sellers[index].city,
                                           profileImg:

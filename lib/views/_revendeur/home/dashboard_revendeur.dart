@@ -22,33 +22,26 @@ class _Dashboard_revendeurState extends State<Dashboard_revendeur> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<RistourneProvider>(context, listen: false)
-          .getRistourneImage();
-      Provider.of<AuthProvider>(context, listen: false).getUserFromSP();
-      int iduser =
-          Provider.of<AuthProvider>(context, listen: false).currentUsr.iduser;
-      int idvendor =
-          Provider.of<AuthProvider>(context, listen: false).currentUsr.idvendor;
-      Provider.of<CaProvider>(context, listen: false).getCA(idvendor);
-      Provider.of<CaFamilleProvider>(context, listen: false)
-          .getCAFamille(idvendor);
-    });
-  }
+    // WidgetsBinding.instance.addPostFrameCallback((_) async {});
+    Provider.of<RistourneProvider>(context, listen: false).getRistourneImage();
+    Provider.of<AuthProvider>(context, listen: false).getUserFromSP();
+    int iduser =
+        Provider.of<AuthProvider>(context, listen: false).currentUsr.iduser;
+    int idvendor =
+        Provider.of<AuthProvider>(context, listen: false).currentUsr.idvendor;
+    Provider.of<CaProvider>(context, listen: false).getCA(idvendor);
+    Provider.of<CaFamilleProvider>(context, listen: false)
+        .getCAFamille(idvendor);
+    final caProvider = Provider.of<CaProvider>(context, listen: false);
+    final myNoteProvider = Provider.of<MyNoteProvider>(context, listen: false);
 
-  showPDFDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          content: SizedBox(
-            height: 300,
-            // child: SfPdfViewer.asset(
-            //   "assets/pdf.pdf",
-            // ),
-          ),
-        );
-      },
+    final ca = caProvider.ca.first;
+
+    myNoteProvider.getMyNote(
+      idvendor,
+      ca.total_ca_365,
+      ca.total_ca_184,
+      ca.payment_deadline,
     );
   }
 
@@ -61,13 +54,6 @@ class _Dashboard_revendeurState extends State<Dashboard_revendeur> {
     var caFamilleProvider =
         Provider.of<CaFamilleProvider>(context, listen: true);
     var noteProvider = Provider.of<MyNoteProvider>(context, listen: true);
-
-    Provider.of<MyNoteProvider>(context, listen: false).getMyNote(
-      authProvider.currentUsr.idvendor,
-      caProvider.ca.first.total_ca_365,
-      caProvider.ca.first.total_ca_184,
-      caProvider.ca.first.payment_deadline,
-    );
 
     return Scaffold(
       //resizeToAvoidBottomInset: false,
@@ -381,7 +367,7 @@ class _Dashboard_revendeurState extends State<Dashboard_revendeur> {
                                                       Color(0xFFef888d),
                                                   linesData: [
                                                     {
-                                                      'إجمالي المبيعات (365 يوم)':
+                                                      'إجمالي المبيعات / 365 يوم':
                                                           caProvider.ca.first
                                                                       ?.total_ca_365
                                                                       .toString() +
@@ -389,7 +375,7 @@ class _Dashboard_revendeurState extends State<Dashboard_revendeur> {
                                                               "---- درهم"
                                                     },
                                                     {
-                                                      'إجمالي المبيعات (184 يوم)':
+                                                      'إجمالي المبيعات / 184 يوم':
                                                           caProvider.ca.first
                                                                       ?.total_ca_184
                                                                       .toString() +

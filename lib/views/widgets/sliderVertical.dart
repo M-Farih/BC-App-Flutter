@@ -30,7 +30,7 @@ class _SliderVerticalWidgetState extends State<SliderVerticalWidget> {
       ),
       child: Container(
         width: MediaQuery.of(context).size.width * 0.2,
-        height: MediaQuery.of(context).size.height / 2.6,
+        height: MediaQuery.of(context).size.height / 2.8,
         child: Column(
           children: [
             Padding(
@@ -68,29 +68,27 @@ class _SliderVerticalWidgetState extends State<SliderVerticalWidget> {
               ),
             ),
             Expanded(
-              child: Stack(
-                alignment: AlignmentDirectional.center,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(6),
-                      topRight: Radius.circular(6),
-                    ),
-                    child: RotatedBox(
-                      quarterTurns: 3,
-                      child: Slider(
-                        value: widget.turnover,
-                        activeColor: Color(0xFF2C7DBF),
-                        inactiveColor: Color(0xFFBEE1FF),
-                        min: min,
-                        max: max,
-                        divisions: 40,
-                        label: widget.turnover.round().toString(),
-                        onChanged: (double newValue) {},
-                      ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(6),
+                  topRight: Radius.circular(6),
+                ),
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  child: RotatedBox(
+                    quarterTurns: 3,
+                    child: Slider(
+                      value: widget.turnover,
+                      activeColor: Color(0xFF2C7DBF),
+                      inactiveColor: Color(0xFFBEE1FF),
+                      min: min,
+                      max: max,
+                      divisions: 40,
+                      label: widget.turnover.round().toString(),
+                      onChanged: (double newValue) {},
                     ),
                   ),
-                ],
+                ),
               ),
             ),
             Container(

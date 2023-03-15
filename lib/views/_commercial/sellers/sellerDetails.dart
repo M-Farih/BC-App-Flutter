@@ -25,7 +25,8 @@ class SellerDetails extends StatefulWidget {
       firstName,
       lastName,
       agentName,
-      city;
+      city,
+      address;
 
   SellerDetails({
     this.id,
@@ -40,6 +41,7 @@ class SellerDetails extends StatefulWidget {
     this.lastName,
     this.agentName,
     this.city,
+    this.address,
   });
 
   @override
@@ -69,6 +71,20 @@ class _SellerDetailsState extends State<SellerDetails> {
         Provider.of<AuthProvider>(context, listen: false).getUserFromSP();
       },
     );
+
+    final caProvider = Provider.of<CaProvider>(context, listen: false);
+    final myNoteProvider = Provider.of<MyNoteProvider>(context, listen: false);
+    int idvendor =
+        Provider.of<AuthProvider>(context, listen: false).currentUsr.idvendor;
+
+    final ca = caProvider.ca.first;
+
+    myNoteProvider.getMyNote(
+      idvendor,
+      ca.total_ca_365,
+      ca.total_ca_184,
+      ca.payment_deadline,
+    );
   }
 
   @override
@@ -81,12 +97,6 @@ class _SellerDetailsState extends State<SellerDetails> {
     var caFamilleProvider =
         Provider.of<CaFamilleProvider>(context, listen: true);
     var noteProvider = Provider.of<MyNoteProvider>(context, listen: true);
-    Provider.of<MyNoteProvider>(context, listen: false).getMyNote(
-      widget.idvendor,
-      caProvider.ca.first.total_ca_365,
-      caProvider.ca.first.total_ca_184,
-      caProvider.ca.first.payment_deadline,
-    );
 
     return Scaffold(
       backgroundColor: Color(0xFFF1F4F7),
@@ -151,10 +161,11 @@ class _SellerDetailsState extends State<SellerDetails> {
                                   height: 40,
                                   width: 40,
                                   decoration: BoxDecoration(
-                                      color: widget.phoneNumber != ""
-                                          ? Color(0xFF2C7DBF)
-                                          : Color(0xFFA0A0A0),
-                                      borderRadius: BorderRadius.circular(50)),
+                                    color: widget.phoneNumber != ""
+                                        ? Color(0xFF2C7DBF)
+                                        : Color(0xFFA0A0A0),
+                                    borderRadius: BorderRadius.circular(50),
+                                  ),
                                   child: Icon(
                                     Icons.call,
                                     color: Colors.white,
@@ -191,14 +202,22 @@ class _SellerDetailsState extends State<SellerDetails> {
 
                   /// seller card
                   Container(
-                    height: MediaQuery.of(context).size.height * 0.44,
+                    height: userProvider.userById.idrole == 3
+                        ? MediaQuery.of(context).size.height * 0.44
+                        : MediaQuery.of(context).size.height * 0.64,
                     width: MediaQuery.of(context).size.width - 50,
+                    margin: EdgeInsets.only(
+                      top: userProvider.userById.idrole == 3
+                          ? MediaQuery.of(context).size.height * 0
+                          : MediaQuery.of(context).size.height * 0.06,
+                    ),
                     decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage("assets/images/user-card.png"),
-                          fit: BoxFit.cover,
-                        ),
-                        borderRadius: BorderRadius.circular(20)),
+                      image: DecorationImage(
+                        image: AssetImage("assets/images/user-card.png"),
+                        fit: BoxFit.cover,
+                      ),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -310,216 +329,304 @@ class _SellerDetailsState extends State<SellerDetails> {
                                     : SizedBox(),
                               )
                             : SizedBox(),
+                        userProvider.userById.idrole != 3
+                            ? Column(
+                                children: [
+                                  SizedBox(height: 30),
+                                  widget.phoneNumber.isEmpty ||
+                                          widget.phoneNumber != null
+                                      ? GestureDetector(
+                                          onTap: () {
+                                            contactProvider.call(
+                                              '${widget.phoneNumber}',
+                                            );
+                                          },
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Icon(
+                                                Icons.location_history,
+                                                color: Colors.white,
+                                                size: 30,
+                                              ),
+                                              SizedBox(height: 4),
+                                              Text(
+                                                "${widget.address}",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 18,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      : SizedBox(),
+                                  SizedBox(
+                                    height: 6,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      contactProvider.call(
+                                        '${widget.phoneNumber}',
+                                      );
+                                    },
+                                    child: Text(
+                                      "${widget.phoneNumber}",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 6),
+                                  GestureDetector(
+                                    onTap: () {
+                                      contactProvider.mailSeller(
+                                        '${widget.mail}',
+                                      );
+                                    },
+                                    child: Text(
+                                      "${widget.mail}",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : SizedBox(),
                       ],
                     ),
                   ),
 
                   /// seller Statistics
                   SizedBox(height: 30),
-                  sellerProductStatistics(
-                    productImage: 'assets/images/matelas.png',
-                    familleName: 'Matelas',
-                    famillePrice: caFamilleProvider
-                                    .caFamille.first.total_ca_Matelas !=
-                                null &&
-                            // ignore: unrelated_type_equality_checks
-                            caFamilleProvider
-                                    .caFamille.first.total_ca_Matelas !=
-                                0
-                        ? '${extractTwoDigitsAfterDot(caFamilleProvider.caFamille.first.total_ca_Matelas)}'
-                        : '0 Dhs',
-                    textColor: 0xFF2C7DBF,
-                  ),
-                  sellerProductStatistics(
-                    productImage: 'assets/images/banquette.png',
-                    familleName: 'Banquette',
-                    famillePrice: caFamilleProvider
-                                    .caFamille.first.total_ca_Banquette !=
-                                null &&
-                            // ignore: unrelated_type_equality_checks
-                            caFamilleProvider
-                                    .caFamille.first.total_ca_Banquette !=
-                                0
-                        ? '${extractTwoDigitsAfterDot(caFamilleProvider.caFamille.first.total_ca_Banquette)}'
-                        : '0 Dhs',
-                    textColor: 0xFF84489B,
-                  ),
-                  sellerProductStatistics(
-                    productImage: 'assets/images/mousse.png',
-                    familleName: 'Mousse',
-                    famillePrice: caFamilleProvider
-                                    .caFamille.first.total_ca_Mousse !=
-                                null &&
-                            // ignore: unrelated_type_equality_checks
-                            caFamilleProvider.caFamille.first.total_ca_Mousse !=
-                                0
-                        ? '${extractTwoDigitsAfterDot(caFamilleProvider.caFamille.first.total_ca_Mousse)}'
-                        : '0 Dhs',
-                    textColor: 0xFF81BA48,
-                  ),
-                  sellerProductStatistics(
-                    productImage: 'assets/images/salon.png',
-                    familleName: 'Salon',
-                    famillePrice: caFamilleProvider
-                                    .caFamille.first.total_ca_Divers !=
-                                null &&
-                            // ignore: unrelated_type_equality_checks
-                            caFamilleProvider.caFamille.first.total_ca_Divers !=
-                                0
-                        ? '${extractTwoDigitsAfterDot(caFamilleProvider.caFamille.first.total_ca_Divers)}'
-                        : '0 Dhs',
-                    textColor: 0xFFE32A33,
-                  ),
+                  userProvider.userById.idrole == 3
+                      ? sellerProductStatistics(
+                          productImage: 'assets/images/matelas.png',
+                          familleName: 'Matelas',
+                          famillePrice: caFamilleProvider
+                                          .caFamille.first.total_ca_Matelas !=
+                                      null &&
+                                  // ignore: unrelated_type_equality_checks
+                                  caFamilleProvider
+                                          .caFamille.first.total_ca_Matelas !=
+                                      0
+                              ? '${extractTwoDigitsAfterDot(caFamilleProvider.caFamille.first.total_ca_Matelas)}'
+                              : '0 Dhs',
+                          textColor: 0xFF2C7DBF,
+                        )
+                      : SizedBox(),
+                  userProvider.userById.idrole == 3
+                      ? sellerProductStatistics(
+                          productImage: 'assets/images/banquette.png',
+                          familleName: 'Banquette',
+                          famillePrice: caFamilleProvider
+                                          .caFamille.first.total_ca_Banquette !=
+                                      null &&
+                                  // ignore: unrelated_type_equality_checks
+                                  caFamilleProvider
+                                          .caFamille.first.total_ca_Banquette !=
+                                      0
+                              ? '${extractTwoDigitsAfterDot(caFamilleProvider.caFamille.first.total_ca_Banquette)}'
+                              : '0 Dhs',
+                          textColor: 0xFF84489B,
+                        )
+                      : SizedBox(),
+                  userProvider.userById.idrole == 3
+                      ? sellerProductStatistics(
+                          productImage: 'assets/images/mousse.png',
+                          familleName: 'Mousse',
+                          famillePrice: caFamilleProvider
+                                          .caFamille.first.total_ca_Mousse !=
+                                      null &&
+                                  // ignore: unrelated_type_equality_checks
+                                  caFamilleProvider
+                                          .caFamille.first.total_ca_Mousse !=
+                                      0
+                              ? '${extractTwoDigitsAfterDot(caFamilleProvider.caFamille.first.total_ca_Mousse)}'
+                              : '0 Dhs',
+                          textColor: 0xFF81BA48,
+                        )
+                      : SizedBox(),
+                  userProvider.userById.idrole == 3
+                      ? sellerProductStatistics(
+                          productImage: 'assets/images/salon.png',
+                          familleName: 'Salon',
+                          famillePrice: caFamilleProvider
+                                          .caFamille.first.total_ca_Divers !=
+                                      null &&
+                                  // ignore: unrelated_type_equality_checks
+                                  caFamilleProvider
+                                          .caFamille.first.total_ca_Divers !=
+                                      0
+                              ? '${extractTwoDigitsAfterDot(caFamilleProvider.caFamille.first.total_ca_Divers)}'
+                              : '0 Dhs',
+                          textColor: 0xFFE32A33,
+                        )
+                      : SizedBox(),
 
-                  caFamilleProvider.caFamille.first.total_ca != null
-                      ? double.parse(
-                                  caFamilleProvider.caFamille.first.total_ca) >=
-                              10000.00
-                          ? Column(
-                              children: [
-                                TextLinesCard(
-                                      backgroundColor: Color(0xFF7ad1ca),
-                                      linesData: [
-                                        {
-                                          'الاسم الكامل للبائع':
-                                              (widget.firstName +
+                  userProvider.userById.idrole == 3
+                      ? caFamilleProvider.caFamille.first.total_ca != null
+                          ? double.parse(caFamilleProvider
+                                      .caFamille.first.total_ca) >=
+                                  10000.00
+                              ? Column(
+                                  children: [
+                                    TextLinesCard(
+                                          backgroundColor: Color(0xFF7ad1ca),
+                                          linesData: [
+                                            {
+                                              'الاسم الكامل للبائع': (widget
+                                                          .firstName +
                                                       (widget.firstName.isEmpty
                                                           ? ''
                                                           : ' ') +
                                                       widget.lastName) ??
                                                   "-----------"
-                                        },
-                                        {
-                                          'مندوب مبيعاتي':
-                                              widget.agentName ?? "-----------",
-                                        },
-                                        {
-                                          'المدينة':
-                                              widget.city ?? "-----------"
-                                        },
-                                        {
-                                          'تاريخ آخر شراء': caProvider
-                                                  .ca.first?.lastpurchasedate ??
-                                              "-- / -- / ----"
-                                        },
-                                      ],
-                                      valueTextColor: Colors.white,
-                                      titleTextColor: Colors.white,
-                                    ) ??
-                                    CircularProgressIndicator(),
-                                TextLinesCard(
-                                      backgroundColor: Color(0xFF7ab1d1),
-                                      linesData: [
-                                        {
-                                          'التنقيط': noteProvider
-                                                  .myNote.first?.note
-                                                  .toString() ??
-                                              "-----------"
-                                        },
-                                        {
-                                          'التقييم': noteProvider
-                                                  .myNote.first?.notation
-                                                  .toString() ??
-                                              "-----------",
-                                          'isRTL': false,
-                                        },
-                                        {
-                                          'الرصيد': noteProvider
-                                                      .myNote.first?.solde
-                                                      .toString() +
-                                                  ' درهم' ??
-                                              "---- درهم"
-                                        },
-                                        {
-                                          'المستحقات الغير مدفوعة': noteProvider
-                                                  .myNote.first?.total_nbrimp
-                                                  .toString() ??
-                                              "-----------"
-                                        },
-                                      ],
-                                      valueTextColor: Colors.white,
-                                      titleTextColor: Colors.white,
-                                    ) ??
-                                    CircularProgressIndicator(),
-                                TextLinesCard(
-                                      backgroundColor: Color(0xFFef888d),
-                                      linesData: [
-                                        {
-                                          'إجمالي المبيعات (365 يوم)':
-                                              caProvider.ca.first?.total_ca_365
+                                            },
+                                            {
+                                              'مندوب مبيعاتي':
+                                                  widget.agentName ??
+                                                      "-----------",
+                                            },
+                                            {
+                                              'المدينة':
+                                                  widget.city ?? "-----------"
+                                            },
+                                            {
+                                              'تاريخ آخر شراء': caProvider
+                                                      .ca
+                                                      .first
+                                                      ?.lastpurchasedate ??
+                                                  "-- / -- / ----"
+                                            },
+                                          ],
+                                          valueTextColor: Colors.white,
+                                          titleTextColor: Colors.white,
+                                        ) ??
+                                        CircularProgressIndicator(),
+                                    TextLinesCard(
+                                          backgroundColor: Color(0xFF7ab1d1),
+                                          linesData: [
+                                            {
+                                              'التنقيط': noteProvider
+                                                      .myNote.first?.note
+                                                      .toString() ??
+                                                  "-----------"
+                                            },
+                                            {
+                                              'التقييم': noteProvider
+                                                      .myNote.first?.notation
+                                                      .toString() ??
+                                                  "-----------",
+                                              'isRTL': false,
+                                            },
+                                            {
+                                              'الرصيد': noteProvider
+                                                          .myNote.first?.solde
                                                           .toString() +
                                                       ' درهم' ??
                                                   "---- درهم"
-                                        },
-                                        {
-                                          'إجمالي المبيعات (184 يوم)':
-                                              caProvider.ca.first?.total_ca_184
-                                                          .toString() +
-                                                      ' درهم' ??
-                                                  "---- درهم"
-                                        },
-                                        {
-                                          'مهلة الدفع': caProvider.ca.first
-                                                      ?.payment_deadline ==
-                                                  0
-                                              ? 'يوم --'
-                                              : caProvider.ca.first?.payment_deadline ==
-                                                      1
-                                                  ? caProvider.ca.first
-                                                          ?.payment_deadline
-                                                          .toString() +
-                                                      " يوم"
+                                            },
+                                            {
+                                              'المستحقات الغير مدفوعة':
+                                                  noteProvider.myNote.first
+                                                          ?.total_nbrimp
+                                                          .toString() ??
+                                                      "-----------"
+                                            },
+                                          ],
+                                          valueTextColor: Colors.white,
+                                          titleTextColor: Colors.white,
+                                        ) ??
+                                        CircularProgressIndicator(),
+                                    TextLinesCard(
+                                          backgroundColor: Color(0xFFef888d),
+                                          linesData: [
+                                            {
+                                              'إجمالي المبيعات / 365 يوم':
+                                                  caProvider.ca.first
+                                                              ?.total_ca_365
+                                                              .toString() +
+                                                          ' درهم' ??
+                                                      "---- درهم"
+                                            },
+                                            {
+                                              'إجمالي المبيعات / 184 يوم':
+                                                  caProvider.ca.first
+                                                              ?.total_ca_184
+                                                              .toString() +
+                                                          ' درهم' ??
+                                                      "---- درهم"
+                                            },
+                                            {
+                                              'مهلة الدفع': caProvider.ca.first
+                                                          ?.payment_deadline ==
+                                                      0
+                                                  ? 'يوم --'
                                                   : caProvider.ca.first?.payment_deadline ==
-                                                          2
+                                                          1
                                                       ? caProvider.ca.first
                                                               ?.payment_deadline
                                                               .toString() +
-                                                          " يومان"
-                                                      // ignore: null_aware_before_operator
-                                                      : caProvider.ca.first?.payment_deadline >=
-                                                                  3 &&
-                                                              // ignore: null_aware_before_operator
-                                                              caProvider
-                                                                      .ca
-                                                                      .first
-                                                                      ?.payment_deadline <=
-                                                                  10
+                                                          " يوم"
+                                                      : caProvider.ca.first?.payment_deadline ==
+                                                              2
                                                           ? caProvider.ca.first
                                                                   ?.payment_deadline
                                                                   .toString() +
-                                                              " أيام"
+                                                              " يومان"
                                                           // ignore: null_aware_before_operator
-                                                          : caProvider.ca.first?.payment_deadline >= 11
-                                                              ? caProvider.ca.first?.payment_deadline.toString() + " يوم"
-                                                              : 'يوم --'
-                                        },
-                                      ],
-                                      valueTextColor: Colors.white,
-                                      titleTextColor: Colors.white,
-                                    ) ??
-                                    CircularProgressIndicator(),
-                                // TextLinesCard(
-                                //       backgroundColor:
-                                //           Color(0xFFfac759),
-                                //       linesData: [
-                                //         {
-                                //           'إجمالي المبيعات / الفئة':
-                                //               ''
-                                //         },
-                                //         {'البلاتين': '-- %'},
-                                //         {'الذهب': '-- %'},
-                                //         {'الفضة': '-- %'},
-                                //         {'أخرى': '-- %'},
-                                //       ],
-                                //       valueTextColor: Colors.white,
-                                //       titleTextColor: Colors.white,
-                                //     ) ??
-                                //     CircularProgressIndicator(),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                              ],
-                            )
+                                                          : caProvider.ca.first?.payment_deadline >=
+                                                                      3 &&
+                                                                  // ignore: null_aware_before_operator
+                                                                  caProvider
+                                                                          .ca
+                                                                          .first
+                                                                          ?.payment_deadline <=
+                                                                      10
+                                                              ? caProvider
+                                                                      .ca
+                                                                      .first
+                                                                      ?.payment_deadline
+                                                                      .toString() +
+                                                                  " أيام"
+                                                              // ignore: null_aware_before_operator
+                                                              : caProvider.ca.first?.payment_deadline >= 11
+                                                                  ? caProvider.ca.first?.payment_deadline.toString() + " يوم"
+                                                                  : 'يوم --'
+                                            },
+                                          ],
+                                          valueTextColor: Colors.white,
+                                          titleTextColor: Colors.white,
+                                        ) ??
+                                        CircularProgressIndicator(),
+                                    // TextLinesCard(
+                                    //       backgroundColor:
+                                    //           Color(0xFFfac759),
+                                    //       linesData: [
+                                    //         {
+                                    //           'إجمالي المبيعات / الفئة':
+                                    //               ''
+                                    //         },
+                                    //         {'البلاتين': '-- %'},
+                                    //         {'الذهب': '-- %'},
+                                    //         {'الفضة': '-- %'},
+                                    //         {'أخرى': '-- %'},
+                                    //       ],
+                                    //       valueTextColor: Colors.white,
+                                    //       titleTextColor: Colors.white,
+                                    //     ) ??
+                                    //     CircularProgressIndicator(),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                  ],
+                                )
+                              : SizedBox()
                           : SizedBox()
                       : SizedBox(),
 
