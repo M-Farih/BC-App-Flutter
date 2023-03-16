@@ -15,13 +15,15 @@ class _SliderVerticalWidgetState extends State<SliderVerticalWidget> {
     final double min = 0;
     final double max = widget.maxi;
 
+    var _width = MediaQuery.of(context).size.width * 0.2;
+    var _height = MediaQuery.of(context).size.height / 2.8;
+
     return SliderTheme(
       data: SliderThemeData(
         trackHeight: 75,
         thumbShape: SliderComponentShape.noOverlay,
         overlayShape: SliderComponentShape.noOverlay,
         valueIndicatorShape: SliderComponentShape.noOverlay,
-
         trackShape: RectangularSliderTrackShape(),
 
         /// ticks in between
@@ -29,8 +31,8 @@ class _SliderVerticalWidgetState extends State<SliderVerticalWidget> {
         inactiveTickMarkColor: Colors.transparent,
       ),
       child: Container(
-        width: MediaQuery.of(context).size.width * 0.2,
-        height: MediaQuery.of(context).size.height / 2.8,
+        width: _width,
+        height: _height,
         child: Column(
           children: [
             Padding(
@@ -68,29 +70,37 @@ class _SliderVerticalWidgetState extends State<SliderVerticalWidget> {
               ),
             ),
             Expanded(
-              child: ClipRRect(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(6),
-                  topRight: Radius.circular(6),
-                ),
-                child: GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  child: RotatedBox(
-                    quarterTurns: 3,
-                    child: Slider(
-                      value: widget.turnover,
-                      activeColor: Color(0xFF2C7DBF),
-                      inactiveColor: Color(0xFFBEE1FF),
-                      min: min,
-                      max: max,
-                      divisions: 40,
-                      label: widget.turnover.round().toString(),
-                      onChanged: (double newValue) {},
+                child: Stack(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(6),
+                    topRight: Radius.circular(6),
+                  ),
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    child: RotatedBox(
+                      quarterTurns: 3,
+                      child: Slider(
+                        value: widget.turnover,
+                        activeColor: Color(0xFF2C7DBF),
+                        inactiveColor: Color(0xFFBEE1FF),
+                        min: min,
+                        max: max,
+                        divisions: 40,
+                        label: widget.turnover.round().toString(),
+                        onChanged: (double newValue) {},
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ),
+                Container(
+                  color: Colors.transparent,
+                  width: _width,
+                  height: _height,
+                ),
+              ],
+            )),
             Container(
               width: 75.0,
               height: 75.0,

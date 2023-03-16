@@ -204,12 +204,12 @@ class _SellerDetailsState extends State<SellerDetails> {
                   Container(
                     height: userProvider.userById.idrole == 3
                         ? MediaQuery.of(context).size.height * 0.44
-                        : MediaQuery.of(context).size.height * 0.64,
+                        : MediaQuery.of(context).size.height * 0.5,
                     width: MediaQuery.of(context).size.width - 50,
                     margin: EdgeInsets.only(
                       top: userProvider.userById.idrole == 3
                           ? MediaQuery.of(context).size.height * 0
-                          : MediaQuery.of(context).size.height * 0.06,
+                          : MediaQuery.of(context).size.height * 0.1,
                     ),
                     decoration: BoxDecoration(
                       image: DecorationImage(
@@ -265,35 +265,43 @@ class _SellerDetailsState extends State<SellerDetails> {
                         SizedBox(
                           height: 10,
                         ),
-                        Text(
-                          'CA pour l\'année ${DateTime.now().year}',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12.5,
-                          ),
-                        ),
-                        Text(
-                          caFamilleProvider.caFamille.first.total_ca != null
-                              ? '${caFamilleProvider.caFamille.first.total_ca} Dhs'
-                              : '--- Dhs',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                        userProvider.userById.idrole == 3
+                            ? Text(
+                                'CA pour l\'année ${DateTime.now().year}',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12.5,
+                                ),
+                              )
+                            : SizedBox(),
+                        userProvider.userById.idrole == 3
+                            ? Text(
+                                caFamilleProvider.caFamille.first.total_ca !=
+                                        null
+                                    ? '${caFamilleProvider.caFamille.first.total_ca} Dhs'
+                                    : '--- Dhs',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )
+                            : SizedBox(),
                         SizedBox(
                           height: 10,
                         ),
-                        Text(
-                          caFamilleProvider.caFamille.first.total_ca != null
-                              ? '${caFamilleProvider.caFamille.first.ristourne}'
-                              : '-- %',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 28,
-                          ),
-                        ),
+                        userProvider.userById.idrole == 3
+                            ? Text(
+                                caFamilleProvider.caFamille.first.total_ca !=
+                                        null
+                                    ? '${caFamilleProvider.caFamille.first.ristourne}'
+                                    : '-- %',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 28,
+                                ),
+                              )
+                            : SizedBox(),
                         noteProvider.myNote.first.cat != null &&
                                 caFamilleProvider.caFamille.first.total_ca !=
                                     null
