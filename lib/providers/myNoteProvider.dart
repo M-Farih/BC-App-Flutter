@@ -12,15 +12,18 @@ class MyNoteProvider extends ChangeNotifier {
   MyNoteService _myNoteService = MyNoteService();
   // ignore: deprecated_member_use
 
-  Future<void> getMyNote(
-      int idvendor, int caAn, int caM, int del) async {
+  Future<void> getMyNote(int idvendor, int caAn, int caM, int del) async {
     isBusy = true;
     notifyListeners();
     var response = await _myNoteService.note(idvendor, caAn, caM, del);
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
       _myNote.clear();
-      data['data'].forEach((n) => _myNote.add(MyNote.fromJson(n)));
+      data['data'].forEach(
+        (n) => _myNote.add(
+          MyNote.fromJson(n),
+        ),
+      );
       isBusy = false;
       notifyListeners();
     }

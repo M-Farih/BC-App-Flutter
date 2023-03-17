@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bc_app/const/extentions.dart';
 import 'package:bc_app/providers/authProvider.dart';
 import 'package:bc_app/providers/caFamilleProvider.dart';
@@ -58,9 +60,39 @@ class _SellerDetailsState extends State<SellerDetails> {
     }
   }
 
+  int _seconds = 0;
+  bool _isLoading = false;
+
+  void startLoading() {
+    setState(() {
+      _isLoading = true;
+      _seconds = 1;
+    });
+    Timer.periodic(Duration(milliseconds: 500), (timer) {
+      if (_seconds == 5) {
+        setState(() {
+          _isLoading = false;
+          timer.cancel();
+        });
+      } else {
+        setState(() {
+          _seconds++;
+        });
+      }
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+    startLoading();
+    print(" fffffffffffffffffffffffffffffffffffffffffffffffffff");
+    print(Provider.of<UserProvider>(context, listen: false).sellers.length);
+    print(Provider.of<CaFamilleProvider>(context, listen: false)
+        .caFamille
+        .length);
+    print(Provider.of<CaProvider>(context, listen: false).ca.length);
+    print(Provider.of<MyNoteProvider>(context, listen: false).myNote.length);
     WidgetsBinding.instance.addPostFrameCallback(
       (_) async {
         Provider.of<UserProvider>(context, listen: false)
@@ -69,22 +101,22 @@ class _SellerDetailsState extends State<SellerDetails> {
             .getCAFamille(widget.idvendor);
         Provider.of<CaProvider>(context, listen: false).getCA(widget.idvendor);
         Provider.of<AuthProvider>(context, listen: false).getUserFromSP();
+        Provider.of<CaProvider>(context, listen: false);
+        Provider.of<MyNoteProvider>(context, listen: false);
       },
     );
 
-    final caProvider = Provider.of<CaProvider>(context, listen: false);
-    final myNoteProvider = Provider.of<MyNoteProvider>(context, listen: false);
-    int idvendor =
-        Provider.of<AuthProvider>(context, listen: false).currentUsr.idvendor;
+    // final caProvider = Provider.of<CaProvider>(context, listen: false);
+    // final myNoteProvider = Provider.of<MyNoteProvider>(context, listen: false);
 
-    final ca = caProvider.ca.first;
+    // final ca = caProvider.ca.first;
 
-    myNoteProvider.getMyNote(
-      idvendor,
-      ca.total_ca_365,
-      ca.total_ca_184,
-      ca.payment_deadline,
-    );
+    // myNoteProvider.getMyNote(
+    //   widget.idvendor,
+    //   caProvider.ca.first.total_ca_365,
+    //   caProvider.ca.first.total_ca_184,
+    //   caProvider.ca.first.payment_deadline,
+    // );
   }
 
   @override
@@ -97,6 +129,15 @@ class _SellerDetailsState extends State<SellerDetails> {
     var caFamilleProvider =
         Provider.of<CaFamilleProvider>(context, listen: true);
     var noteProvider = Provider.of<MyNoteProvider>(context, listen: true);
+
+    noteProvider.getMyNote(
+      widget.idvendor,
+      caProvider.ca.first.total_ca_365,
+      caProvider.ca.first.total_ca_184,
+      caProvider.ca.first.payment_deadline,
+    );
+
+    // print(noteProvider.myNote.first.cat + " ffffffffffffffffffff");
 
     return Scaffold(
       backgroundColor: Color(0xFFF1F4F7),
@@ -288,56 +329,73 @@ class _SellerDetailsState extends State<SellerDetails> {
                               )
                             : SizedBox(),
                         SizedBox(
-                          height: 10,
+                          height: userProvider.userById.idrole == 3 ? 14 : 0,
                         ),
-                        userProvider.userById.idrole == 3
-                            ? Text(
-                                caFamilleProvider.caFamille.first.total_ca !=
-                                        null
-                                    ? '${caFamilleProvider.caFamille.first.ristourne}'
-                                    : '-- %',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 28,
-                                ),
-                              )
-                            : SizedBox(),
-                        noteProvider.myNote.first.cat != null &&
-                                caFamilleProvider.caFamille.first.total_ca !=
-                                    null
-                            ? Container(
-                                child: double.parse(caFamilleProvider
-                                            .caFamille.first.total_ca) >=
-                                        10000.00
-                                    ? RatingBar.builder(
-                                        initialRating: double.parse(noteProvider
-                                                .myNote.first.cat) ??
-                                            0,
-                                        minRating: double.parse(noteProvider
-                                                .myNote.first.cat) ??
-                                            0,
-                                        maxRating: double.parse(noteProvider
-                                                .myNote.first.cat) ??
-                                            0,
-                                        itemSize: 30.0,
-                                        direction: Axis.horizontal,
-                                        allowHalfRating: true,
-                                        itemCount: 5,
-                                        ignoreGestures: true,
-                                        itemPadding: EdgeInsets.symmetric(
-                                            horizontal: 1.5),
-                                        itemBuilder: (context, _) => Icon(
-                                          Icons.star,
-                                          color: Colors.amber,
-                                        ),
-                                        onRatingUpdate: (double value) {
-                                          print(value);
-                                        },
-                                      )
-                                    : SizedBox(),
-                              )
-                            : SizedBox(),
-                        userProvider.userById.idrole != 3
+                        if (_isLoading)
+                          SizedBox(
+                            width: 18,
+                            height: 18,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 2.0,
+                            ),
+                          )
+                        else
+                          userProvider.userById.idrole == 3
+                              ? Column(
+                                  children: [
+                                    Text(
+                                      caFamilleProvider
+                                                  .caFamille.first.total_ca !=
+                                              null
+                                          ? '${caFamilleProvider.caFamille.first.ristourne}'
+                                          : '-- %',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 28,
+                                      ),
+                                    ),
+                                    noteProvider.myNote.first.cat != null &&
+                                            caFamilleProvider
+                                                    .caFamille.first.total_ca !=
+                                                null
+                                        ? Container(
+                                            child: double.parse(
+                                                        caFamilleProvider
+                                                            .caFamille
+                                                            .first
+                                                            .total_ca) >=
+                                                    10000.00
+                                                ? RatingBar.builder(
+                                                    initialRating: double.parse(
+                                                            noteProvider.myNote
+                                                                .first.cat) ??
+                                                        0,
+                                                    itemSize: 30.0,
+                                                    direction: Axis.horizontal,
+                                                    allowHalfRating: true,
+                                                    itemCount: 5,
+                                                    ignoreGestures: true,
+                                                    itemPadding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 1.5),
+                                                    itemBuilder: (context, _) =>
+                                                        Icon(
+                                                      Icons.star,
+                                                      color: Colors.amber,
+                                                    ),
+                                                    onRatingUpdate:
+                                                        (double value) {
+                                                      print(value);
+                                                    },
+                                                  )
+                                                : SizedBox(),
+                                          )
+                                        : SizedBox(),
+                                  ],
+                                )
+                              : SizedBox(),
+                        widget.idrole != 3
                             ? Column(
                                 children: [
                                   SizedBox(height: 30),
@@ -411,7 +469,7 @@ class _SellerDetailsState extends State<SellerDetails> {
 
                   /// seller Statistics
                   SizedBox(height: 30),
-                  userProvider.userById.idrole == 3
+                  widget.idrole == 3
                       ? sellerProductStatistics(
                           productImage: 'assets/images/matelas.png',
                           familleName: 'Matelas',
@@ -427,7 +485,7 @@ class _SellerDetailsState extends State<SellerDetails> {
                           textColor: 0xFF2C7DBF,
                         )
                       : SizedBox(),
-                  userProvider.userById.idrole == 3
+                  widget.idrole == 3
                       ? sellerProductStatistics(
                           productImage: 'assets/images/banquette.png',
                           familleName: 'Banquette',
@@ -443,7 +501,7 @@ class _SellerDetailsState extends State<SellerDetails> {
                           textColor: 0xFF84489B,
                         )
                       : SizedBox(),
-                  userProvider.userById.idrole == 3
+                  widget.idrole == 3
                       ? sellerProductStatistics(
                           productImage: 'assets/images/mousse.png',
                           familleName: 'Mousse',
@@ -459,7 +517,7 @@ class _SellerDetailsState extends State<SellerDetails> {
                           textColor: 0xFF81BA48,
                         )
                       : SizedBox(),
-                  userProvider.userById.idrole == 3
+                  widget.idrole == 3
                       ? sellerProductStatistics(
                           productImage: 'assets/images/salon.png',
                           familleName: 'Salon',
@@ -476,7 +534,7 @@ class _SellerDetailsState extends State<SellerDetails> {
                         )
                       : SizedBox(),
 
-                  userProvider.userById.idrole == 3
+                  widget.idrole == 3
                       ? caFamilleProvider.caFamille.first.total_ca != null
                           ? double.parse(caFamilleProvider
                                       .caFamille.first.total_ca) >=

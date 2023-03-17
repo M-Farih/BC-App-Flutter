@@ -57,7 +57,9 @@ class _ListSellersState extends State<ListSellers> {
     var userProvider = Provider.of<UserProvider>(context, listen: true);
     var authProvider = Provider.of<AuthProvider>(context, listen: true);
     return userProvider.busy
-        ? Center(child: CircularProgressIndicator())
+        ? Center(
+            child: CircularProgressIndicator(),
+          )
         : Scaffold(
             backgroundColor: Color(0xFFF1F4F7),
             body: Padding(
@@ -166,13 +168,15 @@ class _ListSellersState extends State<ListSellers> {
                                       width: 30,
                                       height: 30,
                                       child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            Icon(Icons.account_circle,
-                                                color:
-                                                    Colors.red.withOpacity(0.3))
-                                          ]),
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          Icon(
+                                            Icons.account_circle,
+                                            color: Colors.red.withOpacity(0.3),
+                                          )
+                                        ],
+                                      ),
                                     ),
                               onTap: () {
                                 userProvider.busy = true;
@@ -194,7 +198,8 @@ class _ListSellersState extends State<ListSellers> {
                                             .sellers[index].lastName,
                                         agentName: userProvider
                                             .sellers[index].agentName,
-                                        address: userProvider.sellers[index].address,
+                                        address:
+                                            userProvider.sellers[index].address,
                                         city: userProvider.sellers[index].city,
                                         password: userProvider
                                             .sellers[index].password,
@@ -253,14 +258,15 @@ class _ListSellersState extends State<ListSellers> {
       controller: myController,
       keyboardType: _keyboardType,
       decoration: InputDecoration(
-          hintText: hintText,
-          hintTextDirection: TextDirection.ltr,
-          hintStyle: TextStyle(
-            color: Colors.grey,
-            fontSize: 16.0,
-          ),
-          border: InputBorder.none,
-          prefixIcon: Icon(myIcon)),
+        hintText: hintText,
+        hintTextDirection: TextDirection.ltr,
+        hintStyle: TextStyle(
+          color: Colors.grey,
+          fontSize: 16.0,
+        ),
+        border: InputBorder.none,
+        prefixIcon: Icon(myIcon),
+      ),
     );
   }
 }
