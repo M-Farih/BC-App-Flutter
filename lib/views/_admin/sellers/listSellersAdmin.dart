@@ -1,6 +1,4 @@
-import 'package:another_flushbar/flushbar.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:bc_app/models/user.dart';
 import 'package:bc_app/providers/authProvider.dart';
 import 'package:bc_app/providers/userProvider.dart';
 import 'package:bc_app/views/_admin/home/homePage_admin.dart';
@@ -179,231 +177,260 @@ class _ListSellersAdminState extends State<ListSellersAdmin> {
                                   ),
                                 ),
                               ),
-                              child: ListTile(
-                                leading: CircleAvatar(
-                                  backgroundColor: Colors.transparent,
-                                  backgroundImage: NetworkImage(
-                                    '${userProvider.sellers[index].profileImage != "" ? userProvider.sellers[index].profileImage.replaceAll('"', '') : "https://ui-avatars.com/api/?background=FFFFF&color=2C7DBF&name=${userProvider.sellers[index].firstName}+${userProvider.sellers[index].lastName}"}',
-                                  ),
-                                ),
-                                title: Text(
-                                  '${userProvider.sellers[index].firstName} ${userProvider.sellers[index].lastName}',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                subtitle: Row(
-                                  children: [
-                                    userProvider.sellers[index].idrole == 3
-                                        ? Text(
-                                            '${userProvider.sellers[index].code}')
-                                        : SizedBox(),
-                                    userProvider.sellers[index].idrole != 3
-                                        ? Container(
-                                            width: 30,
-                                            height: 15,
-                                            decoration: BoxDecoration(
-                                                color: Colors.blueAccent
-                                                    .withOpacity(0.5),
-                                                borderRadius:
-                                                    BorderRadius.circular(15)),
-                                            child: userProvider.sellers[index]
-                                                        .idrole ==
-                                                    2
-                                                ? Center(
-                                                    child: Text(
-                                                    'C',
-                                                    style: TextStyle(
-                                                        color: Colors.white),
-                                                  ))
-                                                : userProvider.sellers[index]
-                                                            .idrole ==
-                                                        1
-                                                    ? Center(
-                                                        child: Text(
-                                                        'A',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.white),
-                                                      ))
-                                                    : null,
-                                          )
-                                        : SizedBox()
-                                  ],
-                                ),
-                                trailing:
-                                    userProvider.sellers[index].userName != ""
-                                        ? Container(
-                                            width: 30,
-                                            height: 30,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.end,
-                                              children: [
-                                                userProvider.sellers[index]
-                                                            .firstConnection ==
-                                                        "0"
-                                                    ? Icon(
-                                                        Icons.account_circle,
-                                                        color: Colors.blue
-                                                            .withOpacity(0.3),
-                                                      )
-                                                    : Icon(
-                                                        Icons.account_circle,
-                                                        color: Colors.green
-                                                            .withOpacity(0.3),
-                                                      )
-                                              ],
-                                            ),
-                                          )
-                                        : Container(
-                                            width: 30,
-                                            height: 30,
-                                            child: Row(
+                              child: userProvider.sellers[index].firstName ==
+                                      "Admin"
+                                  ? null
+                                  : ListTile(
+                                      leading: CircleAvatar(
+                                        backgroundColor: Colors.transparent,
+                                        backgroundImage: NetworkImage(
+                                          '${userProvider.sellers[index].profileImage != "" ? userProvider.sellers[index].profileImage.replaceAll('"', '') : "https://ui-avatars.com/api/?background=FFFFF&color=2C7DBF&name=${userProvider.sellers[index].firstName}+${userProvider.sellers[index].lastName}"}',
+                                        ),
+                                      ),
+                                      title: Text(
+                                        '${userProvider.sellers[index].firstName} ${userProvider.sellers[index].lastName}',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      subtitle: Row(
+                                        children: [
+                                          userProvider.sellers[index].idrole ==
+                                                  3
+                                              ? Text(
+                                                  '${userProvider.sellers[index].code}')
+                                              : SizedBox(),
+                                          userProvider.sellers[index].idrole !=
+                                                  3
+                                              ? Container(
+                                                  width: 30,
+                                                  height: 15,
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.blueAccent
+                                                        .withOpacity(0.5),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15),
+                                                  ),
+                                                  child: userProvider
+                                                              .sellers[index]
+                                                              .idrole ==
+                                                          2
+                                                      ? Center(
+                                                          child: Text(
+                                                          'C',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white),
+                                                        ))
+                                                      : userProvider
+                                                                  .sellers[
+                                                                      index]
+                                                                  .idrole ==
+                                                              1
+                                                          ? Center(
+                                                              child: Text(
+                                                              'A',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white),
+                                                            ))
+                                                          : null,
+                                                )
+                                              : SizedBox()
+                                        ],
+                                      ),
+                                      trailing: userProvider
+                                                  .sellers[index].userName !=
+                                              ""
+                                          ? Container(
+                                              width: 30,
+                                              height: 30,
+                                              child: Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.end,
                                                 children: [
-                                                  Icon(
-                                                    Icons.account_circle,
-                                                    color: Colors.red
-                                                        .withOpacity(0.3),
-                                                  )
-                                                ]),
+                                                  userProvider.sellers[index]
+                                                              .firstConnection ==
+                                                          "0"
+                                                      ? Icon(
+                                                          Icons.account_circle,
+                                                          color: Colors.blue
+                                                              .withOpacity(0.3),
+                                                        )
+                                                      : Icon(
+                                                          Icons.account_circle,
+                                                          color: Colors.green
+                                                              .withOpacity(0.3),
+                                                        )
+                                                ],
+                                              ),
+                                            )
+                                          : Container(
+                                              width: 30,
+                                              height: 30,
+                                              child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  children: [
+                                                    Icon(
+                                                      Icons.account_circle,
+                                                      color: Colors.red
+                                                          .withOpacity(0.3),
+                                                    )
+                                                  ]),
+                                            ),
+                                      onLongPress: () {
+                                        AwesomeDialog(
+                                          context: context,
+                                          borderSide: BorderSide(
+                                              color: Color(0xFF2C7DBF),
+                                              width: 2),
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          buttonsBorderRadius: BorderRadius.all(
+                                              Radius.circular(2)),
+                                          headerAnimationLoop: false,
+                                          customHeader: CircleAvatar(
+                                            backgroundColor: Colors.transparent,
+                                            radius: 50,
+                                            backgroundImage: NetworkImage(
+                                              '${userProvider.sellers[index].profileImage != "" ? userProvider.sellers[index].profileImage.replaceAll('"', '') : "https://ui-avatars.com/api/?background=FFFFF&color=2C7DBF&name=${userProvider.sellers[index].firstName}+${userProvider.sellers[index].lastName}"}',
+                                            ),
                                           ),
-                                onLongPress: () {
-                                  AwesomeDialog(
-                                    context: context,
-                                    borderSide: BorderSide(
-                                        color: Color(0xFF2C7DBF), width: 2),
-                                    width: MediaQuery.of(context).size.width,
-                                    buttonsBorderRadius:
-                                        BorderRadius.all(Radius.circular(2)),
-                                    headerAnimationLoop: false,
-                                    customHeader: CircleAvatar(
-                                      backgroundColor: Colors.transparent,
-                                      radius: 50,
-                                      backgroundImage: NetworkImage(
-                                        '${userProvider.sellers[index].profileImage != "" ? userProvider.sellers[index].profileImage.replaceAll('"', '') : "https://ui-avatars.com/api/?background=FFFFF&color=2C7DBF&name=${userProvider.sellers[index].firstName}+${userProvider.sellers[index].lastName}"}',
-                                      ),
-                                    ),
-                                    animType: AnimType.BOTTOMSLIDE,
-                                    title: 'INFO',
-                                    desc: 'Dialog description here...',
-                                    body: Column(
-                                      children: [
-                                        Form(
-                                            key: _key,
-                                            child: Column(
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.fromLTRB(
-                                                          20.0, 0, 20.0, 10.0),
-                                                  child: Card(
-                                                      color: Colors.white,
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10),
-                                                      ),
-                                                      child: Padding(
+                                          animType: AnimType.BOTTOMSLIDE,
+                                          title: 'INFO',
+                                          desc: 'Dialog description here...',
+                                          body: Column(
+                                            children: [
+                                              Form(
+                                                  key: _key,
+                                                  child: Column(
+                                                    children: [
+                                                      Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                .all(8.0),
-                                                        child: SizedBox(
-                                                            width: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width -
-                                                                80,
-                                                            child: buildTextField(
-                                                                'Nom d\'utilisateur',
-                                                                userProvider
-                                                                    .sellers[
-                                                                        index]
-                                                                    .userName)),
-                                                      )),
-                                                ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.fromLTRB(
-                                                          20.0, 0, 20.0, 10.0),
-                                                  child: Card(
-                                                      color: Colors.white,
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10),
+                                                                    .fromLTRB(
+                                                                20.0,
+                                                                0,
+                                                                20.0,
+                                                                10.0),
+                                                        child: Card(
+                                                            color: Colors.white,
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10),
+                                                            ),
+                                                            child: Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
+                                                              child: SizedBox(
+                                                                  width: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .width -
+                                                                      80,
+                                                                  child: buildTextField(
+                                                                      'Nom d\'utilisateur',
+                                                                      userProvider
+                                                                          .sellers[
+                                                                              index]
+                                                                          .userName)),
+                                                            )),
                                                       ),
-                                                      child: Padding(
+                                                      Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                .all(8.0),
-                                                        child: SizedBox(
-                                                            width: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width -
-                                                                80,
-                                                            child: buildTextField(
-                                                                'Nouveau mot de passe',
-                                                                userProvider
-                                                                    .sellers[
-                                                                        index]
-                                                                    .userName)),
-                                                      )),
-                                                ),
-                                              ],
-                                            )),
-                                      ],
+                                                                    .fromLTRB(
+                                                                20.0,
+                                                                0,
+                                                                20.0,
+                                                                10.0),
+                                                        child: Card(
+                                                            color: Colors.white,
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10),
+                                                            ),
+                                                            child: Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
+                                                              child: SizedBox(
+                                                                  width: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .width -
+                                                                      80,
+                                                                  child: buildTextField(
+                                                                      'Nouveau mot de passe',
+                                                                      userProvider
+                                                                          .sellers[
+                                                                              index]
+                                                                          .userName)),
+                                                            )),
+                                                      ),
+                                                    ],
+                                                  )),
+                                            ],
+                                          ),
+                                          showCloseIcon: true,
+                                          btnOkText: 'Modifier',
+                                          btnOkColor: Color(0xFF2C7DBF),
+                                          btnOkOnPress: () {
+                                            userProvider
+                                                .updateUsernameAndPassword(
+                                                    userProvider
+                                                        .sellers[index].iduser,
+                                                    nameController.text,
+                                                    passwordController.text);
+                                            _confirmation(context);
+                                          },
+                                        )..show();
+                                      },
+                                      onTap: () {
+                                        userProvider.busy = true;
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) => SellerDetails(
+                                              id: userProvider
+                                                  .sellers[index].iduser,
+                                              idvendor: userProvider
+                                                  .sellers[index].idvendor,
+                                              idrole: userProvider
+                                                  .sellers[index].idrole,
+                                              phoneNumber: userProvider
+                                                  .sellers[index].telephone,
+                                              mail: userProvider
+                                                  .sellers[index].email,
+                                              username: userProvider
+                                                  .sellers[index].userName,
+                                              password: userProvider
+                                                  .sellers[index].password,
+                                              firstName: userProvider
+                                                  .sellers[index].firstName,
+                                              lastName: userProvider
+                                                  .sellers[index].lastName,
+                                              agentName: userProvider
+                                                  .sellers[index].agentName,
+                                              address: userProvider
+                                                  .sellers[index].address,
+                                              city: userProvider
+                                                  .sellers[index].city,
+                                              profileImg:
+                                                  '${userProvider.sellers[index].profileImage != "" ? userProvider.sellers[index].profileImage.replaceAll('"', '') : "https://ui-avatars.com/api/?background=FFFFF&color=2C7DBF&name=${userProvider.sellers[index].firstName}+${userProvider.sellers[index].lastName}"}',
+                                            ),
+                                          ),
+                                        );
+                                      },
                                     ),
-                                    showCloseIcon: true,
-                                    btnOkText: 'Modifier',
-                                    btnOkColor: Color(0xFF2C7DBF),
-                                    btnOkOnPress: () {
-                                      userProvider.updateUsernameAndPassword(
-                                          userProvider.sellers[index].iduser,
-                                          nameController.text,
-                                          passwordController.text);
-                                      _confirmation(context);
-                                    },
-                                  )..show();
-                                },
-                                onTap: () {
-                                  userProvider.busy = true;
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) => SellerDetails(
-                                        id: userProvider.sellers[index].iduser,
-                                        idvendor: userProvider
-                                            .sellers[index].idvendor,
-                                        idrole:
-                                            userProvider.sellers[index].idrole,
-                                        phoneNumber: userProvider
-                                            .sellers[index].telephone,
-                                        mail: userProvider.sellers[index].email,
-                                        username: userProvider
-                                            .sellers[index].userName,
-                                        password: userProvider
-                                            .sellers[index].password,
-                                        firstName: userProvider
-                                            .sellers[index].firstName,
-                                        lastName: userProvider
-                                            .sellers[index].lastName,
-                                        agentName: userProvider
-                                            .sellers[index].agentName,
-                                        address:
-                                            userProvider.sellers[index].address,
-                                        city: userProvider.sellers[index].city,
-                                        profileImg:
-                                            '${userProvider.sellers[index].profileImage != "" ? userProvider.sellers[index].profileImage.replaceAll('"', '') : "https://ui-avatars.com/api/?background=FFFFF&color=2C7DBF&name=${userProvider.sellers[index].firstName}+${userProvider.sellers[index].lastName}"}',
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
                             );
                           }
 

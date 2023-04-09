@@ -578,7 +578,7 @@ class _SellerDetailsState extends State<SellerDetails> {
                                           backgroundColor: Color(0xFF7ab1d1),
                                           linesData: [
                                             {
-                                              'التنقيط': noteProvider
+                                              'النقطة \ التنقيط': noteProvider
                                                       .myNote.first?.note
                                                       .toString() ??
                                                   "-----------"
@@ -598,7 +598,7 @@ class _SellerDetailsState extends State<SellerDetails> {
                                                   "---- درهم"
                                             },
                                             {
-                                              'المستحقات الغير مدفوعة':
+                                              'المدفوعات بدون رصيد':
                                                   noteProvider.myNote.first
                                                           ?.total_nbrimp
                                                           .toString() ??
@@ -613,7 +613,7 @@ class _SellerDetailsState extends State<SellerDetails> {
                                           backgroundColor: Color(0xFFef888d),
                                           linesData: [
                                             {
-                                              'إجمالي المبيعات / 365 يوم':
+                                              'قيمة المبيعات السنوية':
                                                   caProvider.ca.first
                                                               ?.total_ca_365
                                                               .toString() +
@@ -621,7 +621,7 @@ class _SellerDetailsState extends State<SellerDetails> {
                                                       "---- درهم"
                                             },
                                             {
-                                              'إجمالي المبيعات / 184 يوم':
+                                              'متوسط قيمة المبيعات الشهرية':
                                                   caProvider.ca.first
                                                               ?.total_ca_184
                                                               .toString() +
@@ -629,7 +629,7 @@ class _SellerDetailsState extends State<SellerDetails> {
                                                       "---- درهم"
                                             },
                                             {
-                                              'مهلة الدفع': caProvider.ca.first
+                                              'مدة الدفع': caProvider.ca.first
                                                           ?.payment_deadline ==
                                                       0
                                                   ? 'يوم --'

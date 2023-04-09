@@ -323,12 +323,11 @@ class _Dashboard_revendeurState extends State<Dashboard_revendeur> {
                                                       Color(0xFF7ab1d1),
                                                   linesData: [
                                                     {
-                                                      'التنقيط': noteProvider
-                                                              .myNote
-                                                              .first
-                                                              ?.note
-                                                              .toString() ??
-                                                          "-----------"
+                                                      'النقطة \ التنقيط':
+                                                          noteProvider.myNote
+                                                                  .first?.note
+                                                                  .toString() ??
+                                                              "-----------"
                                                     },
                                                     {
                                                       'التقييم': noteProvider
@@ -349,7 +348,7 @@ class _Dashboard_revendeurState extends State<Dashboard_revendeur> {
                                                           "---- درهم"
                                                     },
                                                     {
-                                                      'المستحقات الغير مدفوعة':
+                                                      'المدفوعات بدون رصيد':
                                                           noteProvider
                                                                   .myNote
                                                                   .first
@@ -367,7 +366,7 @@ class _Dashboard_revendeurState extends State<Dashboard_revendeur> {
                                                       Color(0xFFef888d),
                                                   linesData: [
                                                     {
-                                                      'إجمالي المبيعات / 365 يوم':
+                                                      'قيمة المبيعات السنوية':
                                                           caProvider.ca.first
                                                                       ?.total_ca_365
                                                                       .toString() +
@@ -375,7 +374,7 @@ class _Dashboard_revendeurState extends State<Dashboard_revendeur> {
                                                               "---- درهم"
                                                     },
                                                     {
-                                                      'إجمالي المبيعات / 184 يوم':
+                                                      'متوسط قيمة المبيعات الشهرية':
                                                           caProvider.ca.first
                                                                       ?.total_ca_184
                                                                       .toString() +
@@ -383,7 +382,7 @@ class _Dashboard_revendeurState extends State<Dashboard_revendeur> {
                                                               "---- درهم"
                                                     },
                                                     {
-                                                      'مهلة الدفع': caProvider
+                                                      'مدة الدفع': caProvider
                                                                   .ca
                                                                   .first
                                                                   ?.payment_deadline ==
