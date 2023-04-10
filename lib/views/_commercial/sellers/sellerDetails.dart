@@ -317,9 +317,9 @@ class _SellerDetailsState extends State<SellerDetails> {
                             : SizedBox(),
                         userProvider.userById.idrole == 3
                             ? Text(
-                                caFamilleProvider.caFamille.first.total_ca !=
+                                caProvider.ca.first.total_ca_365 !=
                                         null
-                                    ? '${caFamilleProvider.caFamille.first.total_ca} Dhs'
+                                    ? '${caProvider.ca.first.total_ca_365} Dhs'
                                     : '--- Dhs',
                                 style: TextStyle(
                                   color: Colors.white,
@@ -345,8 +345,7 @@ class _SellerDetailsState extends State<SellerDetails> {
                               ? Column(
                                   children: [
                                     Text(
-                                      caFamilleProvider
-                                                  .caFamille.first.total_ca !=
+                                      caProvider.ca.first.total_ca_365 !=
                                               null
                                           ? '${caFamilleProvider.caFamille.first.ristourne}'
                                           : '-- %',
@@ -356,16 +355,13 @@ class _SellerDetailsState extends State<SellerDetails> {
                                       ),
                                     ),
                                     noteProvider.myNote.first.cat != null &&
-                                            caFamilleProvider
-                                                    .caFamille.first.total_ca !=
+                                            caProvider.ca.first.total_ca_365 !=
                                                 null
                                         ? Container(
-                                            child: double.parse(
-                                                        caFamilleProvider
-                                                            .caFamille
-                                                            .first
-                                                            .total_ca) >=
-                                                    10000.00
+                                            child: caProvider.ca.first
+                                                        .total_ca_365 >=
+                                                    caProvider.ca.first
+                                                        .total_ca_365_limit
                                                 ? RatingBar.builder(
                                                     initialRating: double.parse(
                                                             noteProvider.myNote
@@ -535,10 +531,9 @@ class _SellerDetailsState extends State<SellerDetails> {
                       : SizedBox(),
 
                   widget.idrole == 3
-                      ? caFamilleProvider.caFamille.first.total_ca != null
-                          ? double.parse(caFamilleProvider
-                                      .caFamille.first.total_ca) >=
-                                  10000.00
+                      ? caProvider.ca.first.total_ca_365 != null
+                          ? caProvider.ca.first.total_ca_365 >=
+                                  caProvider.ca.first.total_ca_365_limit
                               ? Column(
                                   children: [
                                     TextLinesCard(
@@ -578,13 +573,13 @@ class _SellerDetailsState extends State<SellerDetails> {
                                           backgroundColor: Color(0xFF7ab1d1),
                                           linesData: [
                                             {
-                                              'النقطة \ التنقيط': noteProvider
+                                              'النقطة / التنقيط': noteProvider
                                                       .myNote.first?.note
                                                       .toString() ??
                                                   "-----------"
                                             },
                                             {
-                                              'التقييم': noteProvider
+                                              'التصنيف': noteProvider
                                                       .myNote.first?.notation
                                                       .toString() ??
                                                   "-----------",

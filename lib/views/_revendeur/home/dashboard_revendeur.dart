@@ -9,7 +9,6 @@ import 'package:bc_app/views/widgets/sliderVertical.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -98,9 +97,8 @@ class _Dashboard_revendeurState extends State<Dashboard_revendeur> {
                                 0.0,
                               ),
                               child: Text(
-                                caFamilleProvider.caFamille.first.total_ca !=
-                                        null
-                                    ? '${caFamilleProvider.caFamille.first.total_ca} درهم'
+                                caProvider.ca.first.total_ca_365 != null
+                                    ? '${caProvider.ca.first.total_ca_365} درهم'
                                     : '0 درهم',
                                 style: TextStyle(
                                   color: Colors.white,
@@ -112,10 +110,9 @@ class _Dashboard_revendeurState extends State<Dashboard_revendeur> {
                             ),
                           ],
                         ),
-                        caFamilleProvider.caFamille.first.total_ca != null
-                            ? double.parse(caFamilleProvider
-                                        .caFamille.first.total_ca) >=
-                                    10000.00
+                        caProvider.ca.first.total_ca_365 != null
+                            ? caProvider.ca.first.total_ca_365 >=
+                                    caProvider.ca.first.total_ca_365_limit
                                 ? noteProvider.myNote.first.cat != null
                                     ? RatingBar.builder(
                                         initialRating: double.parse(noteProvider
@@ -266,10 +263,9 @@ class _Dashboard_revendeurState extends State<Dashboard_revendeur> {
                                   ],
                                 ),
                               ),
-                              caFamilleProvider.caFamille.first.total_ca != null
-                                  ? double.parse(caFamilleProvider
-                                              .caFamille.first.total_ca) >=
-                                          10000.00
+                              caProvider.ca.first.total_ca_365 != null
+                                  ? caProvider.ca.first.total_ca_365 >=
+                                          caProvider.ca.first.total_ca_365_limit
                                       ? Column(
                                           children: [
                                             TextLinesCard(
@@ -323,14 +319,14 @@ class _Dashboard_revendeurState extends State<Dashboard_revendeur> {
                                                       Color(0xFF7ab1d1),
                                                   linesData: [
                                                     {
-                                                      'النقطة \ التنقيط':
+                                                      'النقطة / التنقيط':
                                                           noteProvider.myNote
                                                                   .first?.note
                                                                   .toString() ??
                                                               "-----------"
                                                     },
                                                     {
-                                                      'التقييم': noteProvider
+                                                      'التصنيف': noteProvider
                                                               .myNote
                                                               .first
                                                               ?.notation
